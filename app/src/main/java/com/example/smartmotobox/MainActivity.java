@@ -29,11 +29,11 @@ import org.w3c.dom.Text;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
-    Button logout_btn, unlock, lock, riding, parked, biometric;;
+    Button logout_btn, unlock, lock, riding, parked, biometric, btnLoc1, btnLoc2, btnLoc3;
     TextView user_details;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    DatabaseReference dbRefLat, dbRefLon, dbRefTime;
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
@@ -50,6 +50,20 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewpager2);
+
+        //***************************TEST****************************************//
+
+        btnLoc1 = (Button) findViewById(R.id.btnLoc1);
+        btnLoc2 = (Button) findViewById(R.id.btnLoc2);
+        btnLoc3 = (Button) findViewById(R.id.btnLoc3);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        dbRefLat = firebaseDatabase.getReference("/Location/MarkerLat");
+        dbRefLon = firebaseDatabase.getReference("/Location/MarkerLon");
+        dbRefTime = firebaseDatabase.getReference("/Location/MarkerTime");
+
+        //***************************TEST****************************************//
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         tabAdapter = new tabAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(tabAdapter);
@@ -58,6 +72,36 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("MAP"));
         tabLayout.addTab(tabLayout.newTab().setText("CONTROL"));
         tabLayout.addTab(tabLayout.newTab().setText("NOTIFICATIONS"));
+
+
+        //***************************TEST****************************************//
+
+        btnLoc1.setOnClickListener(view -> {
+
+            dbRefLat.child("Latitude").setValue("14.589699096190826");
+            dbRefLon.child("Longitude").setValue("121.10027442687233");
+            dbRefTime.child("Time").setValue("09:59:00.54");
+
+        });
+
+        btnLoc2.setOnClickListener(view -> {
+
+            dbRefLat.child("Latitude").setValue("14.589423949727653");
+            dbRefLon.child("Longitude").setValue("121.1009154748915");
+            dbRefTime.child("Time").setValue("10:02:00.54");
+
+        });
+
+        btnLoc3.setOnClickListener(view -> {
+
+            dbRefLat.child("Latitude").setValue("14.589164377278017");
+            dbRefLon.child("Longitude").setValue("121.10246042715704");
+            dbRefTime.child("Time").setValue("10:07:00.54");
+
+        });
+
+        //***************************TEST****************************************//
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

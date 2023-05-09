@@ -27,7 +27,6 @@ public class firstTab extends Fragment {
     private GoogleMap googleMap;
     private DatabaseReference databaseReference;
     Marker marker;
-    public static final String FIREBASE_URL = "https://smart-motobox-default-rtdb.firebaseio.com/";
     private FirebaseDatabase firebaseDatabase;
 
 

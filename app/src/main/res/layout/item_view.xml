@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/tvNotifID"-->
+<!--        android:text="ID"-->
+<!--        android:layout_toLeftOf="@id/notifID"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="20dp"-->
+<!--        android:textColor="@color/black"/>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:id="@+id/tvNotifTrigger"-->
+<!--        android:layout_toLeftOf="@id/notifTrigger"-->
+<!--        android:text="Trigger:"-->
+<!--        android:textStyle="italic"-->
+<!--        android:textSize="20dp"-->
+<!--        android:textColor="@color/black"/>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:id="@+id/tvNotifDate"-->
+<!--        android:layout_toLeftOf="@id/notifDate"-->
+<!--        android:text="03-03-2023"-->
+<!--        android:textStyle="italic"-->
+<!--        android:textSize="20dp"-->
+<!--        android:textColor="@color/black"/>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_toLeftOf="@id/notifTime"-->
+<!--        android:id="@+id/tvNotifTime"-->
+<!--        android:textStyle="italic"-->
+<!--        android:text="01:43:07"-->
+<!--        android:textSize="20dp"-->
+<!--        android:textColor="@color/black"/>-->
+
+    <TextView
+        android:id="@+id/notifID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:text="014303032023"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/notifTrigger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notifID"
+        android:layout_marginLeft="20dp"
+        android:text="Tilt Activated"
+        android:textColor="#777777"
+        android:textSize="20dp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/notifDate"
+        android:text="03-03-2023"
+        android:layout_below="@id/notifTrigger"
+        android:textStyle="italic"
+        android:textSize="20dp"
+        android:textColor="#777777"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/notifTime"
+        android:layout_below="@id/notifDate"
+        android:textStyle="italic"
+        android:text="01:43:07"
+        android:textSize="20dp"
+        android:textColor="#777777"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/notifTime"
+        android:layout_marginTop="10dp"
+        android:background="@color/black"/>
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
