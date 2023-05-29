@@ -9,8 +9,8 @@
     <!-- TODO: Update blank fragment layout -->
 
     <FrameLayout
-        android:layout_width="400dp"
-        android:layout_height="600dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"

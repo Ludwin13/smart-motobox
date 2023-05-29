@@ -36,7 +36,7 @@ import java.util.List;
 
 
 public class MapFragment extends Fragment {
-    private DatabaseReference dbRefLatLonTime, dbRefLoc2LatLon, dbRefLat, dbRefLon, dbRefTime;
+    private DatabaseReference dbRefLatLonTime, dbRefLoc2LatLon, dbRefLat, dbRefLon, dbRefTime, dbGpsData;
     private FirebaseDatabase firebaseDatabase;
     private ArrayList<Marker> markerList;
 
@@ -86,6 +86,8 @@ public class MapFragment extends Fragment {
         dbRefTime = firebaseDatabase.getReference("/Location/MarkerTime");
         dbRefLatLonTime = firebaseDatabase.getReference("/Location");
 
+        dbGpsData = firebaseDatabase.getReference("Location");
+
         getLatLonTimeFirebase(new dataCallBack() {
             @Override
             public void onCallbackLatLonTime(double mLat, double mLon, String mTime) {
@@ -94,8 +96,29 @@ public class MapFragment extends Fragment {
             }
         });
 
+        getGPSData();
+
 
         return view;
+    }
+
+    private void getGPSData() {
+
+        dbGpsData.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 
@@ -126,47 +149,6 @@ public class MapFragment extends Fragment {
             }
         });
 
-//        dbRefLat.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//
-//        dbRefLon .addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//
-//        dbRefTime.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
 
     }

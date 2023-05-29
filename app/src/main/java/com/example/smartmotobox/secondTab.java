@@ -31,8 +31,10 @@ public class secondTab extends Fragment {
     Data data;
     Button unlock, lock, riding, parked, biometric;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    TextView tvLockStatus, tvAlarmStatus, tvMotorStatus;
+    DatabaseReference databaseReference, connectionDBRef;
+    TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus;
+
+    //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,16 +45,20 @@ public class secondTab extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("/Data");
 
+        connectionDBRef = firebaseDatabase.getReference("/Connection");
+
+
         data = new Data();
 
-        unlock = view.findViewById(R.id.unlockBtn);
-        lock = view.findViewById(R.id.lockBtn);
-        riding = view.findViewById(R.id.ridingBtn);
-        parked = view.findViewById(R.id.parkingBtn);
-        biometric = view.findViewById(R.id.enrollFingerBtn);
-        tvLockStatus = view.findViewById(R.id.lockStatus);
-        tvAlarmStatus = view.findViewById(R.id.alarmStatus);
-        tvMotorStatus = view.findViewById(R.id.motorStatus);
+//        unlock = view.findViewById(R.id.unlockBtn);
+//        lock = view.findViewById(R.id.lockBtn);
+//        riding = view.findViewById(R.id.ridingBtn);
+//        parked = view.findViewById(R.id.parkingBtn);
+//        biometric = view.findViewById(R.id.enrollFingerBtn);
+//        tvLockStatus = view.findViewById(R.id.lockStatus);
+//        tvAlarmStatus = view.findViewById(R.id.alarmStatus);
+//        tvMotorStatus = view.findViewById(R.id.motorStatus);
+//        tvConnectionStatus = view.findViewById(R.id.connectionStatus);
 
         checkStatus();
 
@@ -79,7 +85,7 @@ public class secondTab extends Fragment {
         riding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String btn_Motor_Status = "1";
+                String btn_Motor_Status = "0";
                 data.setBtn_Lock(btn_Motor_Status);
                 ridingMode(btn_Motor_Status);
 
@@ -89,7 +95,7 @@ public class secondTab extends Fragment {
         parked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String btn_Motor_Status = "0";
+                String btn_Motor_Status = "1";
                 data.setBtn_Lock(btn_Motor_Status);
                 parkedMode(btn_Motor_Status);
             }
@@ -109,23 +115,61 @@ public class secondTab extends Fragment {
 
     private void checkStatus() {
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                String lockStatus = snapshot.child("btn_Lock").getValue(String.class);
+//                if (lockStatus == "0") {
+//
+//                    tvLockStatus.setText("LOCKED");
+//                    tvLockStatus.setTextColor(Color.GREEN);
+//                } else {
+//                    tvLockStatus.setText("UNLOCKED");
+//                    tvLockStatus.setTypeface(null, Typeface.BOLD);
+//                    tvLockStatus.setTextColor(Color.RED);
+//                }
+//
+//                String alarmStatus = snapshot.child("/btn_Alarm").getValue(String.class);
+//                if (alarmStatus == "0") {
+//
+//                    tvAlarmStatus.setText("OFF");
+//                    tvAlarmStatus.setTextColor(Color.RED);
+//                } else {
+//                    tvAlarmStatus.setText("N-Word");
+//                    tvAlarmStatus.setTypeface(null, Typeface.BOLD);
+//                    tvAlarmStatus.setTextColor(Color.GREEN);
+//                }
+//
+//                String motorStatus = snapshot.child("btn_Motor_Status").getValue(String.class);
+//                if (motorStatus == "0") {
+//
+//                    tvMotorStatus.setText("RIDING");
+//                    tvMotorStatus.setTextColor(Color.RED);
+//                } else {
+//                        tvMotorStatus.setText("PARKED");
+//                        tvMotorStatus.setTypeface(null, Typeface.BOLD);
+//                        tvMotorStatus.setTextColor(Color.GREEN);
+//                }
+//
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+        DatabaseReference getAlarmStat = databaseReference.child("btn_Alarm");
+        DatabaseReference getEnrollStat = databaseReference.child("btn_Enroll");
+        DatabaseReference getLockStat = databaseReference.child("btn_Lock");
+        DatabaseReference getMotorStat = databaseReference.child("btn_Motor_Status");
+
+        getAlarmStat.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String lockStatus = snapshot.child("btn_Lock").getValue(String.class);
-                if (lockStatus == "0") {
+                String alarm = snapshot.getValue(String.class);
+                String alarmOff = "0";
 
-                    tvLockStatus.setText("LOCKED");
-                    tvLockStatus.setTextColor(Color.GREEN);
-                } else {
-                    tvLockStatus.setText("UNLOCKED");
-                    tvLockStatus.setTypeface(null, Typeface.BOLD);
-                    tvLockStatus.setTextColor(Color.RED);
-                }
-
-                String alarmStatus = snapshot.child("btn_Alarm").getValue(String.class);
-                if (alarmStatus == "0") {
-
+                if(alarm.equals(alarmOff)) {
                     tvAlarmStatus.setText("OFF");
                     tvAlarmStatus.setTextColor(Color.RED);
                 } else {
@@ -134,24 +178,110 @@ public class secondTab extends Fragment {
                     tvAlarmStatus.setTextColor(Color.GREEN);
                 }
 
-                String motorStatus = snapshot.child("btn_Motor_Status").getValue(String.class);
-                if (motorStatus == "0") {
-
-                    tvMotorStatus.setText("RIDING");
-                    tvMotorStatus.setTextColor(Color.RED);
-                } else {
-                        tvMotorStatus.setText("PARKED");
-                        tvMotorStatus.setTypeface(null, Typeface.BOLD);
-                        tvMotorStatus.setTextColor(Color.GREEN);
-                }
-
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
 
+//        getEnrollStat.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                String alarm = snapshot.getValue(String.class);
+//                String alarmOff = "0";
+//
+//                if(alarm.equals(alarmOff)) {
+//                    tvAlarmStatus.setText("OFF");
+//                    tvAlarmStatus.setTextColor(Color.RED);
+//                } else {
+//                    tvAlarmStatus.setText("ON");
+//                    tvAlarmStatus.setTypeface(null, Typeface.BOLD);
+//                    tvAlarmStatus.setTextColor(Color.GREEN);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+        getLockStat.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String lock = snapshot.getValue(String.class);
+                String lockOff = "0";
+
+                if(lock.equals(lockOff)) {
+                    tvLockStatus.setText("LOCKED");
+                    tvLockStatus.setTextColor(Color.GREEN);
+                } else {
+                    tvLockStatus.setText("UNLOCKED");
+                    tvLockStatus.setTypeface(null, Typeface.BOLD);
+                    tvLockStatus.setTextColor(Color.RED);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        getMotorStat.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String motor = snapshot.getValue(String.class);
+                String motorRiding = "0";
+
+                if(motor.equals(motorRiding)) {
+                    tvMotorStatus.setText("RIDING");
+                    tvMotorStatus.setTextColor(Color.RED);
+                } else {
+                    tvMotorStatus.setText("PARKED");
+                    tvMotorStatus.setTypeface(null, Typeface.BOLD);
+                    tvMotorStatus.setTextColor(Color.GREEN);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        connectionDBRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String SSID = snapshot.child("SSID").getValue(String.class);
+                String Status = snapshot.child("Status").getValue(String.class);
+                String Connected = "1";
+
+                if (Status == "0") {
+
+                    tvConnectionStatus.setText("NOT CONNNECTED");
+                    tvConnectionStatus.setTypeface(null, BOLD);
+                    tvConnectionStatus.setTextColor(Color.RED);
+
+                } else {
+                    tvConnectionStatus.setText(SSID);
+                    tvConnectionStatus.setTypeface(null, BOLD);
+                    tvConnectionStatus.setTextColor(Color.GREEN);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void parkedMode(String btn_Motor_Status) {

@@ -3,13 +3,15 @@ package com.example.smartmotobox;
 public class Item {
 
     String id;
-    String trigger;
+    String Status;
     String date;
     String time;
 
-    public Item(String id, String trigger, String date, String time) {
+    public Item() {}
+
+    public Item(String id, String Status, String date, String time) {
         this.id = id;
-        this.trigger = trigger;
+        this.Status = Status;
         this.date = date;
         this.time = time;
     }
@@ -22,12 +24,12 @@ public class Item {
         this.id = id;
     }
 
-    public String getTrigger() {
-        return trigger;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setTrigger(String trigger) {
-        this.trigger = trigger;
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 
     public String getDate() {

@@ -28,10 +28,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.notifID.setText(item.get(position).getId());
-        holder.notifTrigger.setText(item.get(position).getTrigger());
+//        holder.notifID.setText(item.get(position).getId());
+        holder.notifTrigger.setText(item.get(position).getStatus());
         holder.notifDate.setText(item.get(position).getDate());
         holder.notifTime.setText(item.get(position).getTime());
+
 
     }
 

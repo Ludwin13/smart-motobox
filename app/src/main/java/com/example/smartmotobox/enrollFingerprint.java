@@ -18,6 +18,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class enrollFingerprint extends AppCompatActivity {
 
@@ -31,6 +33,28 @@ public class enrollFingerprint extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enroll_fingerprint);
+
+        DatabaseReference getDataChange = FirebaseDatabase.getInstance().getReference("Alarm");
+        DatabaseReference getMagneticStat = getDataChange.child("Magnetic_Stat");
+
+        TimeZone tz = TimeZone.getDefault();
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("MM-dd-yyyy");
+        String date = dateFormat1.format(Calendar.getInstance().getTime());
+
+
+        getMagneticStat.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String magnetic = snapshot.getValue(String.class);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }
