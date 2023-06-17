@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "541275628910",
-    "firebase_url": "https://smart-motobox-default-rtdb.firebaseio.com",
-    "project_id": "smart-motobox",
-    "storage_bucket": "smart-motobox.appspot.com"
+    "project_number": "185215404884",
+    "firebase_url": "https://smartmotobox-c0827-default-rtdb.firebaseio.com",
+    "project_id": "smartmotobox-c0827",
+    "storage_bucket": "smartmotobox-c0827.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:541275628910:android:641d06c824393f54358d7f",
+        "mobilesdk_app_id": "1:185215404884:android:4aaf61ccfcb01802d296c1",
         "android_client_info": {
           "package_name": "com.example.smartmotobox"
         }
       },
       "oauth_client": [
         {
-          "client_id": "541275628910-aokgksv9im27ptrt3sfopeeat8bubhdp.apps.googleusercontent.com",
+          "client_id": "185215404884-kb64n1qnkdlqalh1d2nuro702c6bklbr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDCpHqM9jbgZI3MmE4j8af0kCjRMZK8zH8"
+          "current_key": "AIzaSyDiAC0vweu8zct6gzWEX0AwZ8DUb_q1H28"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "541275628910-aokgksv9im27ptrt3sfopeeat8bubhdp.apps.googleusercontent.com",
+              "client_id": "185215404884-kb64n1qnkdlqalh1d2nuro702c6bklbr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

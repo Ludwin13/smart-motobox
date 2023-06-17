@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:id="@+id/Latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:text="Latitude:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/Latitude_Holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Latitude"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/Latitude"
+        android:text="14.222222"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/Longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Latitude"
+        android:layout_marginLeft="20dp"
+        android:text="Longitude:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/Longitude_Holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/Longitude"
+        android:layout_alignTop="@+id/Longitude"
+        android:text="10.222222"
+        android:textStyle="italic"
+        android:textSize="20dp"
+        android:textColor="#777777"/>
+
+    <TextView
+        android:id="@+id/Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Longitude"
+        android:layout_marginLeft="20dp"
+        android:text="Time:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/Time_Holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/Time"
+        android:layout_alignTop="@+id/Time"
+        android:textStyle="italic"
+        android:text="01:43:07"
+        android:textSize="20dp"
+        android:textColor="#777777"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/Time_Holder"
+        android:layout_marginTop="10dp"
+        android:background="@color/black" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_above="@id/Latitude"
+        android:layout_marginTop="10dp"
+        android:background="@color/black"/>
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

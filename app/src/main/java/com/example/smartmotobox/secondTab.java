@@ -26,12 +26,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.ktx.Firebase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class secondTab extends Fragment {
 
     Data data;
-    Button unlock, lock, riding, parked, biometric;
+    Button unlock, lock, riding, parked, biometric, testBtn;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, connectionDBRef;
+    DatabaseReference databaseReference, connectionDBRef, locationDBRef;
     TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus;
 
     //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
@@ -47,20 +50,41 @@ public class secondTab extends Fragment {
 
         connectionDBRef = firebaseDatabase.getReference("/Connection");
 
+        DatabaseReference locationDBRef = firebaseDatabase.getReference("/Location");
 
         data = new Data();
 
-//        unlock = view.findViewById(R.id.unlockBtn);
-//        lock = view.findViewById(R.id.lockBtn);
-//        riding = view.findViewById(R.id.ridingBtn);
-//        parked = view.findViewById(R.id.parkingBtn);
-//        biometric = view.findViewById(R.id.enrollFingerBtn);
-//        tvLockStatus = view.findViewById(R.id.lockStatus);
-//        tvAlarmStatus = view.findViewById(R.id.alarmStatus);
-//        tvMotorStatus = view.findViewById(R.id.motorStatus);
-//        tvConnectionStatus = view.findViewById(R.id.connectionStatus);
+        testBtn = (Button) view.findViewById(R.id.testBtn);
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        unlock = view.findViewById(R.id.unlockBtn);
+        lock = view.findViewById(R.id.lockBtn);
+        riding = view.findViewById(R.id.ridingBtn);
+        parked = view.findViewById(R.id.parkedBtn);
+        biometric = view.findViewById(R.id.enrollBtn);
+        tvLockStatus = view.findViewById(R.id.tvLockStatus_Holder);
+        tvAlarmStatus = view.findViewById(R.id.tvAlarmStatus_Holder);
+        tvMotorStatus = view.findViewById(R.id.tvMotorStatus_Holder);
+        tvConnectionStatus = view.findViewById(R.id.tvConnection_Holder);
+
 
         checkStatus();
+
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String time = timeFormat.format(Calendar.getInstance().getTime());
+                String date = dateFormat.format(Calendar.getInstance().getTime());
+
+                String key = locationDBRef.push().getKey();
+
+                locationDBRef.child(key).setValue("Lat=14.222|Lon=10.222|Time="+time);
+
+            }
+        });
 
         lock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,48 +139,48 @@ public class secondTab extends Fragment {
 
     private void checkStatus() {
 
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                String lockStatus = snapshot.child("btn_Lock").getValue(String.class);
-//                if (lockStatus == "0") {
-//
-//                    tvLockStatus.setText("LOCKED");
-//                    tvLockStatus.setTextColor(Color.GREEN);
-//                } else {
-//                    tvLockStatus.setText("UNLOCKED");
-//                    tvLockStatus.setTypeface(null, Typeface.BOLD);
-//                    tvLockStatus.setTextColor(Color.RED);
-//                }
-//
-//                String alarmStatus = snapshot.child("/btn_Alarm").getValue(String.class);
-//                if (alarmStatus == "0") {
-//
-//                    tvAlarmStatus.setText("OFF");
-//                    tvAlarmStatus.setTextColor(Color.RED);
-//                } else {
-//                    tvAlarmStatus.setText("N-Word");
-//                    tvAlarmStatus.setTypeface(null, Typeface.BOLD);
-//                    tvAlarmStatus.setTextColor(Color.GREEN);
-//                }
-//
-//                String motorStatus = snapshot.child("btn_Motor_Status").getValue(String.class);
-//                if (motorStatus == "0") {
-//
-//                    tvMotorStatus.setText("RIDING");
-//                    tvMotorStatus.setTextColor(Color.RED);
-//                } else {
-//                        tvMotorStatus.setText("PARKED");
-//                        tvMotorStatus.setTypeface(null, Typeface.BOLD);
-//                        tvMotorStatus.setTextColor(Color.GREEN);
-//                }
-//
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String lockStatus = snapshot.child("btn_Lock").getValue(String.class);
+                if (lockStatus == "0") {
+
+                    tvLockStatus.setText("LOCKED");
+                    tvLockStatus.setTextColor(Color.GREEN);
+                } else {
+                    tvLockStatus.setText("UNLOCKED");
+                    tvLockStatus.setTypeface(null, Typeface.BOLD);
+                    tvLockStatus.setTextColor(Color.RED);
+                }
+
+                String alarmStatus = snapshot.child("/btn_Alarm").getValue(String.class);
+                if (alarmStatus == "0") {
+
+                    tvAlarmStatus.setText("OFF");
+                    tvAlarmStatus.setTextColor(Color.RED);
+                } else {
+                    tvAlarmStatus.setText("N-Word");
+                    tvAlarmStatus.setTypeface(null, Typeface.BOLD);
+                    tvAlarmStatus.setTextColor(Color.GREEN);
+                }
+
+                String motorStatus = snapshot.child("btn_Motor_Status").getValue(String.class);
+                if (motorStatus == "0") {
+
+                    tvMotorStatus.setText("RIDING");
+                    tvMotorStatus.setTextColor(Color.RED);
+                } else {
+                        tvMotorStatus.setText("PARKED");
+                        tvMotorStatus.setTypeface(null, Typeface.BOLD);
+                        tvMotorStatus.setTextColor(Color.GREEN);
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         DatabaseReference getAlarmStat = databaseReference.child("btn_Alarm");
         DatabaseReference getEnrollStat = databaseReference.child("btn_Enroll");
@@ -186,28 +210,28 @@ public class secondTab extends Fragment {
             }
         });
 
-//        getEnrollStat.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                String alarm = snapshot.getValue(String.class);
-//                String alarmOff = "0";
-//
-//                if(alarm.equals(alarmOff)) {
-//                    tvAlarmStatus.setText("OFF");
-//                    tvAlarmStatus.setTextColor(Color.RED);
-//                } else {
-//                    tvAlarmStatus.setText("ON");
-//                    tvAlarmStatus.setTypeface(null, Typeface.BOLD);
-//                    tvAlarmStatus.setTextColor(Color.GREEN);
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        getEnrollStat.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String alarm = snapshot.getValue(String.class);
+                String alarmOff = "0";
+
+                if(alarm.equals(alarmOff)) {
+                    tvAlarmStatus.setText("OFF");
+                    tvAlarmStatus.setTextColor(Color.RED);
+                } else {
+                    tvAlarmStatus.setText("ON");
+                    tvAlarmStatus.setTypeface(null, Typeface.BOLD);
+                    tvAlarmStatus.setTextColor(Color.GREEN);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         getLockStat.addValueEventListener(new ValueEventListener() {
             @Override

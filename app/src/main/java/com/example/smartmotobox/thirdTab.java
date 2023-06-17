@@ -46,7 +46,7 @@ public class thirdTab extends Fragment {
         List<Item> item = new ArrayList<Item>();
 //        myAdapter = new MyAdapter(getActivity().getApplicationContext(), item);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setReverseLayout(true);
+        layoutManager.setReverseLayout(false);
         recyclerView.setLayoutManager(layoutManager);
 //        recyclerView.setAdapter(myAdapter);
 

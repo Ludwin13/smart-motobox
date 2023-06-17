@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.AsyncListUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -33,6 +37,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 public class MapFragment extends Fragment {
@@ -79,6 +84,116 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        Spinner FirebaseDB_Spinner = view.findViewById(R.id.spinner);
+        List<String> Date = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, Date);
+        FirebaseDB_Spinner.setAdapter(adapter);
+
+        DatabaseReference FirebaseDB_GPSDate = FirebaseDatabase.getInstance().getReference().child("Test/Location");
+
+        SupportMapFragment supportMapFragmentInitialization = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        FirebaseDB_GPSDate.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Date.clear();
+
+
+
+                for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    /**
+                     *  this code gets the Location Dates
+                     *  just need to create a code to display the markers by
+                     *  selecting the dates retrieved by this code.
+                     */
+
+                    String parent = postSnapshot.getKey();
+                    Date.add(parent);
+                    adapter.notifyDataSetChanged();
+
+
+                    /**
+                     * Need to create a code to zoom in on the newest received location from the Database
+                     * Problem is the app crashes whenever new data is inserted to the database.
+                     * Maybe use SQLite? It probably won't still fix the issue since new inserted data technically doesn't exist yet (null).
+                     * Need to refresh the app to successfully read it.
+                     * Maybe an app refresher?
+                     */
+
+                    TextView Test = view.findViewById(R.id.Test);
+
+                    FirebaseDB_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
+
+
+
+                            supportMapFragmentInitialization.getMapAsync(new OnMapReadyCallback() {
+                                @Override
+                                public void onMapReady(@NonNull GoogleMap googleMap) {
+                                    googleMap.clear();
+
+                                    DatabaseReference FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(selectedDate);
+
+                                    FirebaseDB_GPSDateMarkerData.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                            List<Location> location = new ArrayList<>();
+                                            location.clear();
+
+                                            for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                                                Location model = postSnapshot.getValue(Location.class);
+
+                                                String LongitudeStr = model.getLongitude().trim(); //producing error!!
+                                                String LatitudeStr = model.getLatitude().trim();
+                                                String Time = model.getTime();
+
+
+                                                Double Latitude = Double.valueOf(LatitudeStr);
+                                                Double Longitude = Double.valueOf(LongitudeStr);
+
+                                                Test.setText(Time);
+
+
+                                                addMarker(Latitude, Longitude, Time, selectedDate);
+
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                            return;
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         dbRefLat = firebaseDatabase.getReference("/Location/MarkerLat");
@@ -88,14 +203,15 @@ public class MapFragment extends Fragment {
 
         dbGpsData = firebaseDatabase.getReference("Location");
 
-        getLatLonTimeFirebase(new dataCallBack() {
-            @Override
-            public void onCallbackLatLonTime(double mLat, double mLon, String mTime) {
-                initSupportMapFragment(mLat, mLon, mTime);
+//        getLatLonTimeFirebase(new dataCallBack() {
+//            @Override
+//            public void onCallbackLatLonTime(double mLat, double mLon, String mTime) {
+//                initSupportMapFragment(mLat, mLon, mTime);
+//
+//            }
+//        });
 
-            }
-        });
-
+        initSupportMapFragment();
         getGPSData();
 
 
@@ -121,39 +237,62 @@ public class MapFragment extends Fragment {
 
     }
 
+    private void addMarker(Double Latitude, Double Longitude, String Time, String selectedDate) {
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-
-    public interface dataCallBack {
-        void onCallbackLatLonTime(double mLat, double mLon, String mTime);
-
-
-    }
-
-    private void getLatLonTimeFirebase(dataCallBack dataCallBack) {
-
-        dbRefLatLonTime.addValueEventListener(new ValueEventListener() {
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String lat = snapshot.child("/MarkerLat/Latitude").getValue(String.class);
-                double mLat = Double.parseDouble(lat);
-                String lon = snapshot.child("/MarkerLon/Longitude").getValue(String.class);
-                double mLon = Double.parseDouble(lon);
-                String mTime = snapshot.child("/MarkerTime/Time").getValue(String.class);
-                dataCallBack.onCallbackLatLonTime(mLat, mLon, mTime);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+                //Initialize variables for LatLng using the last detected location in firebase realtime database.
+                LatLng marker2 = new LatLng(Latitude, Longitude);
+                googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
+                String snippet = "Latitude: " + Latitude + "\n" + "Longitude: " + Longitude + "\n" + "Time: " + Time;
+                googleMap.addMarker(new MarkerOptions()
+                        .position(marker2)
+                        .title("" + selectedDate)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                        .snippet(snippet));
             }
         });
 
 
-
     }
 
-    private void initSupportMapFragment(double mLat, double mLon, String mTime) {
+
+
+//    public interface dataCallBack {
+//        void onCallbackLatLonTime(double mLat, double mLon, String mTime);
+//
+//
+//    }
+//
+//    private void getLatLonTimeFirebase(dataCallBack dataCallBack) {
+//
+//        dbRefLatLonTime.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                String lat = snapshot.child("/MarkerLat/Latitude").getValue(String.class);
+//                double mLat = Double.parseDouble(lat);
+//                String lon = snapshot.child("/MarkerLon/Longitude").getValue(String.class);
+//                double mLon = Double.parseDouble(lon);
+//                String mTime = snapshot.child("/MarkerTime/Time").getValue(String.class);
+//                dataCallBack.onCallbackLatLonTime(mLat, mLon, mTime);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//
+//
+//    }
+
+//    private void initSupportMapFragment(double mLat, double mLon, String mTime)
+
+    private void initSupportMapFragment() {
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -161,36 +300,39 @@ public class MapFragment extends Fragment {
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
                 //Initialize variables for LatLng using the last detected location in firebase realtime database.
-                CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(mLat, mLon), 15f);
+                CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(014.576603, 121.101320), 15f);
                 googleMap.moveCamera(point);
                 googleMap.animateCamera(point);
 
-                LatLng marker1 = new LatLng(mLat, mLon);
+                LatLng marker1 = new LatLng(014.576603, 121.101320);
                 googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
-                String snippet = "Latitude: " +mLat+ "\n" + "Longitude: " +mLon+ "\n" + "Time:" + mTime;
+                String snippet = "Latitude: 014.576603\n" + "Longitude: 121.101320\n" + "Time: 05:03:10";
                 googleMap.addMarker(new MarkerOptions()
                         .position(marker1)
                         .title("Marker1")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                         .snippet(snippet));
-
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(@NonNull LatLng latLng) {
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        markerOptions.position(latLng);
-//                        markerOptions.title(latLng.latitude + " " + latLng.longitude);
-//                        googleMap.clear();
-//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
-//                        googleMap.addMarker(markerOptions);
-
-                    }
-                });
-
-
             }
         });
 
     }
 
+    private void refreshMap() {
+
+        SupportMapFragment supportMapFragmentInitialization = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        supportMapFragmentInitialization.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+                googleMap.clear();
+            }
+        });
+
+    }
+
+
+        // Need to retrieve gps data (/Location/Sub-Children) from  Firebase Realtime Database.
+        // Create a clickable list containing the saved gps date from the database.
+            // Upon selecting a date, display the history by adding all markers inside the Google Maps Fragment.
+        // Will utilize map fragments
 }

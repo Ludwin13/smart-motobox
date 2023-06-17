@@ -10,9 +10,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     Button logout_btn, unlock, lock, riding, parked, biometric, btnLoc1, btnLoc2, btnLoc3;
-    TextView user_details;
+    TextView user_details, Test;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference dbRefLat, dbRefLon, dbRefTime, dbGPSData;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     tabAdapter tabAdapter;
+    String date;
 
     //ALL CODES FROM THE TAB SHOULD BE PLACED IN HERE SO IT UPDATES EVERYTIME
 
@@ -51,24 +56,98 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewpager2);
 
-        List<Item> item = new ArrayList<Item>();
 
-        DatabaseReference getDataChange = FirebaseDatabase.getInstance().getReference("Alarm");
-        DatabaseReference getMagneticStat = getDataChange.child("Magnetic_Stat");
-        DatabaseReference getAttemptStat = getDataChange.child("Attempt_Stat");
-        DatabaseReference getTiltStat = getDataChange.child("Tilt_Stat");
+        List<Item> item = new ArrayList<Item>();
+        markerDateSpinner();
+
+        DatabaseReference getDataChange = FirebaseDatabase.getInstance().getReference("/Alarm");
+        DatabaseReference getMagneticStat = getDataChange.child("/Magnetic_Stat");
+        DatabaseReference getAttemptStat = getDataChange.child("/Attempt_Stat");
+        DatabaseReference getTiltStat = getDataChange.child("/Tilt_Stat");
 
 //        dbGPSData = firebaseDatabase.getReference("Location");
 
-        DatabaseReference setHistoryDataChange = FirebaseDatabase.getInstance().getReference("History");
+        DatabaseReference setHistoryDataChange = FirebaseDatabase.getInstance().getReference("/History");
 
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+
+        Button testBtn = (Button) findViewById(R.id.testBtn);
+
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DatabaseReference pushVariousMaps = FirebaseDatabase.getInstance().getReference("Test").child("Location");
+
+                String key = pushVariousMaps.push().getKey();
+
+                pushVariousMaps.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.579118932527926");
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09938095332215");
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:53:00");
+
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.579495864886997");
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09921842948282");
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:54:00");
+
+//                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.58137566339787");
+//                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.09790207232003");
+//                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:55:00");
+
+                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.582536917342031");
+                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.09699988841597");
+                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:56:00");
+
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.58337511188757");
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09651270906622");
+//                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:57:00");
+
+                        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+//                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.58708962280469");
+//                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.0912819035653");
+//                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:58:00");
+
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590106746148098");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.09257016527715");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:54:00");
+
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590325018780332");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.09054025124676");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:55:00");
+
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590421058668278");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.08814044206196");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:56:00");
+
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590630600102815");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.08694053732121");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:57:00");
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+
+
+            }
+        });
+
 
 
         getMagneticStat.addValueEventListener(new ValueEventListener() {
@@ -245,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
 //        Fragment fragment = new MapFragment();
 //        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment).commit();
 //
@@ -305,6 +383,63 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+    }
+
+    private void markerDateSpinner() {
+
+//        Spinner markerHistory = findViewById(R.id.spinner);
+//        List<Location> location = new ArrayList<>();
+//        List<String> Date = new ArrayList<>();
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Date);
+//        markerHistory.setAdapter(adapter);
+//
+//        DatabaseReference gpsMarkerData = FirebaseDatabase.getInstance().getReference().child("Test/Location");
+//
+//        gpsMarkerData.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                location.clear();
+//                Date.clear();
+//                for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                    Location model = postSnapshot.getValue(Location.class);
+//                    location.add(model);
+//
+//                    // this code gets the Location Dates
+//                    // just need to create a code to display the markers by
+//                    // selecting the dates retrieved by this code.
+//                    String parent = postSnapshot.getKey();
+//                    Date.add(parent);
+//                    adapter.notifyDataSetChanged();
+//
+////                    retrieveDataTest.setText(""+model.getTime());
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//        TextView Test = findViewById(R.id.Test);
+//        markerHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                String selectedDate = markerHistory.getItemAtPosition(i).toString();
+//
+//                Test.setText(selectedDate);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//                return;
+//            }
+//        });
 
 
     }
