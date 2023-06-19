@@ -103,13 +103,13 @@ public class MainActivity extends AppCompatActivity {
 //                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.09790207232003");
 //                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:55:00");
 
-                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.582536917342031");
-                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.09699988841597");
-                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:56:00");
+                        pushVariousMaps.child("6-19-2023").child(key).child("Latitude").setValue("14.5825369");
+                        pushVariousMaps.child("6-19-2023").child(key).child("Longitude").setValue("121.096999");
+                        pushVariousMaps.child("6-19-2023").child(key).child("Time").setValue("16:56:00");
 
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.58337511188757");
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09651270906622");
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:57:00");
+//                        pushVariousMaps.child("6-19-2023").child(key).child("Latitude").setValue("14.58337511188757");
+//                        pushVariousMaps.child("6-19-2023").child(key).child("Longitude").setValue("121.09651270906622");
+//                        pushVariousMaps.child("6-19-2023").child(key).child("Time").setValue("16:57:00");
 
                         /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
 //                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.0912819035653");
 //                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:58:00");
 
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590106746148098");
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.09257016527715");
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue(14.590106746148098);
+//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue(121.09257016527715);
 //                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:54:00");
 
 //                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590325018780332");

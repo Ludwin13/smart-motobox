@@ -26,6 +26,15 @@
             android:layout_height="wrap_content"
             android:text="test" />
 
+<!--        <Button -->
+<!--            android:id="@+id/showHistory_btn"-->
+<!--            android:width="100dp"-->
+<!--            android:height="75dp"-->
+<!--            android:text="HISTORY"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/black"-->
+<!--            />-->
+
     </fragment>
 
 </FrameLayout>
