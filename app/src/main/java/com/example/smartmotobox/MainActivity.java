@@ -59,9 +59,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewpager2);
 
-
         List<Item> item = new ArrayList<Item>();
-        markerDateSpinner();
 
         DatabaseReference getDataChange = FirebaseDatabase.getInstance().getReference("/Alarm");
         DatabaseReference getMagneticStat = getDataChange.child("/Magnetic_Stat");
@@ -387,60 +385,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void markerDateSpinner() {
-
-//        Spinner markerHistory = findViewById(R.id.spinner);
-//        List<Location> location = new ArrayList<>();
-//        List<String> Date = new ArrayList<>();
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Date);
-//        markerHistory.setAdapter(adapter);
-//
-//        DatabaseReference gpsMarkerData = FirebaseDatabase.getInstance().getReference().child("Test/Location");
-//
-//        gpsMarkerData.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                location.clear();
-//                Date.clear();
-//                for(DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                    Location model = postSnapshot.getValue(Location.class);
-//                    location.add(model);
-//
-//                    // this code gets the Location Dates
-//                    // just need to create a code to display the markers by
-//                    // selecting the dates retrieved by this code.
-//                    String parent = postSnapshot.getKey();
-//                    Date.add(parent);
-//                    adapter.notifyDataSetChanged();
-//
-////                    retrieveDataTest.setText(""+model.getTime());
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//
-//        TextView Test = findViewById(R.id.Test);
-//        markerHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                String selectedDate = markerHistory.getItemAtPosition(i).toString();
-//
-//                Test.setText(selectedDate);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//                return;
-//            }
-//        });
 
 
-    }
+
+
 }
