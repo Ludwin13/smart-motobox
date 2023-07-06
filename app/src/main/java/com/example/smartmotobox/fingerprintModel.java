@@ -3,19 +3,19 @@ package com.example.smartmotobox;
 public class fingerprintModel {
 
 
-    String Finger0_Status, Finger1_Status, Finger2_Status, Finger3_Status, Finger4_Status, Finger5_Status, Finger6_Status, Finger7_Status, Finger8_Status, Finger9_Status;
-    String Finger0_Time, Finger1_Time, Finger2_Time, Finger3_Time, Finger4_Time, Finger5_Time, Finger6_Time, Finger7_Time, Finger8_Time, Finger9_Time;
+    String Finger10_Status, Finger1_Status, Finger2_Status, Finger3_Status, Finger4_Status, Finger5_Status, Finger6_Status, Finger7_Status, Finger8_Status, Finger9_Status;
+    String Finger10_Time, Finger1_Time, Finger2_Time, Finger3_Time, Finger4_Time, Finger5_Time, Finger6_Time, Finger7_Time, Finger8_Time, Finger9_Time;
 
     public fingerprintModel() {
 
     }
 
-    public fingerprintModel(String Finger0_Status, String Finger1_Status, String Finger2_Status, String Finger3_Status, String Finger4_Status,
+    public fingerprintModel(String Finger1_Status, String Finger2_Status, String Finger3_Status, String Finger4_Status,
                             String Finger5_Status, String Finger6_Status, String Finger7_Status, String Finger8_Status, String Finger9_Status,
                             String Finger0_Time, String Finger1_Time, String Finger2_Time, String Finger3_Time, String Finger4_Time,
-                            String Finger5_Time, String Finger6_Time, String Finger7_Time, String Finger8_Time, String Finger9_Time) {
+                            String Finger5_Time, String Finger6_Time, String Finger7_Time, String Finger8_Time, String Finger9_Time, String Finger10_Status) {
 
-        this.Finger0_Status = Finger0_Status; this.Finger0_Time = Finger0_Time;
+        this.Finger10_Status = Finger10_Status; this.Finger10_Time = Finger0_Time;
         this.Finger1_Status = Finger1_Status; this.Finger1_Time = Finger1_Time;
         this.Finger2_Status = Finger2_Status; this.Finger2_Time = Finger2_Time;
         this.Finger3_Status = Finger3_Status; this.Finger3_Time = Finger3_Time;
@@ -28,8 +28,8 @@ public class fingerprintModel {
 
     }
 
-    public String getFinger0_Status() { return Finger0_Status; }
-    public void setFinger0_Status(String Finger0_Status) { this.Finger0_Status = Finger0_Status; }
+    public String getFinger10_Status() { return Finger10_Status; }
+    public void setFinger10_Status(String Finger10_Status) { this.Finger10_Status = Finger10_Status; }
 
     public String getFinger1_Status() { return Finger1_Status; }
     public void setFinger1_Status(String Finger1_Status) { this.Finger1_Status = Finger1_Status; }
@@ -58,8 +58,8 @@ public class fingerprintModel {
     public String getFinger9_Status() { return Finger9_Status; }
     public void setFinger9_Status(String Finger9_Status) { this.Finger9_Status = Finger9_Status; }
 
-    public String getFinger0_Time() { return Finger0_Time; }
-    public void setFinger0_Time(String Finger0_Time) { this.Finger0_Time = Finger0_Time; }
+    public String getFinger10_Time() { return Finger10_Time; }
+    public void setFinger10_Time(String Finger10_Time) { this.Finger10_Time = Finger10_Time; }
 
     public String getFinger1_Time() { return Finger1_Time; }
     public void setFinger1_Time(String Finger1_Time) { this.Finger1_Time = Finger1_Time; }
