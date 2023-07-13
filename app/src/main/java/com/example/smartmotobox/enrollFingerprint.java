@@ -27,12 +27,13 @@ public class enrollFingerprint extends AppCompatActivity {
 
     TextView  fingerprint_1, fingerprint_2, fingerprint_3, fingerprint_4, fingerprint_5, fingerprint_6, fingerprint_7, fingerprint_8, fingerprint_9, fingerprint_10;
     Button enrollBtn, backBtn;
-    DatabaseReference firebaseDB_getFingerPrintData, firebaseDB_setBtn_Enroll;
+    DatabaseReference firebaseDB_getFingerPrintData, firebaseDB_Data;
     String getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status, getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status;
     Data data;
     String finger1, finger2, finger3, finger4, finger5, finger6, finger7, finger8, finger9, finger10;
     String Enrolled = "1";
     String notEnrolled = "0";
+    String finished = "2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,8 @@ public class enrollFingerprint extends AppCompatActivity {
         backBtn = (Button) findViewById(R.id.backBtn);
 
         firebaseDB_getFingerPrintData = FirebaseDatabase.getInstance().getReference("Fingerprint");
-        firebaseDB_setBtn_Enroll = FirebaseDatabase.getInstance().getReference("Data");
+        firebaseDB_Data = FirebaseDatabase.getInstance().getReference("Data");
+
 
 
         /**
@@ -77,64 +79,11 @@ public class enrollFingerprint extends AppCompatActivity {
         buttonMethods();
         deleteFingerID(getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status, getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status);
 
-
-//        enrollBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                firebaseDB_getFingerPrintData.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        if(snapshot.exists()) {
-//                            fingerprintModel model = snapshot.getValue(fingerprintModel.class);
-//
-//                            String NotEnrolled = "0";
-//                            String Enrolled = "1";
-//
-//                            String startEnroll = "1";
-//
-//                            String getFinger1_Status = model.getFinger1_Status();
-//                            String getFinger2_Status = model.getFinger2_Status();
-//                            String getFinger3_Status = model.getFinger3_Status();
-//                            String getFinger4_Status = model.getFinger4_Status();
-//                            String getFinger5_Status = model.getFinger5_Status();
-//                            String getFinger6_Status = model.getFinger6_Status();
-//                            String getFinger7_Status = model.getFinger7_Status();
-//                            String getFinger8_Status = model.getFinger8_Status();
-//                            String getFinger9_Status = model.getFinger9_Status();
-//                            String getFinger10_Status = model.getFinger10_Status();
-//
-//                            if (getFinger10_Status.equals(Enrolled) && getFinger1_Status.equals(Enrolled) && getFinger2_Status.equals(Enrolled) && getFinger3_Status.equals(Enrolled) && getFinger4_Status.equals(Enrolled)
-//                            && getFinger5_Status.equals(Enrolled) && getFinger6_Status.equals(Enrolled) && getFinger7_Status.equals(Enrolled) && getFinger8_Status.equals(Enrolled) && getFinger9_Status.equals(Enrolled)) {
-//                                Toast.makeText(enrollFingerprint.this, "Fingerprint Slots Full", Toast.LENGTH_LONG).show();
-//                            }
-//
-////                            else {
-////                                firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue(startEnroll);
-////                            }
-//                            if (getFinger10_Status.equals(NotEnrolled) || getFinger1_Status.equals(NotEnrolled) || getFinger2_Status.equals(NotEnrolled) || getFinger3_Status.equals(NotEnrolled) || getFinger4_Status.equals(NotEnrolled)
-//                                    && getFinger5_Status.equals(NotEnrolled) || getFinger6_Status.equals(NotEnrolled) || getFinger7_Status.equals(NotEnrolled) || getFinger8_Status.equals(NotEnrolled) || getFinger9_Status.equals(NotEnrolled))
-//
-//                            finger1 = getFinger1_Status + getFinger2_Status + getFinger3_Status + getFinger4_Status + getFinger5_Status
-//                                    + getFinger6_Status + getFinger7_Status + getFinger8_Status + getFinger9_Status + getFinger10_Status;
-//
-//                                Toast.makeText(enrollFingerprint.this, ""+finger1, Toast.LENGTH_LONG).show();
-//
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//
-//            }
-//        });
-
     }
 
-    private void confirmDeleteAlert(String title, String message, String child, String value, String ID_Value) {
+    private void confirmDeleteAlert(String title, String message, String child, String value, String ID_Value, String process_child, String process_value) {
+        String postTitle = "Status";
+        String postMessage = "Deletion in Process, Please wait for audio cue from device";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle(title);
@@ -144,9 +93,9 @@ public class enrollFingerprint extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         firebaseDB_getFingerPrintData.child(child).setValue(value);
-                        firebaseDB_setBtn_Enroll.child("btn_Delete").setValue(ID_Value);
-                        getFingerprintData();
-                        refreshActivity();
+                        firebaseDB_Data.child("btn_Delete").setValue("1");
+                        firebaseDB_Data.child("finger_address").setValue(ID_Value);
+                        postConfirmationAlert(child, value, process_child, process_value, postTitle, postMessage);
 
                     }
                 });
@@ -161,7 +110,9 @@ public class enrollFingerprint extends AppCompatActivity {
         dialog.show();
     }
 
-    private void confirmEnrollAlert(String title, String message, String child, String value, String ID_Value) {
+    private void confirmEnrollAlert(String title, String message, String child, String value, String ID_Value, String process_child, String process_value) {
+        String postTitle = "Status";
+        String postMessage = "Enrollment in Process, Check your fingerprint scanner";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle(title);
@@ -170,10 +121,11 @@ public class enrollFingerprint extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        firebaseDB_getFingerPrintData.child(child).setValue(value);
-                        firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue(ID_Value);
-                        getFingerprintData();
-                        refreshActivity();
+                        firebaseDB_Data.child("finger_address").setValue(ID_Value);
+                        firebaseDB_Data.child("btn_Enroll").setValue("1");
+                        Toast.makeText(enrollFingerprint.this, "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
+                        postConfirmationAlert(child, value, process_child, process_value, postTitle, postMessage);
+
 
                     }
                 });
@@ -187,6 +139,57 @@ public class enrollFingerprint extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void postConfirmationAlert(String child, String value, String process_child, String process_value, String postTitle, String postMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(enrollFingerprint.this);
+        builder.setCancelable(true);
+        builder.setTitle(postTitle);
+        builder.setMessage(postMessage);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        firebaseDB_Data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    Data model = snapshot.getValue(Data.class);
+                        String finished_Enroll = model.getBtn_Enroll();
+                        String finished_Delete = model.getBtn_Delete();
+                        if (finished_Enroll.equals(finished)) {
+                            getFingerprintData();
+                            firebaseDB_getFingerPrintData.child(child).setValue(value);
+                            firebaseDB_getFingerPrintData.child(process_child).setValue(process_value);
+                            firebaseDB_Data.child("btn_Enroll").setValue("0");
+                            firebaseDB_Data.child("finger_address").setValue("00");
+                            dialog.hide();
+                            refreshActivity();
+                        }
+
+                    if (finished_Delete.equals(finished)) {
+                        getFingerprintData();
+                        firebaseDB_getFingerPrintData.child(child).setValue(value);
+                        firebaseDB_getFingerPrintData.child(process_child).setValue(process_value);
+                        firebaseDB_Data.child("btn_Delete").setValue("0");
+                        firebaseDB_Data.child("finger_address").setValue("00");
+                        dialog.hide();
+                        refreshActivity();
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+
 
     private void deleteFingerID(String getFinger1_Status, String getFinger2_Status, String getFinger3_Status, String getFinger4_Status, String getFinger5_Status, String getFinger6_Status, String getFinger7_Status, String getFinger8_Status, String getFinger9_Status, String getFinger10_Status) {
         String enroll_Title = "Enroll";
@@ -196,16 +199,14 @@ public class enrollFingerprint extends AppCompatActivity {
         String enrollValue = "1";
         String deleteValue = "0";
 
-
-
         fingerprint_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger1_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "1?","Finger1_Status", deleteValue, "11");
+                    confirmDeleteAlert(delete_Title, delete_Message + "1?","Finger1_Status", deleteValue, "11", "btn_Delete", "1");
                 }
                 if(getFinger1_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "1?","Finger1_Status", enrollValue, "11");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "1?","Finger1_Status", enrollValue, "11","btn_Enroll" ,"0");
                 }
             }
         });
@@ -214,10 +215,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger2_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "2?","Finger2_Status", deleteValue, "13");
+                    confirmDeleteAlert(delete_Title, delete_Message + "2?","Finger2_Status", deleteValue, "13", "btn_Delete", "1");
                 }
                 if(getFinger2_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "2?","Finger2_Status", enrollValue, "13");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "2?","Finger2_Status", enrollValue, "13","btn_Enroll" ,"0");
                 }
 
             }
@@ -227,10 +228,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger3_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "3?","Finger3_Status", deleteValue, "15");
+                    confirmDeleteAlert(delete_Title, delete_Message + "3?","Finger3_Status", deleteValue, "15", "btn_Delete", "1");
                 }
                 if(getFinger3_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "3?","Finger3_Status", enrollValue, "15");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "3?","Finger3_Status", enrollValue, "15","btn_Enroll" ,"0");
                 }
             }
         });
@@ -239,10 +240,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger4_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "4?","Finger4_Status", deleteValue, "17");
+                    confirmDeleteAlert(delete_Title, delete_Message + "4?","Finger4_Status", deleteValue, "17", "btn_Delete", "1");
                 }
                 if(getFinger4_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "4?","Finger4_Status", enrollValue, "17");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "4?","Finger4_Status", enrollValue, "17","btn_Enroll" ,"0");
                 }
             }
         });
@@ -251,10 +252,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger5_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "5?","Finger5_Status", deleteValue, "19");
+                    confirmDeleteAlert(delete_Title, delete_Message + "5?","Finger5_Status", deleteValue, "19", "btn_Delete", "1");
                 }
                 if(getFinger5_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "5?","Finger5_Status", enrollValue, "19");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "5?","Finger5_Status", enrollValue, "19","btn_Enroll" ,"0");
                 }
 
             }
@@ -264,10 +265,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger6_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "6?","Finger6_Status", deleteValue, "21");
+                    confirmDeleteAlert(delete_Title, delete_Message + "6?","Finger6_Status", deleteValue, "21", "btn_Delete", "1");
                 }
                 if(getFinger6_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "6?","Finger6_Status", enrollValue, "21");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "6?","Finger6_Status", enrollValue, "21","btn_Enroll" ,"0");
                 }
 
             }
@@ -277,10 +278,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger7_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "7?","Finger7_Status", deleteValue, "23");
+                    confirmDeleteAlert(delete_Title, delete_Message + "7?","Finger7_Status", deleteValue, "23", "btn_Delete", "1");
                 }
                 if(getFinger7_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "7?","Finger7_Status", enrollValue, "23");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "7?","Finger7_Status", enrollValue, "23","btn_Enroll" ,"0");
                 }
 
             }
@@ -290,10 +291,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger8_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "8?","Finger8_Status", deleteValue, "25");
+                    confirmDeleteAlert(delete_Title, delete_Message + "8?","Finger8_Status", deleteValue, "25", "btn_Delete", "1");
                 }
                 if(getFinger8_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "8?","Finger8_Status", enrollValue, "25");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "8?","Finger8_Status", enrollValue, "25","btn_Enroll" ,"0");
                 }
 
             }
@@ -303,10 +304,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger9_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "9?","Finger9_Status", deleteValue, "27");
+                    confirmDeleteAlert(delete_Title, delete_Message + "9?","Finger9_Status", deleteValue, "27", "btn_Delete", "1");
                 }
                 if(getFinger9_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "9?","Finger9_Status", enrollValue, "27");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "9?","Finger9_Status", enrollValue, "27","btn_Enroll" ,"0");
                 }
 
             }
@@ -315,10 +316,10 @@ public class enrollFingerprint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getFinger10_Status.equals(Enrolled)) {
-                    confirmDeleteAlert(delete_Title, delete_Message + "10?","Finger10_Status", deleteValue, "29");
+                    confirmDeleteAlert(delete_Title, delete_Message + "10?","Finger10_Status", deleteValue, "29", "btn_Delete", "1");
                 }
                 if(getFinger10_Status.equals(notEnrolled)) {
-                    confirmEnrollAlert(enroll_Title, enroll_Message + "10?","Finger10_Status", enrollValue, "29");
+                    confirmEnrollAlert(enroll_Title, enroll_Message + "10?","Finger10_Status", enrollValue, "29","btn_Enroll" ,"0");
                 }
 
             }
@@ -336,58 +337,58 @@ public class enrollFingerprint extends AppCompatActivity {
         });
     }
 
-    private void enrollFreeFingerprint() {
-        if(this.getFinger1_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 1 "+getFinger1_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger1_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("11");
-
-        } else if (this.getFinger2_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 2 "+getFinger2_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger2_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("13");
-
-        } else if (this.getFinger3_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 3 "+getFinger3_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger3_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("15");
-
-        } else if (this.getFinger4_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 4 "+getFinger4_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger4_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("17");
-
-        } else if (this.getFinger5_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 5 "+getFinger5_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger5_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("19");
-
-        } else if (this.getFinger6_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 6 "+getFinger6_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger6_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("21");
-
-        } else if (this.getFinger7_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 7 "+getFinger7_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger7_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("23");
-
-        } else if (this.getFinger8_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 8 "+getFinger8_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger8_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("25");
-
-        } else if (this.getFinger9_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 9 "+getFinger9_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger9_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("27");
-
-        } else if (this.getFinger10_Status.equals(notEnrolled)) {
-            Toast.makeText(enrollFingerprint.this, "finger 10 "+getFinger10_Status, Toast.LENGTH_SHORT).show();
-            firebaseDB_getFingerPrintData.child("Finger10_Status").setValue("1");
-            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("29");
-        }
-    }
+//    private void enrollFreeFingerprint() {
+//        if(this.getFinger1_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 1 "+getFinger1_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger1_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("11");
+//
+//        } else if (this.getFinger2_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 2 "+getFinger2_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger2_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("13");
+//
+//        } else if (this.getFinger3_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 3 "+getFinger3_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger3_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("15");
+//
+//        } else if (this.getFinger4_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 4 "+getFinger4_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger4_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("17");
+//
+//        } else if (this.getFinger5_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 5 "+getFinger5_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger5_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("19");
+//
+//        } else if (this.getFinger6_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 6 "+getFinger6_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger6_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("21");
+//
+//        } else if (this.getFinger7_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 7 "+getFinger7_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger7_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("23");
+//
+//        } else if (this.getFinger8_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 8 "+getFinger8_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger8_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("25");
+//
+//        } else if (this.getFinger9_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 9 "+getFinger9_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger9_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("27");
+//
+//        } else if (this.getFinger10_Status.equals(notEnrolled)) {
+//            Toast.makeText(enrollFingerprint.this, "finger 10 "+getFinger10_Status, Toast.LENGTH_SHORT).show();
+//            firebaseDB_getFingerPrintData.child("Finger10_Status").setValue("1");
+//            firebaseDB_setBtn_Enroll.child("btn_Enroll").setValue("29");
+//        }
+//    }
 
     private void getFingerprintData() {
 

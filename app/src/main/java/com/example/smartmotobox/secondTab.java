@@ -210,28 +210,6 @@ public class secondTab extends Fragment {
             }
         });
 
-        getEnrollStat.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String alarm = snapshot.getValue(String.class);
-                String alarmOff = "0";
-
-                if(alarm.equals(alarmOff)) {
-                    tvAlarmStatus.setText("OFF");
-                    tvAlarmStatus.setTextColor(Color.RED);
-                } else {
-                    tvAlarmStatus.setText("ON");
-                    tvAlarmStatus.setTypeface(null, Typeface.BOLD);
-                    tvAlarmStatus.setTextColor(Color.GREEN);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         getLockStat.addValueEventListener(new ValueEventListener() {
             @Override
