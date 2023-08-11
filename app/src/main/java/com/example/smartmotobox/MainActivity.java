@@ -3,11 +3,18 @@ package com.example.smartmotobox;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -75,76 +82,76 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 
 
-        Button testBtn = (Button) findViewById(R.id.testBtn);
-
-        testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                DatabaseReference pushVariousMaps = FirebaseDatabase.getInstance().getReference("Test").child("Location");
-
-                String key = pushVariousMaps.push().getKey();
-
-                pushVariousMaps.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.579118932527926");
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09938095332215");
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:53:00");
-
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.579495864886997");
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09921842948282");
-//                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:54:00");
-
-//                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.58137566339787");
-//                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.09790207232003");
-//                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:55:00");
-
-                        pushVariousMaps.child("6-19-2023").child(key).child("Latitude").setValue("14.5825369");
-                        pushVariousMaps.child("6-19-2023").child(key).child("Longitude").setValue("121.096999");
-                        pushVariousMaps.child("6-19-2023").child(key).child("Time").setValue("16:56:00");
-
-//                        pushVariousMaps.child("6-19-2023").child(key).child("Latitude").setValue("14.58337511188757");
-//                        pushVariousMaps.child("6-19-2023").child(key).child("Longitude").setValue("121.09651270906622");
-//                        pushVariousMaps.child("6-19-2023").child(key).child("Time").setValue("16:57:00");
-
-                        /////////////////////////////////////////////////////////////////////////////////////////////////
-
-//                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.58708962280469");
-//                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.0912819035653");
-//                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:58:00");
-
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue(14.590106746148098);
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue(121.09257016527715);
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:54:00");
-
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590325018780332");
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.09054025124676");
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:55:00");
-
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590421058668278");
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.08814044206196");
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:56:00");
-
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590630600102815");
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.08694053732121");
-//                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:57:00");
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-
-
-
-            }
-        });
+//        Button testBtn = (Button) findViewById(R.id.testBtn);
+//
+//        testBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                DatabaseReference pushVariousMaps = FirebaseDatabase.getInstance().getReference("Test").child("Location");
+//
+//                String key = pushVariousMaps.push().getKey();
+//
+//                pushVariousMaps.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+////                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.579118932527926");
+////                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09938095332215");
+////                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:53:00");
+//
+////                        pushVariousMaps.child("6-14-2023").child(key).child("Latitude").setValue("14.579495864886997");
+////                        pushVariousMaps.child("6-14-2023").child(key).child("Longitude").setValue("121.09921842948282");
+////                        pushVariousMaps.child("6-14-2023").child(key).child("Time").setValue("16:54:00");
+//
+////                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.58137566339787");
+////                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.09790207232003");
+////                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:55:00");
+//
+//                        pushVariousMaps.child("6-19-2023").child(key).child("Latitude").setValue("14.5825369");
+//                        pushVariousMaps.child("6-19-2023").child(key).child("Longitude").setValue("121.096999");
+//                        pushVariousMaps.child("6-19-2023").child(key).child("Time").setValue("16:56:00");
+//
+////                        pushVariousMaps.child("6-19-2023").child(key).child("Latitude").setValue("14.58337511188757");
+////                        pushVariousMaps.child("6-19-2023").child(key).child("Longitude").setValue("121.09651270906622");
+////                        pushVariousMaps.child("6-19-2023").child(key).child("Time").setValue("16:57:00");
+//
+//                        /////////////////////////////////////////////////////////////////////////////////////////////////
+//
+////                        pushVariousMaps.child("6-16-2023").child(key).child("Latitude").setValue("14.58708962280469");
+////                        pushVariousMaps.child("6-16-2023").child(key).child("Longitude").setValue("121.0912819035653");
+////                        pushVariousMaps.child("6-16-2023").child(key).child("Time").setValue("16:58:00");
+//
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue(14.590106746148098);
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue(121.09257016527715);
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:54:00");
+//
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590325018780332");
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.09054025124676");
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:55:00");
+//
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590421058668278");
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.08814044206196");
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:56:00");
+//
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Latitude").setValue("14.590630600102815");
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Longitude").setValue("121.08694053732121");
+////                        pushVariousMaps.child("6-15-2023").child(key).child("Time").setValue("16:57:00");
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+//
+//
+//
+//
+//
+//            }
+//        });
 
 
 
@@ -160,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 String trigger = "Magnetic Switch Activated";
 
                 if(magnetic.equals(magneticOn)) {
+
+                    notificationBuilder(trigger);
 
                     String key = setHistoryDataChange.push().getKey();
 
@@ -192,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 String trigger = "Max Attempt Reached";
 
                 if(attempt.equals(maxAttempt)) {
+                    notificationBuilder(trigger);
 
                     String key = setHistoryDataChange.push().getKey();
 
@@ -223,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 String trigger = "Tilt Activated";
 
                 if(tilt.equals(tiltOn)) {
+                    notificationBuilder(trigger);
 
                     String key = setHistoryDataChange.push().getKey();
 
@@ -383,6 +394,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void notificationBuilder(String alarmDescription) {
+        Intent intent = new Intent();
+        PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String CHANNEL_ID="MYCHANNEL";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "my_channel";
+            String Description = "This is my channel";
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID,"name",NotificationManager.IMPORTANCE_LOW);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.setShowBadge(true);
+            nm.createNotificationChannel(mChannel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Device Alarm!")
+                .setContentText(alarmDescription)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+        nm.notify(1, builder.build());
     }
 
 

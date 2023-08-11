@@ -134,7 +134,6 @@ public class MapFragment extends Fragment {
                             String parent = postSnapshot.getKey();
                             String date = dateFormat.format(Calendar.getInstance().getTime());
 
-
                             if (parent.equals(date)) {
                                 String currentDate = parent;
                                 DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(currentDate);
@@ -156,12 +155,9 @@ public class MapFragment extends Fragment {
                                             /**
                                              *
                                              */
-
                                             String LatitudeStr = model.getLatitude();
                                             String LongitudeStr = model.getLongitude();
                                             String Time = model.getTime();
-
-
 
                                             if (LatitudeStr == null || LongitudeStr == null || Time == null) {
                                                 break;
@@ -172,59 +168,21 @@ public class MapFragment extends Fragment {
                                                 Test.setText(Latitude.toString());
 
                                                 addMarker(Latitude, Longitude, Time, currentDate);
-
-
                                             }
-
                                         }
-
                                     }
-
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
 
                                     }
                                 });
-
-
-
                             } else {
                                 Test.setText("SEX");
                             }
-
-
-
-
                         }
-
                     }
-
                 }
-
-//                for(DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                    if(postSnapshot.exists()) {
-//                        Location model = postSnapshot.getValue(Location.class);
-//
-//                        Double Longitude = model.getLongitude(); //producing error!!
-//                        Double Latitude = model.getLatitude();
-//                        String Time = model.getTime();
-//
-//                        if (Longitude == null || Latitude == null || Time == null) {
-//                            break;
-//
-//                        } else  {
-////                            addMarker(Latitude, Longitude, Time, selectedDate);
-//
-//                        }
-////                                                Double Latitude = Double.parseDouble(LatitudeStr);
-//                    } else {
-//                        // Do Nothing
-//                    }
-//                }
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -363,10 +321,6 @@ public class MapFragment extends Fragment {
                                                     }
                                                 }
                                             }
-
-
-
-
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -376,12 +330,8 @@ public class MapFragment extends Fragment {
 
                                     }
                                 });
-
                             }
-
-
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
                             return;

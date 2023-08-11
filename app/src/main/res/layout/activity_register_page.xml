@@ -5,52 +5,81 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#99E1D9"
     tools:context=".registerPage">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/signUp_titleScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="20dp"
         android:text="Sign Up"
         android:textSize="34sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-    <EditText
-        android:id="@+id/emailRegister_editText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filledTextField"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:ems="10"
-        android:hint="Input email to register..."
-        android:inputType="textPersonName"
+        android:hint="Enter Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp_titleScreen" />
+        app:layout_constraintTop_toBottomOf="@+id/signUp_titleScreen">
 
-    <EditText
-        android:id="@+id/passwordRegister_editText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailRegister_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filledTextField2"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:ems="10"
-        android:hint="Input Password to register..."
-        android:inputType="textPassword"
+        android:hint="Enter Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailRegister_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/filledTextField">
+
+        <!--this is the actual edit text which takes the input-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordRegister_editText"
+            android:layout_width="match_parent"
+            android:inputType="textPassword"
+            android:maxLength="6"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/register_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:text="Register"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordRegister_editText" />
+        android:textColor="@color/black"
+        android:background="@drawable/round_corners"
+        app:layout_constraintTop_toBottomOf="@+id/filledTextField2" />
 
     <TextView
         android:id="@+id/loginText"
@@ -58,6 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:text="Click To Login"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_btn" />

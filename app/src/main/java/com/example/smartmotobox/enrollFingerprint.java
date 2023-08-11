@@ -56,8 +56,6 @@ public class enrollFingerprint extends AppCompatActivity {
         firebaseDB_getFingerPrintData = FirebaseDatabase.getInstance().getReference("Fingerprint");
         firebaseDB_Data = FirebaseDatabase.getInstance().getReference("Data");
 
-
-
         /**
          * Need to create a limit for fingerprint enrollment
          * Main idea is to create multiple child nodes in the realtime database named Fingerprint_0, Fingerprint_1... so on and so forth
@@ -82,8 +80,8 @@ public class enrollFingerprint extends AppCompatActivity {
     }
 
     private void confirmDeleteAlert(String title, String message, String child, String value, String ID_Value, String process_child, String process_value) {
-        String postTitle = "Status";
-        String postMessage = "Deletion in Process, Please wait for audio cue from device";
+        final String postTitle = "Status";
+        final String postMessage = "Deletion in Process, Please wait for audio cue from device";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle(title);
@@ -111,8 +109,8 @@ public class enrollFingerprint extends AppCompatActivity {
     }
 
     private void confirmEnrollAlert(String title, String message, String child, String value, String ID_Value, String process_child, String process_value) {
-        String postTitle = "Status";
-        String postMessage = "Enrollment in Process, Check your fingerprint scanner";
+        final String postTitle = "Status";
+        final String postMessage = "Enrollment in Process, Check your fingerprint scanner";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle(title);
@@ -192,12 +190,12 @@ public class enrollFingerprint extends AppCompatActivity {
 
 
     private void deleteFingerID(String getFinger1_Status, String getFinger2_Status, String getFinger3_Status, String getFinger4_Status, String getFinger5_Status, String getFinger6_Status, String getFinger7_Status, String getFinger8_Status, String getFinger9_Status, String getFinger10_Status) {
-        String enroll_Title = "Enroll";
-        String delete_Title = "Delete";
-        String enroll_Message = "Enroll Fingerprint ID #";
-        String delete_Message = "Delete Fingerprint ID #";
-        String enrollValue = "1";
-        String deleteValue = "0";
+        final String enroll_Title = "Enroll";
+        final String delete_Title = "Delete";
+        final String enroll_Message = "Enroll Fingerprint ID #";
+        final String delete_Message = "Delete Fingerprint ID #";
+        final String enrollValue = "1";
+        final String deleteValue = "0";
 
         fingerprint_1.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,7 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class forgotPasswordPage extends AppCompatActivity {
 
     EditText emailRecovery;
-    Button resetPassBtn, returnBtn;
+    TextView tvLoginPage;
+    Button resetPassBtn;
     FirebaseAuth mAuth;
 
     @Override
@@ -28,10 +30,10 @@ public class forgotPasswordPage extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         resetPassBtn = (Button) findViewById(R.id.forgotPass_btn);
-        returnBtn = (Button) findViewById(R.id.returnBtn);
+        tvLoginPage = (TextView) findViewById(R.id.loginText);
         emailRecovery = findViewById(R.id.emailRecovery_text);
-        
-        returnBtn.setOnClickListener(new View.OnClickListener() {
+
+        tvLoginPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(forgotPasswordPage.this, loginPage.class);

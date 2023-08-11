@@ -2,19 +2,20 @@ package com.example.smartmotobox;
 
 public class Data {
 
-    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete;
+    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Status;
     int btn_Notification;
 
     public Data() {
 
     }
 
-    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete) {
+    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Status) {
         this.btn_Alarm = btn_Alarm;
         this.btn_Lock = btn_Lock;
         this.btn_Motor_Status = btn_Motor_Status;
         this.btn_Enroll = btn_Enroll;
         this.btn_Delete = btn_Delete;
+        this.btn_GPS_Status = btn_GPS_Status;
     }
 
     public String getBtn_Alarm() { return  this.btn_Alarm; }
@@ -33,5 +34,8 @@ public class Data {
 
     public String getBtn_Delete() { return  this.btn_Delete; }
     public void setBtn_Delete(String btn_Delete) { this.btn_Delete = btn_Delete; }
+
+    public String getBtn_GPS_Status() { return  this.btn_GPS_Status; }
+    public void setBtn_GPS_Status(String btn_GPS_Status) { this.btn_GPS_Status = btn_GPS_Status; }
 
 }

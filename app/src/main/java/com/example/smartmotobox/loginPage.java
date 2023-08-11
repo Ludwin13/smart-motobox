@@ -84,15 +84,22 @@ public class loginPage extends AppCompatActivity {
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString();
 
+        if (TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
+            Toast.makeText(loginPage.this, "Both Fields Empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(loginPage.this, "Enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(loginPage.this, "Email Field Empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(loginPage.this, "Enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(loginPage.this, "Password Field Empty", Toast.LENGTH_SHORT).show();
             return;
         }
+
+
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
