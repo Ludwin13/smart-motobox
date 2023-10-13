@@ -23,14 +23,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class enrollFingerprint extends AppCompatActivity {
+public class enroll_fingerprint_v2 extends AppCompatActivity {
 
-    TextView  fingerprint_1, fingerprint_2, fingerprint_3, fingerprint_4, fingerprint_5, fingerprint_6, fingerprint_7, fingerprint_8, fingerprint_9, fingerprint_10;
-    Button finger1, finger2, finger3, finger4, finger5, finger6, finger7,finger8,finger9, finger10, backBtn;
+    Button finger1, finger2, finger3, finger4, finger5, finger6, finger7, finger8, finger9, finger10, backBtn;
     DatabaseReference firebaseDB_getFingerPrintData, firebaseDB_Data;
     String getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status, getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status;
-    Data data;
-//    String finger1, finger2, finger3, finger4, finger5, finger6, finger7, finger8, finger9, finger10;
     String Enrolled = "1";
     String notEnrolled = "0";
     String finished = "2";
@@ -40,17 +37,16 @@ public class enrollFingerprint extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enroll_fingerprint);
 
-        fingerprint_1 = (TextView) findViewById(R.id.fingerprint_1);
-        fingerprint_2 = (TextView) findViewById(R.id.fingerprint_2);
-        fingerprint_3 = (TextView) findViewById(R.id.fingerprint_3);
-        fingerprint_4 = (TextView) findViewById(R.id.fingerprint_4);
-        fingerprint_5 = (TextView) findViewById(R.id.fingerprint_5);
-        fingerprint_6 = (TextView) findViewById(R.id.fingerprint_6);
-        fingerprint_7 = (TextView) findViewById(R.id.fingerprint_7);
-        fingerprint_8 = (TextView) findViewById(R.id.fingerprint_8);
-        fingerprint_9 = (TextView) findViewById(R.id.fingerprint_9);
-        fingerprint_10 = (TextView) findViewById(R.id.fingerprint_10);
-
+        finger1 = (Button) findViewById(R.id.finger1);
+        finger2 = (Button) findViewById(R.id.finger2);
+        finger3 = (Button) findViewById(R.id.finger3);
+        finger4 = (Button) findViewById(R.id.finger4);
+        finger5 = (Button) findViewById(R.id.finger5);
+        finger6 = (Button) findViewById(R.id.finger6);
+        finger7 = (Button) findViewById(R.id.finger7);
+        finger8 = (Button) findViewById(R.id.finger8);
+        finger9 = (Button) findViewById(R.id.finger9);
+        finger10 = (Button) findViewById(R.id.finger10);
         backBtn = (Button) findViewById(R.id.backBtn);
 
         firebaseDB_getFingerPrintData = FirebaseDatabase.getInstance().getReference("Fingerprint");
@@ -121,7 +117,7 @@ public class enrollFingerprint extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         firebaseDB_Data.child("finger_address").setValue(ID_Value);
                         firebaseDB_Data.child("btn_Enroll").setValue("1");
-                        Toast.makeText(enrollFingerprint.this, "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(enroll_fingerprint_v2.this, "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
                         postConfirmationAlert(child, value, process_child, process_value, postTitle, postMessage);
 
 
@@ -139,7 +135,7 @@ public class enrollFingerprint extends AppCompatActivity {
     }
 
     private void postConfirmationAlert(String child, String value, String process_child, String process_value, String postTitle, String postMessage) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(enrollFingerprint.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(enroll_fingerprint_v2.this);
         builder.setCancelable(true);
         builder.setTitle(postTitle);
         builder.setMessage(postMessage);
@@ -152,17 +148,17 @@ public class enrollFingerprint extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     Data model = snapshot.getValue(Data.class);
-                        String finished_Enroll = model.getBtn_Enroll();
-                        String finished_Delete = model.getBtn_Delete();
-                        if (finished_Enroll.equals(finished)) {
-                            getFingerprintData();
-                            firebaseDB_getFingerPrintData.child(child).setValue(value);
-                            firebaseDB_getFingerPrintData.child(process_child).setValue(process_value);
-                            firebaseDB_Data.child("btn_Enroll").setValue("0");
-                            firebaseDB_Data.child("finger_address").setValue("00");
-                            dialog.hide();
-                            refreshActivity();
-                        }
+                    String finished_Enroll = model.getBtn_Enroll();
+                    String finished_Delete = model.getBtn_Delete();
+                    if (finished_Enroll.equals(finished)) {
+                        getFingerprintData();
+                        firebaseDB_getFingerPrintData.child(child).setValue(value);
+                        firebaseDB_getFingerPrintData.child(process_child).setValue(process_value);
+                        firebaseDB_Data.child("btn_Enroll").setValue("0");
+                        firebaseDB_Data.child("finger_address").setValue("00");
+                        dialog.hide();
+                        refreshActivity();
+                    }
 
                     if (finished_Delete.equals(finished)) {
                         getFingerprintData();
@@ -187,6 +183,8 @@ public class enrollFingerprint extends AppCompatActivity {
 
     }
 
+
+
     private void deleteFingerID(String getFinger1_Status, String getFinger2_Status, String getFinger3_Status, String getFinger4_Status, String getFinger5_Status, String getFinger6_Status, String getFinger7_Status, String getFinger8_Status, String getFinger9_Status, String getFinger10_Status) {
         final String enroll_Title = "Enroll";
         final String delete_Title = "Delete";
@@ -195,9 +193,7 @@ public class enrollFingerprint extends AppCompatActivity {
         final String enrollValue = "1";
         final String deleteValue = "0";
 
-
-
-        fingerprint_1.setOnClickListener(new View.OnClickListener() {
+        finger1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger1_Status.equals(Enrolled)) {
@@ -209,7 +205,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_2.setOnClickListener(new View.OnClickListener() {
+        finger2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger2_Status.equals(Enrolled)) {
@@ -222,7 +218,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_3.setOnClickListener(new View.OnClickListener() {
+        finger3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger3_Status.equals(Enrolled)) {
@@ -234,7 +230,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_4.setOnClickListener(new View.OnClickListener() {
+        finger4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger4_Status.equals(Enrolled)) {
@@ -246,7 +242,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_5.setOnClickListener(new View.OnClickListener() {
+        finger5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger5_Status.equals(Enrolled)) {
@@ -259,7 +255,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_6.setOnClickListener(new View.OnClickListener() {
+        finger6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger6_Status.equals(Enrolled)) {
@@ -272,7 +268,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_7.setOnClickListener(new View.OnClickListener() {
+        finger7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger7_Status.equals(Enrolled)) {
@@ -285,7 +281,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_8.setOnClickListener(new View.OnClickListener() {
+        finger8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger8_Status.equals(Enrolled)) {
@@ -298,7 +294,7 @@ public class enrollFingerprint extends AppCompatActivity {
             }
         });
 
-        fingerprint_9.setOnClickListener(new View.OnClickListener() {
+        finger9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger9_Status.equals(Enrolled)) {
@@ -310,7 +306,7 @@ public class enrollFingerprint extends AppCompatActivity {
 
             }
         });
-        fingerprint_10.setOnClickListener(new View.OnClickListener() {
+        finger10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getFinger10_Status.equals(Enrolled)) {
@@ -329,7 +325,7 @@ public class enrollFingerprint extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(enrollFingerprint.this, MainActivity.class);
+                Intent intent = new Intent(enroll_fingerprint_v2.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -428,83 +424,63 @@ public class enrollFingerprint extends AppCompatActivity {
     private void fingerprintStatus(String getFinger1_Status, String getFinger2_Status, String getFinger3_Status, String getFinger4_Status, String getFinger5_Status, String getFinger6_Status, String getFinger7_Status, String getFinger8_Status, String getFinger9_Status, String getFinger10_Status) {
 
         if(this.getFinger1_Status.equals(notEnrolled)) {
-            fingerprint_1.setText("Not Enrolled");
-            fingerprint_1.setTextColor(Color.RED);
+            finger1.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_1.setText("Enrolled");
-            fingerprint_1.setTextColor(Color.GREEN);
+            finger1.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger2_Status.equals(notEnrolled)) {
-            fingerprint_2.setText("Not Enrolled");
-            fingerprint_2.setTextColor(Color.RED);
+            finger2.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_2.setText("Enrolled");
-            fingerprint_2.setTextColor(Color.GREEN);
+            finger2.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger3_Status.equals(notEnrolled)) {
-            fingerprint_3.setText("Not Enrolled");
-            fingerprint_3.setTextColor(Color.RED);
+            finger3.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_3.setText("Enrolled");
-            fingerprint_3.setTextColor(Color.GREEN);
+            finger3.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger4_Status.equals(notEnrolled)) {
-            fingerprint_4.setText("Not Enrolled");
-            fingerprint_4.setTextColor(Color.RED);
+            finger4.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_4.setText("Enrolled");
-            fingerprint_4.setTextColor(Color.GREEN);
+            finger4.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger5_Status.equals(notEnrolled)) {
-            fingerprint_5.setText("Not Enrolled");
-            fingerprint_5.setTextColor(Color.RED);
+            finger5.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_5.setText("Enrolled");
-            fingerprint_5.setTextColor(Color.GREEN);
+            finger5.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger6_Status.equals(notEnrolled)) {
-            fingerprint_6.setText("Not Enrolled");
-            fingerprint_6.setTextColor(Color.RED);
+            finger6.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_6.setText("Enrolled");
-            fingerprint_6.setTextColor(Color.GREEN);
+            finger6.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger7_Status.equals(notEnrolled)) {
-            fingerprint_7.setText("Not Enrolled");
-            fingerprint_7.setTextColor(Color.RED);
+            finger7.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_7.setText("Enrolled");
-            fingerprint_7.setTextColor(Color.GREEN);
+            finger7.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger8_Status.equals(notEnrolled)) {
-            fingerprint_8.setText("Not Enrolled");
-            fingerprint_8.setTextColor(Color.RED);
+            finger8.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_8.setText("Enrolled");
-            fingerprint_8.setTextColor(Color.GREEN);
+            finger8.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger9_Status.equals(notEnrolled)) {
-            fingerprint_9.setText("Not Enrolled");
-            fingerprint_9.setTextColor(Color.RED);
+            finger9.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_9.setText("Enrolled");
-            fingerprint_9.setTextColor(Color.GREEN);
+            finger9.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
 
         if(this.getFinger10_Status.equals(notEnrolled)) {
-            fingerprint_10.setText("Not Enrolled");
-            fingerprint_10.setTextColor(Color.RED);
+            finger10.setBackgroundColor((getResources().getColor(R.color.teal_200)));
         } else {
-            fingerprint_10.setText("Enrolled");
-            fingerprint_10.setTextColor(Color.GREEN);
+            finger10.setBackgroundColor((getResources().getColor(R.color.purple_200)));
         }
     }
 

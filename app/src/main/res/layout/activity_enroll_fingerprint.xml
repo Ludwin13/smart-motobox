@@ -12,284 +12,311 @@
         android:id="@+id/tvFinger_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="-200dp"
         android:text="Fingerprint 1:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.078"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.087" />
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_2"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_fingerNum"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/fingerprint_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
         android:textColor="#FF0000"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginLeft="5dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_1"
-        app:layout_constraintLeft_toRightOf="@id/tvFinger_1"
+        app:layout_constraintStart_toEndOf="@id/tvFinger_1"
         app:layout_constraintTop_toTopOf="@id/tvFinger_1" />
 
     <TextView
         android:id="@+id/tvFinger_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 2:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_1"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_3"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_1" />
 
     <TextView
         android:id="@+id/fingerprint_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_2"
-        app:layout_constraintLeft_toRightOf="@id/tvFinger_2"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_2"
-        android:layout_marginLeft="5dp"/>
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/tvFinger_2"
+        app:layout_constraintTop_toTopOf="@id/tvFinger_2" />
 
     <TextView
         android:id="@+id/tvFinger_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 3:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_2"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_2"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_4"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_2" />
 
     <TextView
         android:id="@+id/fingerprint_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_3"
-        app:layout_constraintLeft_toRightOf="@id/tvFinger_3"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_3"
-        android:layout_marginLeft="5dp"/>
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintStart_toEndOf="@id/tvFinger_3"
+        app:layout_constraintTop_toTopOf="@id/tvFinger_3" />
 
     <TextView
         android:id="@+id/tvFinger_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 4:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_3"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_3"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_5"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_3" />
 
     <TextView
         android:id="@+id/fingerprint_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_4"
+        android:textStyle="bold"
+
         app:layout_constraintLeft_toRightOf="@id/tvFinger_4"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_4"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvFinger_4" />
 
     <TextView
         android:id="@+id/tvFinger_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 5:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_4"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_4"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_6"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_4" />
 
     <TextView
         android:id="@+id/fingerprint_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_5"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/tvFinger_5"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_5"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvFinger_5" />
 
     <TextView
         android:id="@+id/tvFinger_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 6:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_5"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_5"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_7"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_5" />
 
     <TextView
         android:id="@+id/fingerprint_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_6"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/tvFinger_6"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_6"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvFinger_6" />
 
     <TextView
         android:id="@+id/tvFinger_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 7:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_6"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_6"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_8"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_6" />
 
     <TextView
         android:id="@+id/fingerprint_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_7"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/tvFinger_7"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_7"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvFinger_7" />
 
     <TextView
         android:id="@+id/tvFinger_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 8:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_7"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_7"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_9"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_7" />
 
     <TextView
         android:id="@+id/fingerprint_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_8"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/tvFinger_8"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_8"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvFinger_8" />
 
 
     <TextView
         android:id="@+id/tvFinger_9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 9:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_8"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_8"/>
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintBottom_toTopOf="@+id/tvFinger_10"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_8" />
 
     <TextView
         android:id="@+id/fingerprint_9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_9"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/tvFinger_9"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_9"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvFinger_9" />
 
     <TextView
         android:id="@+id/tvFinger_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Fingerprint 10:"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/tvFinger_9"
-        app:layout_constraintLeft_toLeftOf="@id/tvFinger_9"/>
+        app:layout_constraintBottom_toTopOf="@+id/backBtn"
+        app:layout_constraintLeft_toLeftOf="@id/tvFinger_1"
+        app:layout_constraintTop_toBottomOf="@+id/tvFinger_9" />
 
     <TextView
         android:id="@+id/fingerprint_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="Not Enrolled"
-        android:textStyle="bold"
         android:textColor="#FF0000"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvFinger_10"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/tvFinger_10"
-        app:layout_constraintTop_toTopOf="@id/tvFinger_10"
-        android:layout_marginLeft="5dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvFinger_10" />
 
 
     <Button
         android:id="@+id/backBtn"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:layout_marginTop="250dp"
+        android:background="@drawable/round_corners"
         android:text="Go Back"
         android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tvFinger_10"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_Screen2"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintStart_toStartOf="@id/guideline_Screen"
+        app:layout_constraintVertical_bias="0.879" />
 
-<!--    <Button-->
-<!--        android:id="@+id/enrollBtn"-->
-<!--        android:layout_width="150dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_marginTop="250dp"-->
-<!--        android:text="Enroll Finger"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginBottom="100dp"-->
-<!--        app:layout_constraintLeft_toLeftOf="@id/backBtn"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/backBtn"/>-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_fingerNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_Screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_Screen2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <!--    <Button-->
+    <!--        android:id="@+id/enrollBtn"-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        android:layout_marginTop="250dp"-->
+    <!--        android:text="Enroll Finger"-->
+    <!--        android:textSize="20dp"-->
+    <!--        android:layout_marginBottom="100dp"-->
+    <!--        app:layout_constraintLeft_toLeftOf="@id/backBtn"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/backBtn"/>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

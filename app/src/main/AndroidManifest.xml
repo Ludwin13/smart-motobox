@@ -18,6 +18,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".enroll_fingerprint_v2"
+            android:exported="false" />
+        <activity
             android:name=".loginPage"
             android:exported="false" />
         <activity

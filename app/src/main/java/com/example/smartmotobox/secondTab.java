@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
@@ -132,11 +134,11 @@ public class secondTab extends Fragment {
                 if (GPS_Status == "0") {
                     String btn_GPS_Status = "1";
                     data.setBtn_GPS_Status(btn_GPS_Status);
-                    enableGPS(btn_GPS_Status);
+                    enableGPSConfirmation(btn_GPS_Status);
                 } else {
                     String btn_GPS_Status = "0";
                     data.setBtn_GPS_Status(btn_GPS_Status);
-                    enableGPS(btn_GPS_Status);
+                    disableGPSConfirmation(btn_GPS_Status);
                 }
             }
         });
@@ -204,12 +206,12 @@ public class secondTab extends Fragment {
                 if(gps.equals(gpsOff)) {
                     tvGPSStatus.setText("OFF");
                     tvGPSStatus.setTextColor(Color.RED);
-                    gpsBtn.setText("GPS Disabled");
+                    gpsBtn.setText("Enable GPS");
                 } else {
                     tvGPSStatus.setText("ON");
                     tvGPSStatus.setTypeface(null, Typeface.BOLD);
                     tvGPSStatus.setTextColor(Color.GREEN);
-                    gpsBtn.setText("GPS Enabled");
+                    gpsBtn.setText("Disable GPS");
                 }
             }
 
@@ -334,9 +336,56 @@ public class secondTab extends Fragment {
     }
 
 
-    private void enableGPS(String btn_GPS_Status) {
-        data.setBtn_GPS_Status(btn_GPS_Status);
-        databaseReference.child("btn_GPS_Enabler").setValue(btn_GPS_Status);
+    private void enableGPSConfirmation(String btn_GPS_Status) {
+        final String title = "Enable GPS";
+        final String message = "Do you want to enable GPS?";
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        data.setBtn_GPS_Status(btn_GPS_Status);
+                        databaseReference.child("btn_GPS_Enabler").setValue(btn_GPS_Status);
+                    }
+                });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void disableGPSConfirmation(String btn_GPS_Status) {
+        final String title = "Disable GPS";
+        final String message = "Do you want to disable GPS?";
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        data.setBtn_GPS_Status(btn_GPS_Status);
+                        databaseReference.child("btn_GPS_Enabler").setValue(btn_GPS_Status);
+                    }
+                });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 
