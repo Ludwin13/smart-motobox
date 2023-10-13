@@ -23,7 +23,8 @@
         app:layout_constraintTop_toBottomOf="parent"
         >
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -31,178 +32,226 @@
                 android:id="@+id/tvLockStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="75dp"
-                android:layout_marginEnd="290dp"
                 android:text="Lock Status:"
                 android:textColor="@color/black"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvMotorStatus"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/statusGuideline1" />
 
             <TextView
                 android:id="@+id/tvLockStatus_Holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tvLockStatus"
-                android:layout_marginLeft="-285dp"
-                android:layout_toRightOf="@+id/tvLockStatus"
+                android:layout_marginLeft="10dp"
                 android:text="0"
                 android:textColor="#FF0000"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@+id/tvLockStatus"
+                app:layout_constraintTop_toTopOf="@+id/tvLockStatus" />
 
             <TextView
                 android:id="@+id/tvAlarmStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tvLockStatus"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="75dp"
                 android:text="Alarm Status:"
                 android:textColor="@color/black"
+                android:layout_marginLeft="30dp"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/tvLockStatus_Holder"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="@+id/tvLockStatus" />
 
             <TextView
                 android:id="@+id/tvAlarmStatus_Holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="-65dp"
-                android:layout_alignTop="@+id/tvAlarmStatus"
-                android:layout_toRightOf="@id/tvAlarmStatus"
+                android:layout_marginLeft="10dp"
                 android:text="0"
-                android:textStyle="bold"
                 android:textColor="#FF0000"
-                android:textSize="17.5dp" />
+                android:textSize="17.5dp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/tvAlarmStatus"
+                app:layout_constraintTop_toTopOf="@+id/tvAlarmStatus" />
 
             <TextView
                 android:id="@+id/tvMotorStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvLockStatus"
-                android:layout_alignLeft="@+id/tvLockStatus"
-                android:layout_marginTop="25dp"
                 android:text="Motor Status:"
                 android:textColor="@color/black"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvGPSStatus"
+                app:layout_constraintLeft_toLeftOf="@+id/tvLockStatus"
+                app:layout_constraintTop_toBottomOf="@+id/tvLockStatus" />
 
             <TextView
                 android:id="@+id/tvMotorStatus_Holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/tvMotorStatus"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/tvMotorStatus"
                 android:text="0"
                 android:textColor="#FF0000"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/tvMotorStatus"
+                app:layout_constraintTop_toTopOf="@id/tvMotorStatus" />
 
             <TextView
                 android:id="@+id/tvGPSStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvMotorStatus"
-                android:layout_alignLeft="@+id/tvLockStatus"
-                android:layout_marginTop="25dp"
                 android:text="GPS Status:"
                 android:textColor="@color/black"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/statusGuideline2"
+                app:layout_constraintLeft_toLeftOf="@+id/tvLockStatus"
+                app:layout_constraintTop_toBottomOf="@+id/tvMotorStatus" />
 
             <TextView
                 android:id="@+id/tvGPSStatus_Holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/tvGPSStatus"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/tvGPSStatus"
                 android:text="0"
                 android:textColor="#FF0000"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/tvGPSStatus"
+                app:layout_constraintTop_toTopOf="@id/tvGPSStatus" />
 
-<!--            <Button-->
-<!--                android:id="@+id/testBtn"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_alignParentStart="true"-->
-<!--                android:layout_alignParentTop="true"-->
-<!--                android:layout_marginStart="131dp"-->
-<!--                android:layout_marginTop="633dp"-->
-<!--                android:text="Push Location" />-->
+            <!--            <Button-->
+            <!--                android:id="@+id/testBtn"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_alignParentStart="true"-->
+            <!--                android:layout_alignParentTop="true"-->
+            <!--                android:layout_marginStart="131dp"-->
+            <!--                android:layout_marginTop="633dp"-->
+            <!--                android:text="Push Location" />-->
+
 
             <Button
                 android:id="@+id/lockBtn"
                 android:layout_width="175dp"
                 android:layout_height="75dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="300dp"
+                android:layout_marginStart="16dp"
                 android:background="@drawable/round_corners"
-                android:text="Lock" />
-
+                android:text="Lock"
+                app:layout_constraintBottom_toBottomOf="@+id/gpsBtn"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/statusGuideline2" />
 
             <Button
                 android:id="@+id/ridingBtn"
                 android:layout_width="175dp"
                 android:layout_height="75dp"
-                android:layout_alignTop="@id/lockBtn"
-                android:layout_toRightOf="@id/lockBtn"
-                android:layout_marginLeft="25dp"
                 android:background="@drawable/round_corners"
-                android:text="Riding" />
+                android:text="Riding"
+                app:layout_constraintEnd_toEndOf="@id/guideline4"
+                app:layout_constraintStart_toEndOf="@+id/lockBtn"
+                app:layout_constraintTop_toTopOf="@+id/lockBtn" />
 
             <Button
                 android:id="@+id/gpsBtn"
                 android:layout_width="175dp"
                 android:layout_height="75dp"
-                android:layout_below="@id/lockBtn"
-                android:layout_alignLeft="@id/lockBtn"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners"
-                android:text="Enable GPS" />
+                android:text="Enable GPS"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/lockBtn"
+                app:layout_constraintTop_toTopOf="@+id/statusGuideline2" />
 
 
             <Button
                 android:id="@+id/enrollBtn"
                 android:layout_width="175dp"
                 android:layout_height="75dp"
-                android:layout_below="@id/ridingBtn"
-                android:layout_alignLeft="@id/ridingBtn"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners"
-                android:text="Enroll Fingerprint" />
+                android:text="Enroll Fingerprint"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/ridingBtn"
+                app:layout_constraintStart_toStartOf="@+id/ridingBtn"
+                app:layout_constraintTop_toTopOf="@+id/gpsBtn"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/tvConnection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvAlarmStatus"
-                android:layout_alignLeft="@+id/tvAlarmStatus"
-                android:layout_marginTop="25dp"
                 android:text="WiFi:"
                 android:textColor="@color/black"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/statusGuideline2"
+                app:layout_constraintLeft_toLeftOf="@+id/tvAlarmStatus"
+                app:layout_constraintStart_toStartOf="@+id/tvAlarmStatus"
+                app:layout_constraintTop_toTopOf="@+id/tvMotorStatus"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/tvConnection_Holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tvConnection"
-                android:layout_alignTop="@id/tvConnection"
                 android:layout_marginLeft="10dp"
                 android:text="0"
                 android:textColor="#FF0000"
                 android:textSize="17.5dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/tvConnection"
+                app:layout_constraintTop_toTopOf="@id/tvConnection" />
 
-        </RelativeLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.4" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/statusGuideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/statusGuideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
 </FrameLayout>
