@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99E1D9"
+    tools:context=".fourthTab"
+
+    >
+
+    <TextView
+        android:id="@+id/textViewFinger1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 1:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textViewFinger2"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <TextView
+        android:id="@+id/finger1Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger2Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 2:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textViewFinger3"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/textViewFinger1" />
+
+    <TextView
+        android:id="@+id/finger2Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger3Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger1Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 3:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/textViewFinger4"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger2" />
+
+    <TextView
+        android:id="@+id/finger3Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger4Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger2Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 3:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textViewFinger5"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger3" />
+
+    <TextView
+        android:id="@+id/finger4Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger5Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger3Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 5:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/textViewFinger6"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger4" />
+
+    <TextView
+        android:id="@+id/finger5Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger6Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger4Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 6:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textViewFinger7"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger5" />
+
+    <TextView
+        android:id="@+id/finger6Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger7Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger5Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 7:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textViewFinger8"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger6" />
+
+    <TextView
+        android:id="@+id/finger7Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger8Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger6Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 8:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/textViewFinger9"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger7" />
+
+    <TextView
+        android:id="@+id/finger8Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger9Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger7Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 9:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textViewFinger10"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger8" />
+
+    <TextView
+        android:id="@+id/finger9Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/finger10Status"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger8Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+    <TextView
+        android:id="@+id/textViewFinger10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finger 10:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/bottomScreenGuideline"
+        app:layout_constraintEnd_toStartOf="@id/textViewFinger_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/textViewFinger_guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFinger9" />
+
+    <TextView
+        android:id="@+id/finger10Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add a new fingerprint"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/bottomScreenGuideline"
+        app:layout_constraintEnd_toStartOf="@id/fingerStatus_guideline_end"
+        app:layout_constraintStart_toEndOf="@id/fingerStatus_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/finger9Status" />
+
+    /////////////////////////////////////////////////////////////////
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/textViewFinger_guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/textViewFinger_guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fingerStatus_guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fingerStatus_guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomScreenGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

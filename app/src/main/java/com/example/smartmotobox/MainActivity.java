@@ -268,7 +268,8 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.addTab(tabLayout.newTab().setText("MAP"));
         tabLayout.addTab(tabLayout.newTab().setText("CONTROL"));
-        tabLayout.addTab(tabLayout.newTab().setText("NOTIFICATIONS"));
+        tabLayout.addTab(tabLayout.newTab().setText("ALARM"));
+        tabLayout.addTab(tabLayout.newTab().setText("FINGERPRINT"));
 
 
         //***************************TEST****************************************//

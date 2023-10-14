@@ -20,6 +20,8 @@ public class tabAdapter extends FragmentStateAdapter {
                 return new secondTab();
             } case 2: {
                 return new thirdTab();
+            } case 3: {
+                return new fourthTab();
             }
         }
         return new firstTab();
@@ -27,6 +29,6 @@ public class tabAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }
