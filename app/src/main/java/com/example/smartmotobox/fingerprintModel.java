@@ -12,10 +12,10 @@ public class fingerprintModel {
 
     public fingerprintModel(String Finger1_Status, String Finger2_Status, String Finger3_Status, String Finger4_Status,
                             String Finger5_Status, String Finger6_Status, String Finger7_Status, String Finger8_Status, String Finger9_Status,
-                            String Finger0_Time, String Finger1_Time, String Finger2_Time, String Finger3_Time, String Finger4_Time,
+                            String Finger10_Time, String Finger1_Time, String Finger2_Time, String Finger3_Time, String Finger4_Time,
                             String Finger5_Time, String Finger6_Time, String Finger7_Time, String Finger8_Time, String Finger9_Time, String Finger10_Status) {
 
-        this.Finger10_Status = Finger10_Status; this.Finger10_Time = Finger0_Time;
+        this.Finger10_Status = Finger10_Status; this.Finger10_Time = Finger10_Time;
         this.Finger1_Status = Finger1_Status; this.Finger1_Time = Finger1_Time;
         this.Finger2_Status = Finger2_Status; this.Finger2_Time = Finger2_Time;
         this.Finger3_Status = Finger3_Status; this.Finger3_Time = Finger3_Time;
