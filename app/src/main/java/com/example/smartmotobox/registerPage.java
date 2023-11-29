@@ -1,25 +1,17 @@
 package com.example.smartmotobox;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class registerPage extends AppCompatActivity {
 
@@ -53,11 +45,7 @@ public class registerPage extends AppCompatActivity {
         clickToLogin = findViewById(R.id.loginText);
 
 
-        register_btn.setOnClickListener(view -> {
-            PerformAuth();
-
-
-        });
+        register_btn.setOnClickListener(view -> PerformAuth());
 
         clickToLogin.setOnClickListener(view -> {
             Intent intent = new Intent(registerPage.this, loginPage.class);
@@ -82,39 +70,30 @@ public class registerPage extends AppCompatActivity {
         }
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+
+                        Objects.requireNonNull(mAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()){
+
+                                Toast.makeText(registerPage.this, "User registered successfully. Please verify your email id.",
+                                        Toast.LENGTH_SHORT).show();
+
+                                getEmail.setText("");
+                                getPassword.setText("");
 
 
+                            }
+                        });
 
 
-                            mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
+                    } else {
+                        // If sign in fails, display a message to the user.
 
-                                        Toast.makeText(registerPage.this, "User registered successfully. Please verify your email id.",
-                                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(registerPage.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
 
-                                        getEmail.setText("");
-                                        getPassword.setText("");
-
-
-                                    }
-                                }
-                            });
-
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-
-                            Toast.makeText(registerPage.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
                     }
                 });
 

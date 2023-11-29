@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ktx.Firebase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +37,11 @@ public class thirdTab extends Fragment {
     MyAdapter myAdapter;
     FirebaseRecyclerOptions<Item> options;
     FirebaseRecyclerAdapter<Item, MyViewHolder> adapter;
+    List<String> getAllParentDates = new ArrayList<>();
+    List<String> getSpecificParentDate = new ArrayList<>();
+    String selectedHistoryDate;
+
+
 
 
     @Override
@@ -49,39 +58,109 @@ public class thirdTab extends Fragment {
         layoutManager.setReverseLayout(false);
         recyclerView.setLayoutManager(layoutManager);
 //        recyclerView.setAdapter(myAdapter);
-
+        String myDate = java.text.DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
         DatabaseReference setHistoryDataChange = FirebaseDatabase.getInstance().getReference("History");
+        Spinner FirebaseDB_Spinner = view.findViewById(R.id.spinnerAlarmHistory);
+        ArrayAdapter<String> spinnerAdapterAlarmHistory = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getAllParentDates);
+        FirebaseDB_Spinner.setAdapter(spinnerAdapterAlarmHistory);
 
-        options = new FirebaseRecyclerOptions.Builder<Item>().setQuery(setHistoryDataChange, Item.class).build();
-        adapter = new FirebaseRecyclerAdapter<Item, MyViewHolder>(options) {
+        DatabaseReference alarmHistory = FirebaseDatabase.getInstance().getReference().child("History/NewData");
+
+        alarmHistory.addValueEventListener(new ValueEventListener() {
             @Override
-            protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Item model) {
-                holder.notifTrigger.setText(""+model.getStatus());
-                holder.notifDate.setText(""+model.getDate());
-                holder.notifTime.setText(""+model.getTime());
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    getAllParentDates.clear();
 
+                    for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        if(postSnapshot.exists()) {
+
+                            String triggerDate = postSnapshot.getKey();
+                            getAllParentDates.add(triggerDate);
+                            spinnerAdapterAlarmHistory.notifyDataSetChanged();
+                        }
+                    }
+                }
             }
 
-            @NonNull
             @Override
-            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, parent, false);
-                return new MyViewHolder(v);
             }
-        };
+        });
 
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
+        FirebaseDB_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
+
+                if (selectedDate == "--SELECT HISTORY--") {
+
+                } else {
+                    getAlarmHistory();
+                    selectedHistoryDate = selectedDate;
+
+                    DatabaseReference alarmHistorySelected = FirebaseDatabase.getInstance().getReference().child("History/NewData").child(selectedHistoryDate);
+
+                    options = new FirebaseRecyclerOptions.Builder<Item>().setQuery(alarmHistorySelected, Item.class).build();
+                    adapter = new FirebaseRecyclerAdapter<Item, MyViewHolder>(options) {
+                        @Override
+                        protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Item model) {
+                            holder.notifTrigger.setText(""+model.getStatus());
+                            holder.notifDate.setText(""+model.getDate());
+                            holder.notifTime.setText(""+model.getTime());
+
+                        }
+
+                        @NonNull
+                        @Override
+                        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, parent, false);
+                            return new MyViewHolder(v);
+                        }
+                    };
 
 
-
-
-
-
+                    adapter.startListening();
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
 
 
         return view;
     }
+
+    private void getAlarmHistory() {
+        ArrayAdapter<String> spinnerAdapterAlarmHistory = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getAllParentDates);
+        DatabaseReference alarmHistory = FirebaseDatabase.getInstance().getReference().child("History/NewData");
+        alarmHistory.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    getAllParentDates.clear();
+                    for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        if(postSnapshot.exists()) {
+                            String triggerDate = postSnapshot.getKey();
+                            getAllParentDates.add(triggerDate);
+                            spinnerAdapterAlarmHistory.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
 }

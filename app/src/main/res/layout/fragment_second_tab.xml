@@ -141,28 +141,28 @@
 
             <Button
                 android:id="@+id/lockBtn"
-                android:layout_width="175dp"
+                android:layout_width="125dp"
                 android:layout_height="75dp"
-                android:layout_marginStart="16dp"
                 android:background="@drawable/round_corners"
                 android:text="Lock"
                 app:layout_constraintBottom_toBottomOf="@+id/gpsBtn"
-                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintEnd_toStartOf="@id/centerGuideline"
+                app:layout_constraintStart_toEndOf="@+id/btnGuideline1"
                 app:layout_constraintTop_toTopOf="@+id/statusGuideline2" />
 
             <Button
                 android:id="@+id/ridingBtn"
-                android:layout_width="175dp"
+                android:layout_width="125dp"
                 android:layout_height="75dp"
                 android:background="@drawable/round_corners"
                 android:text="Riding"
-                app:layout_constraintEnd_toEndOf="@id/guideline4"
-                app:layout_constraintStart_toEndOf="@+id/lockBtn"
+                app:layout_constraintEnd_toStartOf="@id/btnGuideline2"
+                app:layout_constraintStart_toEndOf="@+id/centerGuideline"
                 app:layout_constraintTop_toTopOf="@+id/lockBtn" />
 
             <Button
                 android:id="@+id/gpsBtn"
-                android:layout_width="175dp"
+                android:layout_width="125dp"
                 android:layout_height="75dp"
                 android:background="@drawable/round_corners"
                 android:text="Enable GPS"
@@ -170,18 +170,16 @@
                 app:layout_constraintLeft_toLeftOf="@id/lockBtn"
                 app:layout_constraintTop_toTopOf="@+id/statusGuideline2" />
 
-
             <Button
-                android:id="@+id/enrollBtn"
-                android:layout_width="175dp"
+                android:id="@+id/resetWiFi"
+                android:layout_width="125dp"
                 android:layout_height="75dp"
                 android:background="@drawable/round_corners"
-                android:text="Enroll Fingerprint"
+                android:text="Disconnect Wifi"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/ridingBtn"
-                app:layout_constraintStart_toStartOf="@+id/ridingBtn"
-                app:layout_constraintTop_toTopOf="@+id/gpsBtn"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="@+id/statusGuideline2" />
+
 
             <TextView
                 android:id="@+id/tvConnection"
@@ -249,7 +247,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.3" />
+                app:layout_constraintGuide_percent="0.4" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/centerGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/btnGuideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/btnGuideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
