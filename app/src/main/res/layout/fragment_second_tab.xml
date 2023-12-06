@@ -117,6 +117,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvMotorStatus" />
 
             <TextView
+                android:id="@+id/tvVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volume:"
+                android:textColor="@color/black"
+                android:textSize="17.5dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/statusGuideline2"
+                app:layout_constraintLeft_toLeftOf="@+id/tvConnection"
+                app:layout_constraintTop_toBottomOf="@+id/tvConnection" />
+
+            <TextView
+                android:id="@+id/tvVolume_Holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="0"
+                android:textColor="#FF0000"
+                android:textSize="17.5dp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/tvVolume"
+                app:layout_constraintTop_toTopOf="@id/tvVolume" />
+
+            <TextView
                 android:id="@+id/tvGPSStatus_Holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,6 +204,27 @@
                 app:layout_constraintLeft_toLeftOf="@id/ridingBtn"
                 app:layout_constraintTop_toTopOf="@+id/statusGuideline2" />
 
+            <Button
+                android:id="@+id/changeNumberBtn"
+                android:layout_width="125dp"
+                android:layout_height="75dp"
+                android:background="@drawable/round_corners"
+                android:text="Change Number"
+                android:layout_marginTop="-75dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/lockBtn"
+                app:layout_constraintTop_toBottomOf="@id/gpsBtn" />
+
+            <SeekBar
+                android:id="@+id/volumeSeekBar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/statusGuideline2"
+                app:layout_constraintStart_toStartOf="@id/btnGuideline1"
+                app:layout_constraintEnd_toEndOf="@id/btnGuideline2"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                android:max="7"/>
 
             <TextView
                 android:id="@+id/tvConnection"

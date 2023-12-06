@@ -103,9 +103,9 @@ public class MapFragment extends Fragment {
         /** Firebase Realtime Database Reference Initialization....
          * For Main GPS, Tracks onDataChange wherever the child is.
          * Without manual interference in the database then it will only get the latest data write. */
-        DatabaseReference Firebase_GPSDataChange = FirebaseDatabase.getInstance().getReference().child("Test/Location");
+        DatabaseReference Firebase_GPSDataChange = FirebaseDatabase.getInstance().getReference().child("Location");
         /** For Spinner content (GPS History) */
-        DatabaseReference FirebaseDB_GPSDate = FirebaseDatabase.getInstance().getReference().child("Test/Location");
+        DatabaseReference FirebaseDB_GPSDate = FirebaseDatabase.getInstance().getReference().child("Location");
         /** Google Maps API Initialization */
         SupportMapFragment supportMapFragmentInitialization = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -122,8 +122,6 @@ public class MapFragment extends Fragment {
                  */
                 getSpecificParentDate.clear();
                 if(snapshot.exists()) {
-                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                        if(postSnapshot.exists()) {
                             /**
                              * postSnapshot.getKey() retrieves the postSnapshot children names (Date) e.g. (6-16-2023);
                              * imported SimpleDateFormat to determine the current Date.
@@ -131,7 +129,7 @@ public class MapFragment extends Fragment {
                              *      If the currentDate is equal to the latest postSnapshot children name with the same date
                              *      then it will create a query pointing to that specific Date Node and retrieve the Marker Data.
                              */
-                            String parent = postSnapshot.getKey();
+                            String parent = snapshot.getKey();
                             String date = dateFormat.format(Calendar.getInstance().getTime());
 
                             if (parent.equals(date)) {
@@ -160,7 +158,9 @@ public class MapFragment extends Fragment {
                                             String Time = model.getTime();
 
                                             if (LatitudeStr == null || LongitudeStr == null || Time == null) {
+
                                                 break;
+
                                             } else {
 
                                                 Double Latitude = Double.valueOf(LatitudeStr);
@@ -179,8 +179,8 @@ public class MapFragment extends Fragment {
                             } else {
                                 Test.setText("SEX");
                             }
-                        }
-                    }
+
+
                 }
             }
             @Override

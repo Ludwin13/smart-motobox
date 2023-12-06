@@ -11,7 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,18 +23,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class secondTab extends Fragment {
 
     Data data;
-    Button lockBtn, motorStatusBtn, gpsBtn, resetWiFiBtn;
+    Button lockBtn, motorStatusBtn, gpsBtn, resetWiFiBtn, changeNumberBtn;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, connectionDBRef;
-    TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus, tvGPSStatus;
-    String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler;
+    DatabaseReference databaseReference, connectionDBRef, volumeDBRef;
+    TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus, tvGPSStatus, tvVolume;
+    String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler, getVolume_Control;
     String statusOff = "0";
+    String volume_0 = "00";
+    String volume_1 = "10";
+    String volume_2 = "20";
+    String volume_3 = "30";
+    String volume_4 = "40";
+    String volume_5 = "50";
+    String volume_6 = "60";
+    String volume_7 = "70";
+    SeekBar seekBar;
     //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
 
     @Override
@@ -42,6 +57,7 @@ public class secondTab extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Data");
         connectionDBRef = firebaseDatabase.getReference("/Connection");
+        volumeDBRef = firebaseDatabase.getReference("Volume");
         data = new Data();
 //        testBtn = (Button) view.findViewById(R.id.testBtn);
         lockBtn = (Button) view.findViewById(R.id.lockBtn);
@@ -54,9 +70,14 @@ public class secondTab extends Fragment {
         tvMotorStatus = (TextView) view.findViewById(R.id.tvMotorStatus_Holder);
         tvConnectionStatus = (TextView) view.findViewById(R.id.tvConnection_Holder);
         tvGPSStatus = (TextView) view.findViewById(R.id.tvGPSStatus_Holder);
+        seekBar = (SeekBar) view.findViewById(R.id.volumeSeekBar);
+        tvVolume = (TextView) view.findViewById(R.id.tvVolume_Holder);
+        changeNumberBtn = (Button) view.findViewById(R.id.changeNumberBtn);
+
 
         getMotorStatus();
-        btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler);
+        btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control);
+
 
 //        lockBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -116,7 +137,7 @@ public class secondTab extends Fragment {
         return view;
     }
 
-    private void btnMethods(String getMotor_status, String getBtn_lock, String getGPS_status) {
+    private void btnMethods(String getMotor_status, String getBtn_lock, String getGPS_status, String getVolume_Control) {
         String statusOff = "0";
         String statusOn = "1";
 
@@ -155,6 +176,66 @@ public class secondTab extends Fragment {
 
         resetWiFiBtn.setOnClickListener(view -> {
           resetWiFiConfirmation();
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int volume, boolean b) {
+                volumeDBRef.child("Volume_Control").setValue(volume + "0");
+                getMotorStatus();
+
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        changeNumberBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String postTitle = "Change Number?";
+                final String postMessage = "Enrollment in Process, Check your fingerprint scanner";
+
+                LinearLayout layoutName = new LinearLayout(getContext());
+                layoutName.setOrientation(LinearLayout.VERTICAL);
+
+                final EditText etNumber = new EditText(getContext());
+                etNumber.setHint("9276625575");
+                layoutName.addView(etNumber);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setView(layoutName);
+                builder.setTitle("Input Number (Start with +63 '9' ");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Change Number",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String newNumber = etNumber.getText().toString(); // variable to collect user input
+                                databaseReference.child("numChange_confirmation").setValue("1");
+                                databaseReference.child("mobile_number").setValue(newNumber);
+                                Toast.makeText(getContext(), "Number Succesfully Changed!", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
     }
 
@@ -226,6 +307,10 @@ public class secondTab extends Fragment {
 
     }
 
+    private void getVolumeValue(){
+
+    }
+
     private void getMotorStatus(){
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -237,9 +322,27 @@ public class secondTab extends Fragment {
                     getMotor_Status = model.getBtn_Motor_Status();
                     getBtn_Lock = model.getBtn_Lock();
                     getBtn_GPS_Enabler = model.getBtn_GPS_Enabler();
+//                    setMotorStatus(getBtn_Alarm, getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control);
+//                    btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control);
 
-                    setMotorStatus(getBtn_Alarm, getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler);
-                    btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler);
+                    volumeDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                Data model = snapshot.getValue(Data.class);
+
+                                getVolume_Control = model.getVolume_Control();
+                                setMotorStatus(getBtn_Alarm, getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control);
+                                btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
             }
 
@@ -250,7 +353,7 @@ public class secondTab extends Fragment {
         });
     }
 
-    private void setMotorStatus(String getBtn_Alarm, String getMotor_Status, String getBtn_Lock, String getGPS_Status) {
+    private void setMotorStatus(String getBtn_Alarm, String getMotor_Status, String getBtn_Lock, String getGPS_Status, String getVolume_Control) {
 
         if(this.getMotor_Status.equals(statusOff)) {
             tvMotorStatus.setText("PARKED");
@@ -287,6 +390,42 @@ public class secondTab extends Fragment {
             tvGPSStatus.setTextColor(Color.GREEN);
             gpsBtn.setText("Disable GPS");
         }
+
+        if (this.getVolume_Control.equals(volume_0)) {
+            tvVolume.setText("0");
+            tvVolume.setTextColor(Color.RED);
+
+        } else if (this.getVolume_Control.equals(volume_1)) {
+            tvVolume.setText("10");
+            tvVolume.setTextColor(Color.RED);
+
+        } else if (this.getVolume_Control.equals(volume_2)) {
+            tvVolume.setText("20");
+            tvVolume.setTextColor(Color.RED);
+
+        } else if (this.getVolume_Control.equals(volume_3)) {
+            tvVolume.setText("30");
+            tvVolume.setTextColor(Color.YELLOW);
+
+        } else if (this.getVolume_Control.equals(volume_4)) {
+            tvVolume.setText("40");
+            tvVolume.setTextColor(Color.YELLOW);
+
+        } else if (this.getVolume_Control.equals(volume_5)) {
+            tvVolume.setText("50");
+            tvVolume.setTextColor(Color.GREEN);
+
+        } else if (this.getVolume_Control.equals(volume_6)) {
+            tvVolume.setText("60");
+            tvVolume.setTextColor(Color.GREEN);
+
+        } else {
+            tvVolume.setText("70");
+            tvVolume.setTextColor(Color.GREEN);
+
+        }
+
+
 
     }
 

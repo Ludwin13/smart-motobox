@@ -2,20 +2,21 @@ package com.example.smartmotobox;
 
 public class Data {
 
-    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler;
+    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler, Volume_Control;
     int btn_Notification;
 
     public Data() {
 
     }
 
-    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler) {
+    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler, String Volume_Control) {
         this.btn_Alarm = btn_Alarm;
         this.btn_Lock = btn_Lock;
         this.btn_Motor_Status = btn_Motor_Status;
         this.btn_Enroll = btn_Enroll;
         this.btn_Delete = btn_Delete;
         this.btn_GPS_Enabler = btn_GPS_Enabler;
+        this.Volume_Control = Volume_Control;
     }
 
     public String getBtn_Alarm() { return  this.btn_Alarm; }
@@ -37,5 +38,8 @@ public class Data {
 
     public String getBtn_GPS_Enabler() { return  this.btn_GPS_Enabler; }
     public void setBtn_GPS_Enabler(String btn_GPS_Enabler) { this.btn_GPS_Enabler = btn_GPS_Enabler; }
+
+    public String getVolume_Control() { return this.Volume_Control; }
+    public void getVolume_Control(String Volume_Control) { this.Volume_Control = Volume_Control; }
 
 }
