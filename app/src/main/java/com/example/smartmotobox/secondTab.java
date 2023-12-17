@@ -37,13 +37,13 @@ public class secondTab extends Fragment {
     TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus, tvGPSStatus, tvVolume;
     String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler, getVolume_Control;
     String statusOff = "0";
-    String volume_0 = "00";
-    String volume_1 = "10";
-    String volume_2 = "20";
-    String volume_3 = "30";
-    String volume_4 = "40";
-    String volume_5 = "50";
-    String volume_6 = "60";
+    String volume_0 = "60";
+    String volume_1 = "61";
+    String volume_2 = "62";
+    String volume_3 = "63";
+    String volume_4 = "64";
+    String volume_5 = "65";
+    String volume_6 = "66";
     String volume_7 = "70";
     SeekBar seekBar;
     //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
@@ -63,7 +63,7 @@ public class secondTab extends Fragment {
         lockBtn = (Button) view.findViewById(R.id.lockBtn);
         motorStatusBtn = (Button) view.findViewById(R.id.ridingBtn);
         gpsBtn = (Button) view.findViewById(R.id.gpsBtn);
-        resetWiFiBtn = (Button) view.findViewById(R.id.resetWiFi);
+//        resetWiFiBtn = (Button) view.findViewById(R.id.resetWiFi);
 
         tvLockStatus = (TextView) view.findViewById(R.id.tvLockStatus_Holder);
         tvAlarmStatus = (TextView) view.findViewById(R.id.tvAlarmStatus_Holder);
@@ -144,7 +144,7 @@ public class secondTab extends Fragment {
         lockBtn.setOnClickListener(view -> {
 
             if (getBtn_lock.equals(statusOff)) {
-                lockConfirmation(getBtn_lock);
+//                lockConfirmation(getBtn_lock);
                 databaseReference.child("btn_Lock").setValue(statusOn);
                 getMotorStatus();
 //                    data.setBtn_Lock(statusOn);
@@ -174,15 +174,48 @@ public class secondTab extends Fragment {
             GPSConfirmation(getGPS_status);
         });
 
-        resetWiFiBtn.setOnClickListener(view -> {
-          resetWiFiConfirmation();
-        });
+//        resetWiFiBtn.setOnClickListener(view -> {
+//          resetWiFiConfirmation();
+//        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int volume, boolean b) {
-                volumeDBRef.child("Volume_Control").setValue(volume + "0");
+
+                if (volume == 0)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("60");
+                } else if (volume == 1)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("61");
+
+                } else if (volume == 2)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("62");
+
+                } else if (volume == 3)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("63");
+
+                } else if (volume == 4)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("64");
+
+                } else if (volume == 5)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("65");
+
+                } else if (volume == 6)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("66");
+
+                } else if (volume == 7)
+                {
+                    volumeDBRef.child("Volume_Control").setValue("67");
+
+                }
                 getMotorStatus();
+
 
 
             }
@@ -239,26 +272,24 @@ public class secondTab extends Fragment {
         });
     }
 
-    private void resetWiFiConfirmation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setCancelable(true);
-        builder.setTitle("Disconnect Wifi");
-        builder.setMessage("Disconnect WiFi and Open Config Portal?");
-        builder.setPositiveButton("Disconnect",
-                (dialog, which) -> {
+//    private void resetWiFiConfirmation() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//        builder.setCancelable(true);
+//        builder.setTitle("Disconnect Wifi");
+//        builder.setMessage("Disconnect WiFi and Open Config Portal?");
+//        builder.setPositiveButton("Disconnect",
+//                (dialog, which) -> {
+//
+//                    databaseReference.child("reset_device_connection").setValue("1");
+//
+//                });
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//
+//
+//    }
 
-                    databaseReference.child("reset_device_connection").setValue("1");
-
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-
-    }
-
-    private void lockConfirmation(String getBtn_lock) {
-    }
 
 
     private void GPSConfirmation(String btn_GPS_Status) {

@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference getMagneticStat = getDataChange.child("/Magnetic_Stat");
         DatabaseReference getAttemptStat = getDataChange.child("/Attempt_Stat");
         DatabaseReference getTiltStat = getDataChange.child("/Tilt_Stat");
+        DatabaseReference disableGPS = FirebaseDatabase.getInstance().getReference("Data");
+        disableGPS.child("btn_GPS_Enabler").setValue("0");
 
         getMagneticStat.addValueEventListener(new ValueEventListener() {
             @Override
@@ -314,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void notificationBuilder(String alarmDescription) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, SplashScreen.class);
         PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -335,7 +337,10 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Device Alarm!")
                 .setContentText(alarmDescription)
+                .setContentIntent(contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
 
 
         nm.notify(1, builder.build());
