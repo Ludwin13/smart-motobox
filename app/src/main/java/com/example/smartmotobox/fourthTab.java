@@ -348,7 +348,7 @@ public class fourthTab extends Fragment {
 
     private void postConfirmationAlert(String child, String fingerDesc_child, String fingerDate_child, String fingerTime_child, String value, String process_child, String process_value, String postTitle, String postMessage, String fingerDescription) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         builder.setTitle(postTitle);
         builder.setMessage(postMessage);
 

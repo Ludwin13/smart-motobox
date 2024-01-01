@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
     //ALL CODES FROM THE TAB SHOULD BE PLACED IN HERE SO IT UPDATES EVERYTIME
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

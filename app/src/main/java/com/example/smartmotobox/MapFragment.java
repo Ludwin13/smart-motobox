@@ -2,6 +2,9 @@ package com.example.smartmotobox;
 
 import static java.lang.Thread.sleep;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,6 +52,15 @@ public class MapFragment extends Fragment {
     private DatabaseReference dbRefLatLonTime, dbRefLoc2LatLon, dbRefLat, dbRefLon, dbRefTime, dbGpsData;
     private FirebaseDatabase firebaseDatabase;
     private ArrayList<Marker> markerList;
+    boolean isConnectedto;
+
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser) {
+//            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+//        }
+//    }
 
     // latVar1 and longVar2 should be read using .get() and onDataChange()
     // latLng database structure is unlimited, but Array for MapMarkers will be limited to 5 items.
@@ -109,245 +121,244 @@ public class MapFragment extends Fragment {
         /** Google Maps API Initialization */
         SupportMapFragment supportMapFragmentInitialization = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-        Firebase_GPSDataChange.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                /**
-                 * .setText(snapshot) results to Location
-                 * getting the snapshot.children (Location) will iterate through the Date Children
-                 * .setText(postSnapshot) results to the last created date node. So if 6-16-2023 is the last in the JSON Structure then it will only display that.
-                 * Need a way to retrieve Dates for the marker or maybe not?
-                 *
-                 * DataSnapshot snapshot = Location
-                 */
-                getSpecificParentDate.clear();
-                if(snapshot.exists()) {
-                            /**
-                             * postSnapshot.getKey() retrieves the postSnapshot children names (Date) e.g. (6-16-2023);
-                             * imported SimpleDateFormat to determine the current Date.
-                             * The main idea is:
-                             *      If the currentDate is equal to the latest postSnapshot children name with the same date
-                             *      then it will create a query pointing to that specific Date Node and retrieve the Marker Data.
-                             */
-                            String parent = snapshot.getKey();
-                            String date = dateFormat.format(Calendar.getInstance().getTime());
+        isConnected();
 
-                            if (parent.equals(date)) {
-                                String currentDate = parent;
-                                DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(currentDate);
-                                Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+            Firebase_GPSDataChange.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    /**
+                     * .setText(snapshot) results to Location
+                     * getting the snapshot.children (Location) will iterate through the Date Children
+                     * .setText(postSnapshot) results to the last created date node. So if 6-16-2023 is the last in the JSON Structure then it will only display that.
+                     * Need a way to retrieve Dates for the marker or maybe not?
+                     *
+                     * DataSnapshot snapshot = Location
+                     */
+                    getSpecificParentDate.clear();
+                    if(snapshot.exists()) {
+                        /**
+                         * postSnapshot.getKey() retrieves the postSnapshot children names (Date) e.g. (6-16-2023);
+                         * imported SimpleDateFormat to determine the current Date.
+                         * The main idea is:
+                         *      If the currentDate is equal to the latest postSnapshot children name with the same date
+                         *      then it will create a query pointing to that specific Date Node and retrieve the Marker Data.
+                         */
+                        String parent = snapshot.getKey();
+                        String date = dateFormat.format(Calendar.getInstance().getTime());
+
+                        if (parent.equals(date)) {
+                            String currentDate = parent;
+                            DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(currentDate);
+                            Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    /**
+                                     * at this point the query points to the child node with the same name as the value of the currentDate variable.
+                                     * So snapshot will display only the date name (Parent).
+                                     * DataSnapshot snapshot = Dates (6-16-2023, 6-17-2023) etc.
+                                     */
+                                    for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+
                                         /**
-                                         * at this point the query points to the child node with the same name as the value of the currentDate variable.
-                                         * So snapshot will display only the date name (Parent).
-                                         * DataSnapshot snapshot = Dates (6-16-2023, 6-17-2023) etc.
+                                         * Need an enhanced for loop to increment through the snapshot (Parent Node/Date).
+                                         * This will retrieve children of the Date nodes e.g. nodes that start with "-NDY..."
                                          */
-                                        for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        Location model = postSnapshot.getValue(Location.class);
+                                        /**
+                                         *
+                                         */
+                                        String LatitudeStr = model.getLatitude();
+                                        String LongitudeStr = model.getLongitude();
+                                        String Time = model.getTime();
 
-                                            /**
-                                             * Need an enhanced for loop to increment through the snapshot (Parent Node/Date).
-                                             * This will retrieve children of the Date nodes e.g. nodes that start with "-NDY..."
-                                             */
-                                            Location model = postSnapshot.getValue(Location.class);
-                                            /**
-                                             *
-                                             */
-                                            String LatitudeStr = model.getLatitude();
-                                            String LongitudeStr = model.getLongitude();
-                                            String Time = model.getTime();
+                                        if (LatitudeStr == null || LongitudeStr == null || Time == null) {
 
-                                            if (LatitudeStr == null || LongitudeStr == null || Time == null) {
+                                            break;
 
-                                                break;
+                                        } else {
 
-                                            } else {
+                                            Double Latitude = Double.valueOf(LatitudeStr);
+                                            Double Longitude = Double.valueOf(LongitudeStr);
+                                            Test.setText(Latitude.toString());
 
-                                                Double Latitude = Double.valueOf(LatitudeStr);
-                                                Double Longitude = Double.valueOf(LongitudeStr);
-                                                Test.setText(Latitude.toString());
-
-                                                addMarker(Latitude, Longitude, Time, currentDate);
-                                            }
+                                            addMarker(Latitude, Longitude, Time, currentDate);
                                         }
                                     }
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
-                                    }
-                                });
-                            } else {
-                                Test.setText("SEX");
-                            }
+                                }
+                            });
+                        }
 
+
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            });
 
-            }
-        });
+            FirebaseDB_GPSDate.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    getAllParentDates.clear();
 
-        FirebaseDB_GPSDate.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                getAllParentDates.clear();
+                    for(DataSnapshot postSnapshot : snapshot.getChildren()) {
 
-                for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        /**
+                         *  this code gets the Location Dates
+                         *  just need to create a code to display the markers by
+                         *  selecting the dates retrieved by this code.
+                         */
 
-                    /**
-                     *  this code gets the Location Dates
-                     *  just need to create a code to display the markers by
-                     *  selecting the dates retrieved by this code.
-                     */
-
-                    String parent = postSnapshot.getKey();
-                    getAllParentDates.add(parent);
-                    adapter.notifyDataSetChanged();
-                    /**
-                     * Need to create a code to zoom in on the newest received location from the Database
-                     * Problem is the app crashes whenever new data is inserted to the database.
-                     * Maybe use SQLite? It probably won't still fix the issue since new inserted data technically doesn't exist yet (null).
-                     * Need to refresh the app to successfully read it.
-                     * Maybe an app refresher?
-                     */
+                        String parent = postSnapshot.getKey();
+                        getAllParentDates.add(parent);
+                        adapter.notifyDataSetChanged();
+                        /**
+                         * Need to create a code to zoom in on the newest received location from the Database
+                         * Problem is the app crashes whenever new data is inserted to the database.
+                         * Maybe use SQLite? It probably won't still fix the issue since new inserted data technically doesn't exist yet (null).
+                         * Need to refresh the app to successfully read it.
+                         * Maybe an app refresher?
+                         */
 
 
 
-                    FirebaseDB_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
+                        FirebaseDB_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
 
-                            if (selectedDate == "--SELECT HISTORY--") {
+                                if (selectedDate == "--SELECT HISTORY--") {
 
-                            } else {
+                                } else {
 
-                                supportMapFragmentInitialization.getMapAsync(new OnMapReadyCallback() {
-                                    @Override
-                                    public void onMapReady(@NonNull GoogleMap googleMap) {
-                                        googleMap.clear();
+                                    supportMapFragmentInitialization.getMapAsync(new OnMapReadyCallback() {
+                                        @Override
+                                        public void onMapReady(@NonNull GoogleMap googleMap) {
+                                            googleMap.clear();
 
-                                        DatabaseReference FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(selectedDate);
+                                            DatabaseReference FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(selectedDate);
 
-                                        FirebaseDB_GPSDateMarkerData.addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                /**
-                                                 * DataSnapshot snapshot == every child node under the parent node from the FirebaseDB_GPSDateMarkerData
-                                                 * So for example;
-                                                 *      FirebaseDB_GPSDate == ("Test/Location");
-                                                 *      selectedDate == ("6-16-2023);
-                                                 *      FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(selectedDate);
-                                                 *                                   = ("Test/Location").child("6-16"-2023);
-                                                 *                                   = ("Test/Location/6-16-2023); == DataSnapshot snapshot
-                                                 * So under that "Test/Location/6-16-2023" path, there's existing data which are also called child nodes.
-                                                 * In my case the child nodes are each uniquely named with the starting "-NYD..."
-                                                 * for every child nodes under that path, there are sub-child nodes structured from Latitude, Longitude, Time.
-                                                 * For Example:
-                                                 *      } Test
-                                                 *          } Location
-                                                 *              } 6-16-2023
-                                                 *                  } -NYD...
-                                                 *                      } Latitude = 14.222... (Number Object)
-                                                 *                      } Longitude = 121.222... (Number Object)
-                                                 *                      } Time = "16:16:16" (String Object)*/
-
-                                                List<Location> location = new ArrayList<>();
-                                                location.clear();
-
-                                                for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                            FirebaseDB_GPSDateMarkerData.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                     /**
-                                                     * This enhanced for loop "for(DataSnapshot postSnapshot : snapshot.getChildren())"
-                                                     * iterates through the snapshot ("Test/Location/6-16-2032) children
-                                                     * which in this case the child nodes with unique keys starting with -NYD...
-                                                     *
-                                                     * the postSnapshot in the enhanced for loop then is assigned with the snapshot.getChildren() values
-                                                     * through testing with TextView.setText(); the postSnapshot will contain the unique children's sub-child
-                                                     * values for example:
-                                                     *          } -NYD...
-                                                     *             } Latitude = 14.222... (Number Object)
-                                                     *             } Longitude = 121.222... (Number Object)
-                                                     *             } Time = "16:16:16" (String Object)
-                                                     *  postSnapshot will then be equal to:
-                                                     *      postSnapshot == {Latitude=14.222,Longitude=121.222,Time=16:16:16}
-                                                     */
-                                                    if(postSnapshot.exists()) {
-                                                        Location model = postSnapshot.getValue(Location.class);
+                                                     * DataSnapshot snapshot == every child node under the parent node from the FirebaseDB_GPSDateMarkerData
+                                                     * So for example;
+                                                     *      FirebaseDB_GPSDate == ("Test/Location");
+                                                     *      selectedDate == ("6-16-2023);
+                                                     *      FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(selectedDate);
+                                                     *                                   = ("Test/Location").child("6-16"-2023);
+                                                     *                                   = ("Test/Location/6-16-2023); == DataSnapshot snapshot
+                                                     * So under that "Test/Location/6-16-2023" path, there's existing data which are also called child nodes.
+                                                     * In my case the child nodes are each uniquely named with the starting "-NYD..."
+                                                     * for every child nodes under that path, there are sub-child nodes structured from Latitude, Longitude, Time.
+                                                     * For Example:
+                                                     *      } Test
+                                                     *          } Location
+                                                     *              } 6-16-2023
+                                                     *                  } -NYD...
+                                                     *                      } Latitude = 14.222... (Number Object)
+                                                     *                      } Longitude = 121.222... (Number Object)
+                                                     *                      } Time = "16:16:16" (String Object)*/
 
+                                                    List<Location> location = new ArrayList<>();
+                                                    location.clear();
+
+                                                    for(DataSnapshot postSnapshot : snapshot.getChildren()) {
                                                         /**
-                                                         * I've also added an if-else statement to determine if the postSnapshot has an existing value.
-                                                         * if it exists then it will go through the Location Class
-                                                         * which the mdoel class will be assigned with the values retrieved from the postSnapshot.
-                                                         * Double Latitude = 14.222
-                                                         * Double Longitude = 121.222
-                                                         * String Time = "16:16:16"
+                                                         * This enhanced for loop "for(DataSnapshot postSnapshot : snapshot.getChildren())"
+                                                         * iterates through the snapshot ("Test/Location/6-16-2032) children
+                                                         * which in this case the child nodes with unique keys starting with -NYD...
+                                                         *
+                                                         * the postSnapshot in the enhanced for loop then is assigned with the snapshot.getChildren() values
+                                                         * through testing with TextView.setText(); the postSnapshot will contain the unique children's sub-child
+                                                         * values for example:
+                                                         *          } -NYD...
+                                                         *             } Latitude = 14.222... (Number Object)
+                                                         *             } Longitude = 121.222... (Number Object)
+                                                         *             } Time = "16:16:16" (String Object)
+                                                         *  postSnapshot will then be equal to:
+                                                         *      postSnapshot == {Latitude=14.222,Longitude=121.222,Time=16:16:16}
                                                          */
+                                                        if(postSnapshot.exists()) {
+                                                            Location model = postSnapshot.getValue(Location.class);
 
-
-                                                        String LongitudeStr = model.getLongitude(); //producing error!!
-                                                        String LatitudeStr = model.getLatitude();
-                                                        String Time = model.getTime();
-
-
-
-
-
-                                                        /**
-                                                         * the methods model.getLongitude, model.getLatitude, and model.getTime();
-                                                         * retrieves the current assigned value in the Location class assigns it in the Double Longitude, Latitude, and String Time.
-                                                         */
-
-                                                        if (LongitudeStr == null || LatitudeStr == null || Time == null) {
                                                             /**
-                                                             * This code then checks if the variables are null. If they are null then it will break; Which will then loop over again
-                                                             * to the onDataChange. Else, it will convert the variables to Double and call the method addMarker and assign the following variables to the required parameters.
+                                                             * I've also added an if-else statement to determine if the postSnapshot has an existing value.
+                                                             * if it exists then it will go through the Location Class
+                                                             * which the mdoel class will be assigned with the values retrieved from the postSnapshot.
+                                                             * Double Latitude = 14.222
+                                                             * Double Longitude = 121.222
+                                                             * String Time = "16:16:16"
                                                              */
 
-                                                            break;
 
-                                                        } else  {
+                                                            String LongitudeStr = model.getLongitude(); //producing error!!
+                                                            String LatitudeStr = model.getLatitude();
+                                                            String Time = model.getTime();
 
-                                                            Double Longitude = Double.valueOf(LongitudeStr);
-                                                            Double Latitude = Double.valueOf(LatitudeStr);
 
-                                                            addMarker(Latitude, Longitude, Time, selectedDate);
 
-                                                        }
+
+
+                                                            /**
+                                                             * the methods model.getLongitude, model.getLatitude, and model.getTime();
+                                                             * retrieves the current assigned value in the Location class assigns it in the Double Longitude, Latitude, and String Time.
+                                                             */
+
+                                                            if (LongitudeStr == null || LatitudeStr == null || Time == null) {
+                                                                /**
+                                                                 * This code then checks if the variables are null. If they are null then it will break; Which will then loop over again
+                                                                 * to the onDataChange. Else, it will convert the variables to Double and call the method addMarker and assign the following variables to the required parameters.
+                                                                 */
+
+                                                                break;
+
+                                                            } else  {
+
+                                                                Double Longitude = Double.valueOf(LongitudeStr);
+                                                                Double Latitude = Double.valueOf(LatitudeStr);
+
+                                                                addMarker(Latitude, Longitude, Time, selectedDate);
+
+                                                            }
 //                                                Double Latitude = Double.parseDouble(LatitudeStr);
-                                                    } else {
-                                                        // Do Nothing
+                                                        } else {
+                                                            // Do Nothing
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
 
-                                            }
-                                        });
+                                                }
+                                            });
 
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
-                        }
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-                            return;
-                        }
-                    });
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+                                return;
+                            }
+                        });
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+                }
+            });
 
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -469,6 +480,15 @@ public class MapFragment extends Fragment {
             }
         });
 
+    }
+
+    private void isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+
+        isConnectedto = connected;
     }
 
 

@@ -2,14 +2,14 @@ package com.example.smartmotobox;
 
 public class Data {
 
-    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler, Volume_Control;
+    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler, Volume_Control, numChange_confirmation;
     int btn_Notification;
 
     public Data() {
 
     }
 
-    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler, String Volume_Control) {
+    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler, String Volume_Control, String numChange_confirmation) {
         this.btn_Alarm = btn_Alarm;
         this.btn_Lock = btn_Lock;
         this.btn_Motor_Status = btn_Motor_Status;
@@ -17,6 +17,7 @@ public class Data {
         this.btn_Delete = btn_Delete;
         this.btn_GPS_Enabler = btn_GPS_Enabler;
         this.Volume_Control = Volume_Control;
+        this.numChange_confirmation = numChange_confirmation;
     }
 
     public String getBtn_Alarm() { return  this.btn_Alarm; }
@@ -41,5 +42,8 @@ public class Data {
 
     public String getVolume_Control() { return this.Volume_Control; }
     public void getVolume_Control(String Volume_Control) { this.Volume_Control = Volume_Control; }
+
+    public String getNumChange_confirmation() { return this.numChange_confirmation; }
+    public void setNumChange_confirmation(String numChange_confirmation) { this.numChange_confirmation = numChange_confirmation; }
 
 }

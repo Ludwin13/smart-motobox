@@ -1,6 +1,9 @@
 package com.example.smartmotobox;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -19,6 +22,7 @@ public class loginPage extends AppCompatActivity {
     Button loginButton;
     TextView registerPage, forgotPassword;
     FirebaseAuth mAuth;
+    Boolean isConnectedto;
 
     @Override
     public void onStart() {
@@ -45,13 +49,22 @@ public class loginPage extends AppCompatActivity {
         registerPage = findViewById(R.id.registerPage);
         forgotPassword = findViewById(R.id.forgotPassword);
 
+        isConnected();
+
         forgotPassword.setOnClickListener(view -> {
             Intent intent = new Intent(loginPage.this, forgotPasswordPage.class);
             startActivity(intent);
             finish();
         });
 
-        loginButton.setOnClickListener(view -> performLogin());
+        loginButton.setOnClickListener(view -> {
+            isConnected();
+            if (isConnectedto == true) {
+                performLogin();
+            } else {
+                Toast.makeText(loginPage.this, "Not Connected to Internet", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         registerPage.setOnClickListener(view -> {
             Intent intent = new Intent(loginPage.this, registerPage.class);
@@ -60,6 +73,15 @@ public class loginPage extends AppCompatActivity {
         });
 
 
+    }
+
+    private void isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+
+        isConnectedto = connected;
     }
 
     private void performLogin() {
