@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void notificationBuilder(String alarmDescription) {
         Intent intent = new Intent(this, SplashScreen.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         String CHANNEL_ID="MYCHANNEL";

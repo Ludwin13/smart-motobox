@@ -2,14 +2,14 @@ package com.example.smartmotobox;
 
 public class Data {
 
-    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler, Volume_Control, numChange_confirmation;
+    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler, Volume_Control, numChange_confirmation, mobile_number;
     int btn_Notification;
 
     public Data() {
 
     }
 
-    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler, String Volume_Control, String numChange_confirmation) {
+    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler, String Volume_Control, String numChange_confirmation, String mobile_number) {
         this.btn_Alarm = btn_Alarm;
         this.btn_Lock = btn_Lock;
         this.btn_Motor_Status = btn_Motor_Status;
@@ -18,6 +18,7 @@ public class Data {
         this.btn_GPS_Enabler = btn_GPS_Enabler;
         this.Volume_Control = Volume_Control;
         this.numChange_confirmation = numChange_confirmation;
+        this.mobile_number = mobile_number;
     }
 
     public String getBtn_Alarm() { return  this.btn_Alarm; }
@@ -46,4 +47,6 @@ public class Data {
     public String getNumChange_confirmation() { return this.numChange_confirmation; }
     public void setNumChange_confirmation(String numChange_confirmation) { this.numChange_confirmation = numChange_confirmation; }
 
+    public String getMobile_number() { return this.mobile_number; }
+    public void setMobile_number(String mobile_number) { this.mobile_number = mobile_number; }
 }

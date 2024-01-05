@@ -25,7 +25,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".loginPage"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".mapMarkerDatabase"

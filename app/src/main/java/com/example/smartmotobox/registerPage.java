@@ -1,7 +1,11 @@
 package com.example.smartmotobox;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -18,6 +22,7 @@ public class registerPage extends AppCompatActivity {
     EditText getEmail, getPassword;
     Button register_btn;
     TextView clickToLogin;
+    Boolean isConnectedto;
 
     FirebaseAuth mAuth;
 
@@ -25,12 +30,12 @@ public class registerPage extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null){
+//            Intent intent = new Intent(getApplicationContext(), registerPage.class);
+//            startActivity(intent);
+//            finish();
+//        }
     }
 
     @Override
@@ -45,14 +50,31 @@ public class registerPage extends AppCompatActivity {
         clickToLogin = findViewById(R.id.loginText);
 
 
-        register_btn.setOnClickListener(view -> PerformAuth());
+        register_btn.setOnClickListener(view -> {
+            isConnected();
+            if (isConnectedto == true) {
+                PerformAuth();
+            } else {
+                Toast.makeText(registerPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
+            }
 
-        clickToLogin.setOnClickListener(view -> {
-            Intent intent = new Intent(registerPage.this, loginPage.class);
-            startActivity(intent);
-            finish();
         });
 
+        clickToLogin.setOnClickListener(view -> {
+                Intent intent = new Intent(registerPage.this, loginPage.class);
+                startActivity(intent);
+                finish();
+        });
+
+    }
+
+    private void isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+
+        isConnectedto = connected;
     }
 
     private void PerformAuth() {

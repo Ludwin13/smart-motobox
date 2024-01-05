@@ -1,7 +1,11 @@
 package com.example.smartmotobox;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -16,6 +20,7 @@ public class forgotPasswordPage extends AppCompatActivity {
     TextView tvLoginPage;
     Button resetPassBtn;
     FirebaseAuth mAuth;
+    Boolean isConnectedto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +38,38 @@ public class forgotPasswordPage extends AppCompatActivity {
             finish();
         });
         
-        emailRecovery.setOnClickListener(view -> changePassword());
+        emailRecovery.setOnClickListener(view -> {
+            isConnected();
+            if (isConnectedto == true) {
+                changePassword();
+            }  else {
+                Toast.makeText(forgotPasswordPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        resetPassBtn.setOnClickListener(view -> changePassword());
-    
-        
+        resetPassBtn.setOnClickListener(view -> {
+            isConnected();
+            if (isConnectedto == true) {
+                changePassword();
+            }  else {
+                Toast.makeText(forgotPasswordPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
 
 
+
+
+    }
+
+    private void isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+
+        isConnectedto = connected;
     }
 
     private void changePassword() {
@@ -52,6 +81,7 @@ public class forgotPasswordPage extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
             return;
         }
+
 
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {

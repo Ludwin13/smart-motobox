@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Sign Up"
-        android:textSize="34sp"
+        android:textSize="34dp"
         android:textStyle="bold"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +45,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailRegister_editText"
             android:layout_width="match_parent"
+            android:inputType="textEmailAddress"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -89,8 +90,8 @@
         android:text="Click To Login"
         android:background="?attr/selectableItemBackground"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+        app:layout_constraintEnd_toEndOf="@id/register_btn"
+        app:layout_constraintStart_toStartOf="@id/register_btn"
+        app:layout_constraintTop_toBottomOf="@+id/register_btn"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

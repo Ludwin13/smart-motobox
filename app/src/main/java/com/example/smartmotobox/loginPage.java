@@ -29,10 +29,13 @@ public class loginPage extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
+
+        if (currentUser != null ) {
+            if (currentUser.isEmailVerified()) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
@@ -62,7 +65,7 @@ public class loginPage extends AppCompatActivity {
             if (isConnectedto == true) {
                 performLogin();
             } else {
-                Toast.makeText(loginPage.this, "Not Connected to Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(loginPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
             }
         });
 
