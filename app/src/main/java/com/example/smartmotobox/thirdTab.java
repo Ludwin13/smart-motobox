@@ -94,7 +94,7 @@ public class thirdTab extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
 
-                if (selectedDate == "--SELECT HISTORY--") {
+                if (selectedDate.equals("--SELECT HISTORY--")) {
 
                 } else {
                     getAlarmHistory();

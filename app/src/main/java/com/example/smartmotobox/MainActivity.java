@@ -2,13 +2,9 @@ package com.example.smartmotobox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,15 +13,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,14 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.ktx.Firebase;
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -71,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference getAttemptStat = getDataChange.child("/Attempt_Stat");
         DatabaseReference getTiltStat = getDataChange.child("/Tilt_Stat");
         DatabaseReference disableGPS = FirebaseDatabase.getInstance().getReference("Data");
+        DatabaseReference alarm = FirebaseDatabase.getInstance().getReference("Data/btn_Alarm");
         disableGPS.child("btn_GPS_Enabler").setValue("0");
 
         getMagneticStat.addValueEventListener(new ValueEventListener() {
@@ -91,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
                     String key = historyChange.push().getKey();
 //                    String key = setHistoryDataChange.push().getKey();
 
+                    assert key != null;
                     historyChange.child(key).child("Status").setValue(trigger);
                     historyChange.child(key).child("date").setValue(myDate);
                     historyChange.child(key).child("time").setValue(myTime);
 
                     getMagneticStat.setValue("0");
+                    alarm.setValue("1");
 
                 }
 
@@ -126,12 +111,13 @@ public class MainActivity extends AppCompatActivity {
 
 //                    String  = setHistoryDataChange.push().getKey();
 
+                    assert key != null;
                     historyChange.child(key).child("Status").setValue(trigger);
                     historyChange.child(key).child("date").setValue(myDate);
                     historyChange.child(key).child("time").setValue(myTime);
 
                     getAttemptStat.setValue("0");
-
+                    alarm.setValue("1");
                 }
 
 
@@ -160,11 +146,13 @@ public class MainActivity extends AppCompatActivity {
 
 //                    String  = setHistoryDataChange.push().getKey();
 
+                    assert key != null;
                     historyChange.child(key).child("Status").setValue(trigger);
                     historyChange.child(key).child("date").setValue(myDate);
                     historyChange.child(key).child("time").setValue(myTime);
 
                     getTiltStat.setValue("0");
+                    alarm.setValue("1");
                 }
 
 
@@ -256,44 +244,6 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
-
-//        Fragment fragment = new MapFragment();
-//        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment).commit();
-//
-//        firebaseDatabase = FirebaseDatabase.getInstance();
-//        databaseReference = firebaseDatabase.getReference().child("Location");
-//
-//        databaseReference.child("Latitude").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//
-//                } else {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//
-//        databaseReference.child("Longitude").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()) {
-//
-//                } else {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
         auth = FirebaseAuth.getInstance();
         logout_btn = findViewById(R.id.logout_btn);

@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -29,13 +28,7 @@ public class registerPage extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            Intent intent = new Intent(getApplicationContext(), registerPage.class);
-//            startActivity(intent);
-//            finish();
-//        }
+
     }
 
     @Override
@@ -52,7 +45,7 @@ public class registerPage extends AppCompatActivity {
 
         register_btn.setOnClickListener(view -> {
             isConnected();
-            if (isConnectedto == true) {
+            if (isConnectedto) {
                 PerformAuth();
             } else {
                 Toast.makeText(registerPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
@@ -71,10 +64,8 @@ public class registerPage extends AppCompatActivity {
     private void isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
-
-        isConnectedto = connected;
     }
 
     private void PerformAuth() {

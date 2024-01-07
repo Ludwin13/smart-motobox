@@ -46,22 +46,20 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class MapFragment extends Fragment {
-    private DatabaseReference dbRefLatLonTime, dbRefLoc2LatLon, dbRefLat, dbRefLon, dbRefTime, dbGpsData;
+    private DatabaseReference dbRefLoc2LatLon;
+    private DatabaseReference dbRefLat;
+    private DatabaseReference dbRefLon;
+    private DatabaseReference dbRefTime;
+    private DatabaseReference dbGpsData;
     private FirebaseDatabase firebaseDatabase;
     private ArrayList<Marker> markerList;
     boolean isConnectedto;
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser) {
-//            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-//        }
-//    }
-
+/**
     // latVar1 and longVar2 should be read using .get() and onDataChange()
     // latLng database structure is unlimited, but Array for MapMarkers will be limited to 5 items.
     // latLngs.add(new LatLng(latVar1, longVar2));
@@ -96,6 +94,10 @@ public class MapFragment extends Fragment {
 
 
     //Maybe need onDataChange to listen to changes in Realtime Database and update the Map Markers.
+
+**/
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -146,9 +148,8 @@ public class MapFragment extends Fragment {
                         String parent = snapshot.getKey();
                         String date = dateFormat.format(Calendar.getInstance().getTime());
 
-                        if (parent.equals(date)) {
-                            String currentDate = parent;
-                            DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(currentDate);
+                        if (parent != null && parent.equals(date)) {
+                            DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(parent);
                             Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -157,7 +158,7 @@ public class MapFragment extends Fragment {
                                      * So snapshot will display only the date name (Parent).
                                      * DataSnapshot snapshot = Dates (6-16-2023, 6-17-2023) etc.
                                      */
-                                    for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
                                         /**
                                          * Need an enhanced for loop to increment through the snapshot (Parent Node/Date).
@@ -167,6 +168,7 @@ public class MapFragment extends Fragment {
                                         /**
                                          *
                                          */
+                                        assert model != null;
                                         String LatitudeStr = model.getLatitude();
                                         String LongitudeStr = model.getLongitude();
                                         String Time = model.getTime();
@@ -181,10 +183,11 @@ public class MapFragment extends Fragment {
                                             Double Longitude = Double.valueOf(LongitudeStr);
                                             Test.setText(Latitude.toString());
 
-                                            addMarker(Latitude, Longitude, Time, currentDate);
+                                            addMarker(Latitude, Longitude, Time, parent);
                                         }
                                     }
                                 }
+
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -232,20 +235,19 @@ public class MapFragment extends Fragment {
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
 
-                                if (selectedDate == "--SELECT HISTORY--") {
+                                if (selectedDate.equals("--SELECT HISTORY--")) {
 
                                 } else {
 
-                                    supportMapFragmentInitialization.getMapAsync(new OnMapReadyCallback() {
-                                        @Override
-                                        public void onMapReady(@NonNull GoogleMap googleMap) {
+                                    if (supportMapFragmentInitialization != null) {
+                                        supportMapFragmentInitialization.getMapAsync(googleMap -> {
                                             googleMap.clear();
 
                                             DatabaseReference FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(selectedDate);
 
                                             FirebaseDB_GPSDateMarkerData.addValueEventListener(new ValueEventListener() {
                                                 @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                public void onDataChange(@NonNull DataSnapshot snapshot1) {
                                                     /**
                                                      * DataSnapshot snapshot == every child node under the parent node from the FirebaseDB_GPSDateMarkerData
                                                      * So for example;
@@ -269,7 +271,7 @@ public class MapFragment extends Fragment {
                                                     List<Location> location = new ArrayList<>();
                                                     location.clear();
 
-                                                    for(DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                                    for(DataSnapshot postSnapshot1 : snapshot1.getChildren()) {
                                                         /**
                                                          * This enhanced for loop "for(DataSnapshot postSnapshot : snapshot.getChildren())"
                                                          * iterates through the snapshot ("Test/Location/6-16-2032) children
@@ -285,8 +287,8 @@ public class MapFragment extends Fragment {
                                                          *  postSnapshot will then be equal to:
                                                          *      postSnapshot == {Latitude=14.222,Longitude=121.222,Time=16:16:16}
                                                          */
-                                                        if(postSnapshot.exists()) {
-                                                            Location model = postSnapshot.getValue(Location.class);
+                                                        if(postSnapshot1.exists()) {
+                                                            Location model = postSnapshot1.getValue(Location.class);
 
                                                             /**
                                                              * I've also added an if-else statement to determine if the postSnapshot has an existing value.
@@ -298,6 +300,7 @@ public class MapFragment extends Fragment {
                                                              */
 
 
+                                                            assert model != null;
                                                             String LongitudeStr = model.getLongitude(); //producing error!!
                                                             String LatitudeStr = model.getLatitude();
                                                             String Time = model.getTime();
@@ -327,10 +330,8 @@ public class MapFragment extends Fragment {
                                                                 addMarker(Latitude, Longitude, Time, selectedDate);
 
                                                             }
-//                                                Double Latitude = Double.parseDouble(LatitudeStr);
-                                                        } else {
-                                                            // Do Nothing
                                                         }
+
                                                     }
                                                 }
                                                 @Override
@@ -340,13 +341,12 @@ public class MapFragment extends Fragment {
                                             });
 
 
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
-                                return;
                             }
                         });
 
@@ -366,18 +366,9 @@ public class MapFragment extends Fragment {
         dbRefLat = firebaseDatabase.getReference("/Location/MarkerLat");
         dbRefLon = firebaseDatabase.getReference("/Location/MarkerLon");
         dbRefTime = firebaseDatabase.getReference("/Location/MarkerTime");
-        dbRefLatLonTime = firebaseDatabase.getReference("/Location");
+        DatabaseReference dbRefLatLonTime = firebaseDatabase.getReference("/Location");
 
         dbGpsData = firebaseDatabase.getReference("Location");
-
-//        getLatLonTimeFirebase(new dataCallBack() {
-//            @Override
-//            public void onCallbackLatLonTime(double mLat, double mLon, String mTime) {
-//                initSupportMapFragment(mLat, mLon, mTime);
-//
-//            }
-//        });
-
         initSupportMapFragment();
 
         return view;
@@ -388,9 +379,8 @@ public class MapFragment extends Fragment {
     private void addMarker(Double Latitude, Double Longitude, String Time, String selectedDate) {
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull GoogleMap googleMap) {
+        if (supportMapFragment != null) {
+            supportMapFragment.getMapAsync(googleMap -> {
                 //Initialize variables for LatLng using the last detected location in firebase realtime database.
                 LatLng marker2 = new LatLng(Latitude, Longitude);
                 googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
@@ -404,8 +394,8 @@ public class MapFragment extends Fragment {
                 CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(Latitude, Longitude), 17.5f);
                 googleMap.moveCamera(point);
                 googleMap.animateCamera(point);
-            }
-        });
+            });
+        }
 
 
     }
@@ -448,9 +438,8 @@ public class MapFragment extends Fragment {
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull GoogleMap googleMap) {
+        if (supportMapFragment != null) {
+            supportMapFragment.getMapAsync(googleMap -> {
                 //Initialize variables for LatLng using the last detected location in firebase realtime database.
                 CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(014.576603, 121.101320), 15f);
                 googleMap.moveCamera(point);
@@ -464,31 +453,16 @@ public class MapFragment extends Fragment {
                         .title("Marker1")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                         .snippet(snippet));
-            }
-        });
-
-    }
-
-    private void refreshMap() {
-
-        SupportMapFragment supportMapFragmentInitialization = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
-        supportMapFragmentInitialization.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull GoogleMap googleMap) {
-                googleMap.clear();
-            }
-        });
+            });
+        }
 
     }
 
     private void isConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
-
-        isConnectedto = connected;
     }
 
 

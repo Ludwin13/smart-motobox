@@ -40,7 +40,7 @@ public class forgotPasswordPage extends AppCompatActivity {
         
         emailRecovery.setOnClickListener(view -> {
             isConnected();
-            if (isConnectedto == true) {
+            if (isConnectedto) {
                 changePassword();
             }  else {
                 Toast.makeText(forgotPasswordPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
@@ -49,7 +49,7 @@ public class forgotPasswordPage extends AppCompatActivity {
 
         resetPassBtn.setOnClickListener(view -> {
             isConnected();
-            if (isConnectedto == true) {
+            if (isConnectedto) {
                 changePassword();
             }  else {
                 Toast.makeText(forgotPasswordPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
@@ -66,10 +66,8 @@ public class forgotPasswordPage extends AppCompatActivity {
     private void isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
-
-        isConnectedto = connected;
     }
 
     private void changePassword() {

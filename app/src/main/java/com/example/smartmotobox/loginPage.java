@@ -62,7 +62,7 @@ public class loginPage extends AppCompatActivity {
 
         loginButton.setOnClickListener(view -> {
             isConnected();
-            if (isConnectedto == true) {
+            if (isConnectedto) {
                 performLogin();
             } else {
                 Toast.makeText(loginPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
@@ -81,10 +81,8 @@ public class loginPage extends AppCompatActivity {
     private void isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
-
-        isConnectedto = connected;
     }
 
     private void performLogin() {

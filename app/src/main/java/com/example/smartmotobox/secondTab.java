@@ -1,7 +1,6 @@
 package com.example.smartmotobox;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +26,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.Objects;
-
 public class secondTab extends Fragment {
 
     Data data;
-    Button lockBtn, motorStatusBtn, gpsBtn, resetWiFiBtn, changeNumberBtn;
+    Button lockBtn, motorStatusBtn, gpsBtn, changeNumberBtn;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, connectionDBRef, volumeDBRef, firebaseDB_Connection;
+    DatabaseReference databaseReference, connectionDBRef, volumeDBRef, firebaseDB_Connection, firebaseDB_Alarm;
     TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus, tvGPSStatus, tvVolume;
     String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getConnection;
     String statusOff = "0";
@@ -47,11 +42,13 @@ public class secondTab extends Fragment {
     String volume_4 = "64";
     String volume_5 = "65";
     String volume_6 = "66";
-    String volume_7 = "70";
     String isConnected = "1";
+    String statusOn = "1";
     boolean isConnectedto;
     SeekBar seekBar;
     //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
+
+   private final Handler mHandler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +58,7 @@ public class secondTab extends Fragment {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Data");
+        firebaseDB_Alarm = firebaseDatabase.getReference("Data");
         connectionDBRef = firebaseDatabase.getReference("/Connection");
         volumeDBRef = firebaseDatabase.getReference("Volume");
         data = new Data();
@@ -80,90 +78,67 @@ public class secondTab extends Fragment {
         tvVolume = (TextView) view.findViewById(R.id.tvVolume_Holder);
         changeNumberBtn = (Button) view.findViewById(R.id.changeNumberBtn);
 
+        isConnected();
+        if (isConnectedto) {
 
-        firebaseDB_Connection.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                    Connection connection = snapshot.getValue(Connection.class);
+            firebaseDB_Alarm.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()) {
+                        Data model = snapshot.getValue(Data.class);
 
-                    getConnection = connection.getConnection();
-                    if (getConnection.equals(isConnected)) {
-                        tvConnectionStatus.setText("Connected");
-                        tvConnectionStatus.setTextColor(Color.GREEN);
+                        assert model != null;
+                        getBtn_Alarm = model.getBtn_Alarm();
 
-                    } else {
-                        tvConnectionStatus.setText("Disconnected");
-                        tvConnectionStatus.setTextColor(Color.RED);
+                        if (getBtn_Alarm.equals(statusOn)) {
+                            tvAlarmStatus.setText("ON");
+                            tvAlarmStatus.setTextColor(Color.GREEN);
+                            MyRunnable myRunnable = new MyRunnable();
+                            new Thread(myRunnable).start();
+
+                        } else {
+                            tvAlarmStatus.setText("OFF");
+                            tvAlarmStatus.setTextColor(Color.RED);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+
+
+            firebaseDB_Connection.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        Connection connection = snapshot.getValue(Connection.class);
+
+                        if (connection != null) {
+                            getConnection = connection.getConnection();
+                        }
+                        if (getConnection.equals(isConnected)) {
+                            tvConnectionStatus.setText("Connected");
+                            tvConnectionStatus.setTextColor(Color.GREEN);
+
+                        } else {
+                            tvConnectionStatus.setText("Disconnected");
+                            tvConnectionStatus.setTextColor(Color.RED);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
         getMotorStatus();
         btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number);
-
-
-
-
-//        lockBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String lockStatus = data.getBtn_Lock();
-//
-//                if (lockStatus == "0") {
-//                    String Status = "1";
-//                    data.setBtn_Lock(Status);
-//                    lockStatus(Status);
-//                } else {
-//                    String Status = "0";
-//                    data.setBtn_Lock(Status);
-//                    lockStatus(Status);
-//                }
-//
-//            }
-//        });
-//
-//        motorStatusBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String motorStatus = data.getBtn_Motor_Status();
-//
-//                if (motorStatus == "0") {
-//                    String Status = "1";
-//                    data.setBtn_Motor_Status(Status);
-//                    motorStatus_Mode(Status);
-//                } else {
-//                    String Status = "0";
-//                    data.setBtn_Motor_Status(Status);
-//                    motorStatus_Mode(Status);
-//                }
-//            }
-//        });
-//
-//
-//        gpsBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String GPS_Status = data.getBtn_GPS_Status();
-//                String gpsOff = "0";
-//
-//                if (GPS_Status.equals(gpsOff)) {
-//                    String btn_GPS_Status = "1";
-//                    GPSConfirmation(btn_GPS_Status);
-//                } else {
-//                    String btn_GPS_Status = "0";
-//                    GPSConfirmation(btn_GPS_Status);
-//                }
-//            }
-//        });
-
-
-
 
         return view;
     }
@@ -175,7 +150,7 @@ public class secondTab extends Fragment {
         lockBtn.setOnClickListener(view -> {
             isConnected();
 
-            if (isConnectedto == true) {
+            if (isConnectedto) {
                 FirebaseDB_Connection();
 
                 if (getBtn_lock.equals(statusOff)) {
@@ -183,7 +158,7 @@ public class secondTab extends Fragment {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Lock").setValue(statusOn);
                     } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
                         builder.setTitle("Device Connection");
                         builder.setMessage("Device is not Connected to the Internet");
@@ -191,15 +166,12 @@ public class secondTab extends Fragment {
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     }
-//                lockConfirmation(getBtn_lock);
-
-//                    data.setBtn_Lock(statusOn);
                 } else {
                     if (getConnection.equals(isConnected)) {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Lock").setValue(statusOff);
                     } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
                         builder.setTitle("Device Connection");
                         builder.setMessage("Device is not Connected to the Internet");
@@ -210,18 +182,17 @@ public class secondTab extends Fragment {
 
 //                    data.setBtn_Lock(statusOff);
                 }
-                getMotorStatus();
             } else {
                 Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
-                getMotorStatus();
             }
+            getMotorStatus();
 
         });
 
         motorStatusBtn.setOnClickListener(view -> {
             isConnected();
 
-            if (isConnectedto == true) {
+            if (isConnectedto) {
                 FirebaseDB_Connection();
 
                 if (getMotor_status.equals(statusOff)) {
@@ -229,7 +200,7 @@ public class secondTab extends Fragment {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Motor_Status").setValue(statusOn);
                     } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
                         builder.setTitle("Device Connection");
                         builder.setMessage("Device is not Connected to the Internet");
@@ -246,7 +217,7 @@ public class secondTab extends Fragment {
                         databaseReference.child("btn_Motor_Status").setValue(statusOff);
                         getMotorStatus();
                     } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
                         builder.setTitle("Device Connection");
                         builder.setMessage("Device is not Connected to the Internet");
@@ -267,13 +238,13 @@ public class secondTab extends Fragment {
 
         gpsBtn.setOnClickListener(view -> {
             isConnected();
-            if (isConnectedto == true) {
+            if (isConnectedto) {
                 FirebaseDB_Connection();
                 if (getConnection.equals(isConnected)) {
                     firebaseDB_Connection.child("Connection").setValue("0");
                     GPSConfirmation(getGPS_status);
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                     builder.setCancelable(true);
                     builder.setTitle("Device Connection");
                     builder.setMessage("Device is not Connected to the Internet");
@@ -297,16 +268,15 @@ public class secondTab extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int volume, boolean b) {
                 isConnected();
-                if (isConnectedto == true) {
+                if (isConnectedto) {
                     FirebaseDB_Connection();
 
-                    if (volume == 0)
-                    {
+                    if (volume == 0) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("60");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -315,13 +285,12 @@ public class secondTab extends Fragment {
                             dialog.show();
                         }
 
-                    } else if (volume == 1)
-                    {
+                    } else if (volume == 1) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("61");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -331,13 +300,12 @@ public class secondTab extends Fragment {
                         }
 
 
-                    } else if (volume == 2)
-                    {
+                    } else if (volume == 2) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("62");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -347,13 +315,12 @@ public class secondTab extends Fragment {
                         }
 
 
-                    } else if (volume == 3)
-                    {
+                    } else if (volume == 3) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("63");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -363,13 +330,12 @@ public class secondTab extends Fragment {
                         }
 
 
-                    } else if (volume == 4)
-                    {
+                    } else if (volume == 4) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("64");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -379,13 +345,12 @@ public class secondTab extends Fragment {
                         }
 
 
-                    } else if (volume == 5)
-                    {
+                    } else if (volume == 5) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("65");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -395,13 +360,12 @@ public class secondTab extends Fragment {
                         }
 
 
-                    } else if (volume == 6)
-                    {
+                    } else if (volume == 6) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("66");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -411,13 +375,12 @@ public class secondTab extends Fragment {
                         }
 
 
-                    } else if (volume == 7)
-                    {
+                    } else if (volume == 7) {
                         if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("67");
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
                             builder.setTitle("Device Connection");
                             builder.setMessage("Device is not Connected to the Internet");
@@ -428,14 +391,10 @@ public class secondTab extends Fragment {
 
 
                     }
-                   getMotorStatus();
                 } else {
                     Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
-                    getMotorStatus();
                 }
-
-
-
+                getMotorStatus();
 
 
             }
@@ -451,72 +410,62 @@ public class secondTab extends Fragment {
             }
         });
 
-        changeNumberBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isConnected();
-                if (isConnectedto == true) {
-                    FirebaseDB_Connection();
+        changeNumberBtn.setOnClickListener(view -> {
+            isConnected();
+            if (isConnectedto) {
+                FirebaseDB_Connection();
 
-                    if (getConnection.equals(isConnected)) {
-                        firebaseDB_Connection.child("Connection").setValue("0");
-                        final String postTitle = "Change Number?";
-                        final String postMessage = "Enrollment in Process, Check your fingerprint scanner";
+                if (getConnection.equals(isConnected)) {
+                    firebaseDB_Connection.child("Connection").setValue("0");
 
-                        LinearLayout layoutName = new LinearLayout(getContext());
-                        layoutName.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout layoutName = new LinearLayout(getContext());
+                    layoutName.setOrientation(LinearLayout.VERTICAL);
 
-                        final EditText etNumber = new EditText(getContext());
-                        etNumber.setHint("9276625575");
-                        layoutName.addView(etNumber);
+                    final EditText etNumber = new EditText(getContext());
+                    etNumber.setHint("9276625575");
+                    layoutName.addView(etNumber);
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setView(layoutName);
-                        builder.setTitle("Input Number (Start with +63 '9'\nSaved Number: "+getMobile_Number);
-                        builder.setCancelable(true);
-                        builder.setPositiveButton("Change Number",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String newNumber = etNumber.getText().toString(); // variable to collect user input
-                                        databaseReference.child("numChange_confirmation").setValue("1");
-                                        databaseReference.child("mobile_number").setValue(newNumber);
-                                        Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
-                                        postChangeNumberConfirmation();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                    builder.setView(layoutName);
+                    builder.setTitle("Input Number (Start with +63 '9'");
+                    builder.setMessage("Saved Number: " + getMobile_Number);
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("Change Number",
+                            (dialog, which) -> {
+                                String newNumber = etNumber.getText().toString(); // variable to collect user input
+                                databaseReference.child("numChange_confirmation").setValue("1");
+                                databaseReference.child("mobile_number").setValue(newNumber);
+                                Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
+                                postChangeNumberConfirmation();
 
 
-                                    }
-                                });
+                            });
 
-                        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                    });
 
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setCancelable(true);
-                        builder.setTitle("Device Connection");
-                        builder.setMessage("Device is not Connected to the Internet");
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-
-                    }
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
-                    Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                    builder.setCancelable(true);
+                    builder.setTitle("Device Connection");
+                    builder.setMessage("Device is not Connected to the Internet");
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
                 }
-
-
+            } else {
+                Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
             }
+
+
         });
     }
 
     private void postChangeNumberConfirmation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setCancelable(false);
         builder.setTitle("Mobile Number Change");
         builder.setMessage("Currently changing the mobile number saved on the device, please wait.");
@@ -526,12 +475,14 @@ public class secondTab extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     String finished = "2";
                     Data model = snapshot.getValue(Data.class);
-                    String finished_numChange = model.getNumChange_confirmation();
-                    if (finished_numChange.equals(finished))
-                    {
+                    String finished_numChange = null;
+                    if (model != null) {
+                        finished_numChange = model.getNumChange_confirmation();
+                    }
+                    if (finished_numChange != null && finished_numChange.equals(finished)) {
                         databaseReference.child("numChange_confirmation").setValue("0");
                         Toast.makeText(getContext(), "Number Succesfully Changed!", Toast.LENGTH_LONG).show();
                         dialog.hide();
@@ -548,28 +499,7 @@ public class secondTab extends Fragment {
         });
     }
 
-//    private void resetWiFiConfirmation() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-//        builder.setCancelable(true);
-//        builder.setTitle("Disconnect Wifi");
-//        builder.setMessage("Disconnect WiFi and Open Config Portal?");
-//        builder.setPositiveButton("Disconnect",
-//                (dialog, which) -> {
-//
-//                    databaseReference.child("reset_device_connection").setValue("1");
-//
-//                });
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//
-//
-//    }
-
-
-
     private void GPSConfirmation(String btn_GPS_Status) {
-//        data.setBtn_GPS_Status(btn_GPS_Status);
         final String gpsOff = "0";
         final String gpsOn = "1";
         final String title1 = "Enable GPS";
@@ -614,25 +544,19 @@ public class secondTab extends Fragment {
 
     }
 
-    private void getVolumeValue(){
-
-    }
-
-    private void getMotorStatus(){
+    private void getMotorStatus() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     Data model = snapshot.getValue(Data.class);
 
+                    assert model != null;
                     getBtn_Alarm = model.getBtn_Alarm();
                     getMotor_Status = model.getBtn_Motor_Status();
                     getBtn_Lock = model.getBtn_Lock();
                     getBtn_GPS_Enabler = model.getBtn_GPS_Enabler();
                     getMobile_Number = model.getMobile_number();
-
-//                    setMotorStatus(getBtn_Alarm, getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control);
-//                    btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control);
 
                     firebaseDB_Connection.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -640,7 +564,9 @@ public class secondTab extends Fragment {
                             if (snapshot.exists()) {
                                 Connection connection = snapshot.getValue(Connection.class);
 
-                                getConnection = connection.getConnection();
+                                if (connection != null) {
+                                    getConnection = connection.getConnection();
+                                }
 
                                 volumeDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -648,7 +574,9 @@ public class secondTab extends Fragment {
                                         if (snapshot.exists()) {
                                             Data model = snapshot.getValue(Data.class);
 
-                                            getVolume_Control = model.getVolume_Control();
+                                            if (model != null) {
+                                                getVolume_Control = model.getVolume_Control();
+                                            }
                                             setMotorStatus(getBtn_Alarm, getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number);
                                             btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number);
                                         }
@@ -669,7 +597,6 @@ public class secondTab extends Fragment {
                     });
 
 
-
                 }
             }
 
@@ -682,7 +609,7 @@ public class secondTab extends Fragment {
 
     private void setMotorStatus(String getBtn_Alarm, String getMotor_Status, String getBtn_Lock, String getGPS_Status, String getVolume_Control, String getMobile_Number) {
 
-        if(this.getMotor_Status.equals(statusOff)) {
+        if (this.getMotor_Status.equals(statusOff)) {
             tvMotorStatus.setText("PARKED");
             tvMotorStatus.setTextColor(Color.GREEN);
             motorStatusBtn.setText("Ride Mode");
@@ -692,7 +619,7 @@ public class secondTab extends Fragment {
             motorStatusBtn.setText("Park Mode");
         }
 
-        if(this.getBtn_Alarm.equals(statusOff)) {
+        if (this.getBtn_Alarm.equals(statusOff)) {
             tvAlarmStatus.setText("OFF");
             tvAlarmStatus.setTextColor(Color.RED);
         } else {
@@ -700,7 +627,7 @@ public class secondTab extends Fragment {
             tvAlarmStatus.setTextColor(Color.GREEN);
         }
 
-        if(this.getBtn_Lock.equals(statusOff)) {
+        if (this.getBtn_Lock.equals(statusOff)) {
             tvLockStatus.setText("OFF");
             tvLockStatus.setTextColor(Color.RED);
         } else {
@@ -708,7 +635,7 @@ public class secondTab extends Fragment {
             tvLockStatus.setTextColor(Color.GREEN);
         }
 
-        if(this.getBtn_GPS_Enabler.equals(statusOff)) {
+        if (this.getBtn_GPS_Enabler.equals(statusOff)) {
             tvGPSStatus.setText("OFF");
             tvGPSStatus.setTextColor(Color.RED);
             gpsBtn.setText("Enable GPS");
@@ -762,10 +689,7 @@ public class secondTab extends Fragment {
                 if (snapshot.exists()) {
                     Connection connection = snapshot.getValue(Connection.class);
 
-                    String internetConnection = connection.getConnection();
-
-                    getConnection = internetConnection;
-
+                    getConnection = connection.getConnection();
 
 
                 }
@@ -781,11 +705,32 @@ public class secondTab extends Fragment {
     private void isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
-
-        isConnectedto = connected;
     }
 
+    public class MyRunnable implements Runnable {
 
-}
+
+        @Override
+        public void run() {
+                    mHandler.post(() -> {
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        firebaseDB_Alarm.child("btn_Alarm").setValue("0");
+                        tvAlarmStatus.setText("OFF");
+                        tvAlarmStatus.setTextColor(Color.RED);
+
+                    });
+
+                }
+
+
+            }
+
+        }
+
+
