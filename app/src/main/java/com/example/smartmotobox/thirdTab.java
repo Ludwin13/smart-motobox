@@ -78,6 +78,37 @@ public class thirdTab extends Fragment {
                             String triggerDate = postSnapshot.getKey();
                             getAllParentDates.add(triggerDate);
                             spinnerAdapterAlarmHistory.notifyDataSetChanged();
+//                            FirebaseDB_Spinner.performClick();
+
+                            String myDate = java.text.DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
+                            int pos = getAllParentDates.indexOf(myDate);
+
+                            DatabaseReference alarmHistorySelected = FirebaseDatabase.getInstance().getReference().child("History/NewData").child(myDate);
+                            FirebaseDB_Spinner.setSelection(pos);
+
+                            options = new FirebaseRecyclerOptions.Builder<Item>().setQuery(alarmHistorySelected, Item.class).build();
+                            adapter = new FirebaseRecyclerAdapter<Item, MyViewHolder>(options) {
+                                @Override
+                                protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Item model) {
+                                    holder.notifTrigger.setText(""+model.getStatus());
+                                    holder.notifDate.setText(""+model.getDate());
+                                    holder.notifTime.setText(""+model.getTime());
+
+                                }
+
+                                @NonNull
+                                @Override
+                                public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                                    View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, parent, false);
+                                    return new MyViewHolder(v);
+                                }
+                            };
+
+
+                            adapter.startListening();
+                            recyclerView.setAdapter(adapter);
+
                         }
                     }
                 }

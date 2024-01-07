@@ -1,5 +1,6 @@
 package com.example.smartmotobox;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.ref.WeakReference;
+
 public class secondTab extends Fragment {
 
     Data data;
@@ -46,9 +49,12 @@ public class secondTab extends Fragment {
     String statusOn = "1";
     boolean isConnectedto;
     SeekBar seekBar;
-    //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
 
-   private final Handler mHandler = new Handler();
+    //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
+    private static class MyHandler extends Handler {
+    }
+
+    private final Handler mHandler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +90,7 @@ public class secondTab extends Fragment {
             firebaseDB_Alarm.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()) {
+                    if (snapshot.exists()) {
                         Data model = snapshot.getValue(Data.class);
 
                         assert model != null;
@@ -157,6 +163,7 @@ public class secondTab extends Fragment {
                     if (getConnection.equals(isConnected)) {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Lock").setValue(statusOn);
+                        lockBtn.setText("UNLOCK");
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
@@ -170,6 +177,7 @@ public class secondTab extends Fragment {
                     if (getConnection.equals(isConnected)) {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Lock").setValue(statusOff);
+                        lockBtn.setText("LOCK");
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
@@ -714,17 +722,12 @@ public class secondTab extends Fragment {
 
         @Override
         public void run() {
-                    mHandler.post(() -> {
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    mHandler.postDelayed(() -> {
                         firebaseDB_Alarm.child("btn_Alarm").setValue("0");
                         tvAlarmStatus.setText("OFF");
                         tvAlarmStatus.setTextColor(Color.RED);
 
-                    });
+                    }, 5000);
 
                 }
 
@@ -732,5 +735,35 @@ public class secondTab extends Fragment {
             }
 
         }
+
+
+//    public static class MyRunnable implements Runnable {
+//        private final WeakReference<Activity> mActivity;
+//
+//        public MyRunnable(Activity activity) {
+//            mActivity = new WeakReference<>(activity);
+//        }
+//
+//        @Override
+//        public void run() {
+//            Activity activity = mActivity.get();
+//            if (activity != null) {
+//
+//            }
+//        }
+//    }
+//
+//    private MyRunnable mRunnable = new MyRunnable(this);
+//
+//    public void setAlarmStatusOff() {
+//        firebaseDB_Alarm.child("btn_Alarm").setValue("0");
+//        tvAlarmStatus.setText("OFF");
+//        tvAlarmStatus.setTextColor(Color.RED);
+//
+//        // Execute the Runnable in 2 seconds
+//        mHandler.postDelayed(mRunnable, 2000);
+//    }
+
+
 
 
