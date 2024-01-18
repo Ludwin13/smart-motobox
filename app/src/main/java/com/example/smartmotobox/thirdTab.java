@@ -1,5 +1,8 @@
 package com.example.smartmotobox;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +43,7 @@ public class thirdTab extends Fragment {
     List<String> getAllParentDates = new ArrayList<>();
     List<String> getSpecificParentDate = new ArrayList<>();
     String selectedHistoryDate;
+    boolean isConnectedto;
 
 
 
@@ -55,7 +59,7 @@ public class thirdTab extends Fragment {
         List<Item> item = new ArrayList<Item>();
 //        myAdapter = new MyAdapter(getActivity().getApplicationContext(), item);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setReverseLayout(false);
+        layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
 //        recyclerView.setAdapter(myAdapter);
         String myDate = java.text.DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
@@ -85,14 +89,14 @@ public class thirdTab extends Fragment {
 
                             DatabaseReference alarmHistorySelected = FirebaseDatabase.getInstance().getReference().child("History/NewData").child(myDate);
                             FirebaseDB_Spinner.setSelection(pos);
-
                             options = new FirebaseRecyclerOptions.Builder<Item>().setQuery(alarmHistorySelected, Item.class).build();
                             adapter = new FirebaseRecyclerAdapter<Item, MyViewHolder>(options) {
                                 @Override
                                 protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Item model) {
                                     holder.notifTrigger.setText(""+model.getStatus());
-                                    holder.notifDate.setText(""+model.getDate());
                                     holder.notifTime.setText(""+model.getTime());
+                                    holder.notifDate.setText(""+model.getDate());
+
 
                                 }
 
@@ -152,7 +156,6 @@ public class thirdTab extends Fragment {
                         }
                     };
 
-
                     adapter.startListening();
                     recyclerView.setAdapter(adapter);
                 }
@@ -193,5 +196,10 @@ public class thirdTab extends Fragment {
 
     }
 
+    private void isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+    }
 }

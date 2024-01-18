@@ -36,7 +36,7 @@ public class secondTab extends Fragment {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference, connectionDBRef, volumeDBRef, firebaseDB_Connection, firebaseDB_Alarm;
     TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus, tvGPSStatus, tvVolume;
-    String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getConnection;
+    String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getConnection, getSSID;
     String statusOff = "0";
     String volume_0 = "60";
     String volume_1 = "61";
@@ -124,9 +124,11 @@ public class secondTab extends Fragment {
 
                         if (connection != null) {
                             getConnection = connection.getConnection();
+                            getSSID = connection.getSSID();
                         }
                         if (getConnection.equals(isConnected)) {
-                            tvConnectionStatus.setText("Connected");
+                            tvConnectionStatus.setText(getSSID);
+                            tvConnectionStatus.setTextSize(10);
                             tvConnectionStatus.setTextColor(Color.GREEN);
 
                         } else {
@@ -167,9 +169,8 @@ public class secondTab extends Fragment {
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
-                        builder.setTitle("Device Connection");
-                        builder.setMessage("Device is not Connected to the Internet");
-
+                        builder.setTitle("Smart Moto Box Connection");
+                        builder.setMessage("Smart Moto Box device is not connected to the Internet");
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     }
@@ -181,9 +182,8 @@ public class secondTab extends Fragment {
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
-                        builder.setTitle("Device Connection");
-                        builder.setMessage("Device is not Connected to the Internet");
-
+                        builder.setTitle("Smart Moto Box Connection");
+                        builder.setMessage("Smart Moto Box device is not connected to the Internet");
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     }
@@ -191,7 +191,7 @@ public class secondTab extends Fragment {
 //                    data.setBtn_Lock(statusOff);
                 }
             } else {
-                Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
             }
             getMotorStatus();
 
@@ -210,9 +210,8 @@ public class secondTab extends Fragment {
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
-                        builder.setTitle("Device Connection");
-                        builder.setMessage("Device is not Connected to the Internet");
-
+                        builder.setTitle("Smart Moto Box Connection");
+                        builder.setMessage("Smart Moto Box device is not connected to the Internet");
                         AlertDialog dialog = builder.create();
                         dialog.show();
 
@@ -227,9 +226,8 @@ public class secondTab extends Fragment {
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
-                        builder.setTitle("Device Connection");
-                        builder.setMessage("Device is not Connected to the Internet");
-
+                        builder.setTitle("Smart Moto Box Connection");
+                        builder.setMessage("Smart Moto Box device is not connected to the Internet");
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     }
@@ -238,7 +236,7 @@ public class secondTab extends Fragment {
                 }
                 getMotorStatus();
             } else {
-                Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
             }
             getMotorStatus();
         });
@@ -254,15 +252,14 @@ public class secondTab extends Fragment {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                     builder.setCancelable(true);
-                    builder.setTitle("Device Connection");
-                    builder.setMessage("Device is not Connected to the Internet");
-
+                    builder.setTitle("Smart Moto Box Connection");
+                    builder.setMessage("Smart Moto Box device is not connected to the Internet");
                     AlertDialog dialog = builder.create();
                     dialog.show();
                     getMotorStatus();
                 }
             } else {
-                Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
                 getMotorStatus();
             }
 
@@ -286,9 +283,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -300,9 +296,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -315,9 +310,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -330,9 +324,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -345,9 +338,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -360,9 +352,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -375,9 +366,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -390,9 +380,8 @@ public class secondTab extends Fragment {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             builder.setCancelable(true);
-                            builder.setTitle("Device Connection");
-                            builder.setMessage("Device is not Connected to the Internet");
-
+                            builder.setTitle("Smart Moto Box Connection");
+                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -440,12 +429,21 @@ public class secondTab extends Fragment {
                     builder.setCancelable(true);
                     builder.setPositiveButton("Change Number",
                             (dialog, which) -> {
-                                String newNumber = etNumber.getText().toString(); // variable to collect user input
-                                databaseReference.child("numChange_confirmation").setValue("1");
-                                databaseReference.child("mobile_number").setValue(newNumber);
-                                Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
-                                postChangeNumberConfirmation();
-
+                                FirebaseDB_Connection();
+                                if (getConnection.equals(isConnected)) {
+                                    String newNumber = etNumber.getText().toString(); // variable to collect user input
+                                    databaseReference.child("numChange_confirmation").setValue("1");
+                                    databaseReference.child("mobile_number").setValue(newNumber);
+                                    Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
+                                    postChangeNumberConfirmation();
+                                } else {
+                                    AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
+                                    builder2.setCancelable(true);
+                                    builder2.setTitle("Smart Moto Box Connection");
+                                    builder2.setMessage("Smart Moto Box device is not connected to the Internet");
+                                    AlertDialog dialog2 = builder2.create();
+                                    dialog2.show();
+                                }
 
                             });
 
@@ -457,9 +455,8 @@ public class secondTab extends Fragment {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                     builder.setCancelable(true);
-                    builder.setTitle("Device Connection");
-                    builder.setMessage("Device is not Connected to the Internet");
-
+                    builder.setTitle("Smart Moto Box Connection");
+                    builder.setMessage("Smart Moto Box device is not Connected to the Internet");
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
@@ -523,8 +520,18 @@ public class secondTab extends Fragment {
             builder.setMessage(message);
             builder.setPositiveButton("Enable",
                     (dialog, which) -> {
-                        databaseReference.child("btn_GPS_Enabler").setValue(gpsOn);
-                        getMotorStatus();
+                        FirebaseDB_Connection();
+                        if (getConnection.equals(isConnected)){
+                            databaseReference.child("btn_GPS_Enabler").setValue(gpsOn);
+                            getMotorStatus();
+                        } else {
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
+                            builder2.setCancelable(true);
+                            builder2.setTitle("Smart Moto Box Connection");
+                            builder2.setMessage("Smart Moto Box device is not connected to the Internet");
+                            AlertDialog dialog2 = builder2.create();
+                            dialog2.show();
+                        }
                     });
 
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
@@ -539,8 +546,19 @@ public class secondTab extends Fragment {
             builder.setMessage(message2);
             builder.setPositiveButton("Disable",
                     (dialog, which) -> {
-                        databaseReference.child("btn_GPS_Enabler").setValue(gpsOff);
-                        getMotorStatus();
+                        FirebaseDB_Connection();
+                        if (getConnection.equals(isConnected)){
+                            databaseReference.child("btn_GPS_Enabler").setValue(gpsOff);
+                            getMotorStatus();
+                        } else {
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
+                            builder2.setCancelable(true);
+                            builder2.setTitle("Smart Moto Box Connection");
+                            builder2.setMessage("Smart Moto Box device is not connected to the Internet");
+                            AlertDialog dialog2 = builder2.create();
+                            dialog2.show();
+                        }
+
                     });
 
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
@@ -636,11 +654,13 @@ public class secondTab extends Fragment {
         }
 
         if (this.getBtn_Lock.equals(statusOff)) {
-            tvLockStatus.setText("OFF");
-            tvLockStatus.setTextColor(Color.RED);
-        } else {
-            tvLockStatus.setText("ON");
+            tvLockStatus.setText("LOCKED");
             tvLockStatus.setTextColor(Color.GREEN);
+            lockBtn.setText("UNLOCK");
+        } else {
+            tvLockStatus.setText("UNLOCKED");
+            tvLockStatus.setTextColor(Color.RED);
+            lockBtn.setText("LOCK");
         }
 
         if (this.getBtn_GPS_Enabler.equals(statusOff)) {
@@ -698,7 +718,7 @@ public class secondTab extends Fragment {
                     Connection connection = snapshot.getValue(Connection.class);
 
                     getConnection = connection.getConnection();
-
+                    getSSID = connection.getSSID();
 
                 }
             }

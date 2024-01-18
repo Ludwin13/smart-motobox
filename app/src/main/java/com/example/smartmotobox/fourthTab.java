@@ -1,7 +1,10 @@
 package com.example.smartmotobox;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -42,6 +45,7 @@ public class fourthTab extends Fragment {
     ArrayList<CharSequence> arrayListCollection = new ArrayList<>();
     ArrayAdapter<CharSequence> adapter;
     EditText txt; // user input bar
+    boolean isConnectedto;
 
 
     @Override
@@ -88,132 +92,193 @@ public class fourthTab extends Fragment {
         final String deleteValue = "0";
         final String enrollValue = "1";
 
-        finger1Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger1_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("1", getFinger1_Description, getFinger1_Date, getFinger1_Time, "11", "Finger1_Status", "Finger1_Description", "Finger1_Date", "Finger1_Time", "1");
-                }
-                if(getFinger1_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "1?","Finger1_Status","Finger1_Description", "Finger1_Date", "Finger1_Time", enrollValue, "11","btn_Enroll" ,"0");
-                }
-            }
-        });
 
-        finger2Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger2_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("2", getFinger2_Description, getFinger2_Date, getFinger2_Time, "13", "Finger2_Status", "Finger2_Description", "Finger2_Date", "Finger2_Time", "1");
-                }
-                if(getFinger2_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "2?","Finger2_Status", "Finger2_Description","Finger2_Date", "Finger2_Time",  enrollValue, "13","btn_Enroll" ,"0");
-                }
 
-            }
-        });
-
-        finger3Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger3_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("3", getFinger3_Description, getFinger3_Date, getFinger3_Time, "15", "Finger3_Status", "Finger3_Description", "Finger3_Date", "Finger3_Time", "1");
+            finger1Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger1_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("2", getFinger1_Description, getFinger1_Date, getFinger1_Time, "11", "Finger1_Status", "Finger1Description", "Finger1_Date", "Finger1_Time", "1");
+                        }
+                        if(getFinger1_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "1?","Finger1_Status", "Finger1_Description","Finger1_Date", "Finger1_Time",  enrollValue, "11","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
-                if(getFinger3_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "3?","Finger3_Status", "Finger3_Description","Finger3_Date", "Finger3_Time",  enrollValue, "15","btn_Enroll" ,"0");
-                }
-            }
-        });
+            });
 
-        finger4Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger4_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("4", getFinger4_Description, getFinger4_Date, getFinger4_Time, "17", "Finger4_Status", "Finger4_Description", "Finger4_Date", "Finger4_Time", "1");
-                }
-                if(getFinger4_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "4?","Finger4_Status", "Finger4_Description","Finger4_Date", "Finger4_Time",  enrollValue, "17","btn_Enroll" ,"0");
-                }
-            }
-        });
+            finger2Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger2_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("2", getFinger2_Description, getFinger2_Date, getFinger2_Time, "13", "Finger2_Status", "Finger2_Description", "Finger2_Date", "Finger2_Time", "1");
+                        }
+                        if(getFinger2_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "2?","Finger2_Status", "Finger2_Description","Finger2_Date", "Finger2_Time",  enrollValue, "13","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
 
-        finger5Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger5_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("5", getFinger5_Description, getFinger5_Date, getFinger5_Time, "19", "Finger5_Status", "Finger5_Description", "Finger5_Date", "Finger5Time", "1");
-                }
-                if(getFinger5_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "5?","Finger5_Status", "Finger5_Description","Finger5_Date", "Finger5_Time",  enrollValue, "19","btn_Enroll" ,"0");
-                }
 
-            }
-        });
+                }
+            });
 
-        finger6Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger6_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("6", getFinger6_Description, getFinger6_Date, getFinger6_Time, "21", "Finger6_Status", "Finger6_Description", "Finger3_Date", "Finger6_Time", "1");
-                }
-                if(getFinger6_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "6?","Finger6_Status", "Finger6_Description", "Finger6_Date", "Finger6_Time", enrollValue, "21","btn_Enroll" ,"0");
-                }
+            finger3Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger3_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("3", getFinger3_Description, getFinger3_Date, getFinger3_Time, "15", "Finger3_Status", "Finger3_Description", "Finger3_Date", "Finger3_Time", "1");
 
-            }
-        });
+                        }
+                        if(getFinger3_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "3?","Finger3_Status", "Finger3_Description","Finger3_Date", "Finger3_Time",  enrollValue, "15","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
 
-        finger7Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger7_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("7", getFinger7_Description, getFinger7_Date, getFinger7_Time, "23", "Finger7_Status", "Finger7_Description", "Finger7_Date", "Finger7_Time", "1");
                 }
-                if(getFinger7_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "7?","Finger7_Status","Finger7_Description", "Finger7_Date", "Finger7_Time",  enrollValue, "23","btn_Enroll" ,"0");
-                }
+            });
 
-            }
-        });
+            finger4Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger4_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("4", getFinger4_Description, getFinger4_Date, getFinger4_Time, "17", "Finger4_Status", "Finger4_Description", "Finger4_Date", "Finger4_Time", "1");
+                        }
+                        if(getFinger4_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "4?","Finger4_Status", "Finger4_Description","Finger4_Date", "Finger4_Time",  enrollValue, "17","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
 
-        finger8Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger8_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("8", getFinger8_Description, getFinger8_Date, getFinger8_Time, "25", "Finger8_Status", "Finger8_Description", "Finger8_Date", "Finger8_Time", "1");
                 }
-                if(getFinger8_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "8?","Finger8_Status", "Finger8_Description","Finger8_Date", "Finger8_Time",  enrollValue, "25","btn_Enroll" ,"0");
-                }
+            });
 
-            }
-        });
+            finger5Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger5_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("5", getFinger5_Description, getFinger5_Date, getFinger5_Time, "19", "Finger5_Status", "Finger5_Description", "Finger5_Date", "Finger5Time", "1");
+                        }
+                        if(getFinger5_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "5?","Finger5_Status", "Finger5_Description","Finger5_Date", "Finger5_Time",  enrollValue, "19","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
 
-        finger9Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger9_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("9", getFinger9_Description, getFinger9_Date, getFinger9_Time, "27", "Finger9_Status", "Finger9_Description", "Finger9_Date", "Finger9_Time", "1" );
-                }
-                if(getFinger9_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "9?","Finger9_Status", "Finger9_Description","Finger9_Date", "Finger9_Time",  enrollValue, "27","btn_Enroll" ,"0");
-                }
 
-            }
-        });
-        finger10Status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFinger10_Status.equals(Enrolled)) {
-                    enrolledFingerStatus("10", getFinger10_Description, getFinger10_Date, getFinger10_Time, "29", "Finger10_Status", "Finger10_Description", "Finger10_Date", "Finger10_Time", "1");
                 }
-                if(getFinger10_Status.equals(notEnrolled)) {
-                    getConnectionStatusEnroll(enroll_Title, enroll_Message + "10?","Finger10_Status", "Finger10_Description","Finger10_Date", "Finger10_Time",  enrollValue, "29","btn_Enroll" ,"0");
-                }
+            });
 
-            }
-        });
+            finger6Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger6_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("6", getFinger6_Description, getFinger6_Date, getFinger6_Time, "21", "Finger6_Status", "Finger6_Description", "Finger3_Date", "Finger6_Time", "1");
+                        }
+                        if(getFinger6_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "6?","Finger6_Status", "Finger6_Description", "Finger6_Date", "Finger6_Time", enrollValue, "21","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            });
+
+            finger7Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger7_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("7", getFinger7_Description, getFinger7_Date, getFinger7_Time, "23", "Finger7_Status", "Finger7_Description", "Finger7_Date", "Finger7_Time", "1");
+                        }
+                        if(getFinger7_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "7?","Finger7_Status","Finger7_Description", "Finger7_Date", "Finger7_Time",  enrollValue, "23","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            });
+
+            finger8Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger8_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("8", getFinger8_Description, getFinger8_Date, getFinger8_Time, "25", "Finger8_Status", "Finger8_Description", "Finger8_Date", "Finger8_Time", "1");
+                        }
+                        if(getFinger8_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "8?","Finger8_Status", "Finger8_Description","Finger8_Date", "Finger8_Time",  enrollValue, "25","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            });
+
+            finger9Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger9_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("9", getFinger9_Description, getFinger9_Date, getFinger9_Time, "27", "Finger9_Status", "Finger9_Description", "Finger9_Date", "Finger9_Time", "1" );
+                        }
+                        if(getFinger9_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "9?","Finger9_Status", "Finger9_Description","Finger9_Date", "Finger9_Time",  enrollValue, "27","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+            finger10Status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isConnected();
+                    if (isConnectedto) {
+                        if (getFinger10_Status.equals(Enrolled)) {
+                            enrolledFingerStatus("10", getFinger10_Description, getFinger10_Date, getFinger10_Time, "29", "Finger10_Status", "Finger10_Description", "Finger10_Date", "Finger10_Time", "1");
+                        }
+                        if(getFinger10_Status.equals(notEnrolled)) {
+                            getConnectionStatusEnroll(enroll_Title, enroll_Message + "10?","Finger10_Status", "Finger10_Description","Finger10_Date", "Finger10_Time",  enrollValue, "29","btn_Enroll" ,"0");
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
 
     }
 
@@ -661,5 +726,10 @@ public class fourthTab extends Fragment {
         }
     }
 
+    private void isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+    }
 }
