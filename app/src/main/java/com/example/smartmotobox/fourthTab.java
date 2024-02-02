@@ -37,11 +37,6 @@ public class fourthTab extends Fragment {
     getFinger1_Time, getFinger2_Time, getFinger3_Time, getFinger4_Time, getFinger5_Time, getFinger6_Time, getFinger7_Time, getFinger8_Time, getFinger9_Time, getFinger10_Time,
     getFinger1_Date, getFinger2_Date, getFinger3_Date, getFinger4_Date, getFinger5_Date, getFinger6_Date, getFinger7_Date, getFinger8_Date, getFinger9_Date, getFinger10_Date,
     getFinger10_Description, getFinger1_Description, getFinger2_Description, getFinger3_Description, getFinger4_Description, getFinger5_Description, getFinger6_Description, getFinger7_Description, getFinger8_Description, getFinger9_Description;
-    String Enrolled = "1";
-    String notEnrolled = "0";
-    String finished = "2";
-    String connectionStatus, SSID;
-    String hasConnection = "1";
     ArrayList<CharSequence> arrayListCollection = new ArrayList<>();
     ArrayAdapter<CharSequence> adapter;
     EditText txt; // user input bar
@@ -91,6 +86,8 @@ public class fourthTab extends Fragment {
         final String delete_Title = "Delete";
         final String deleteValue = "0";
         final String enrollValue = "1";
+        String Enrolled = "1";
+        String notEnrolled = "0";
 
 
 
@@ -331,6 +328,7 @@ public class fourthTab extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         firebaseDB_Data.child("finger_address").setValue(ID_Value);
                         firebaseDB_Data.child("btn_Delete").setValue("1");
+                        firebaseDB_Data.child("btn_Control").setValue("1");
                         postConfirmationAlert(child, fingerDesc_child, fingerDate_child, fingerTime_child, value, process_child, process_value, postTitle, postMessage, nullInput);
                     }
                 });
@@ -394,6 +392,7 @@ public class fourthTab extends Fragment {
                         String fingerDescription = etFingerDesc.getText().toString(); // variable to collect user input
                         firebaseDB_Data.child("finger_address").setValue(ID_Value);
                         firebaseDB_Data.child("btn_Enroll").setValue("1");
+                        firebaseDB_Data.child("btn_Control").setValue("1");
                         Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
                         postConfirmationAlert(child, fingerDesc_child, fingerDate_child, fingerTime_child, value, process_child, process_value, postTitle, postMessage, fingerDescription);
 
@@ -425,6 +424,7 @@ public class fourthTab extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     Data model = snapshot.getValue(Data.class);
+                    String finished = "2";
                     String finished_Enroll = model.getBtn_Enroll();
                     String finished_Delete = model.getBtn_Delete();
                     if (finished_Enroll.equals(finished)) {
@@ -644,7 +644,7 @@ public class fourthTab extends Fragment {
 
 
     private void fingerprintStatus(String getFinger1_Status, String getFinger2_Status, String getFinger3_Status, String getFinger4_Status, String getFinger5_Status, String getFinger6_Status, String getFinger7_Status, String getFinger8_Status, String getFinger9_Status, String getFinger10_Status) {
-
+    String notEnrolled = "0";
         if(this.getFinger1_Status.equals(notEnrolled)) {
             finger1Status.setText("+ Add a new Fingerprint");
             finger1Status.setTextColor(Color.RED);

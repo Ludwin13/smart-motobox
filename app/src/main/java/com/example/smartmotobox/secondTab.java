@@ -165,6 +165,7 @@ public class secondTab extends Fragment {
                     if (getConnection.equals(isConnected)) {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Lock").setValue(statusOn);
+                        databaseReference.child("btn_Control").setValue("1");
                         lockBtn.setText("UNLOCK");
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -178,6 +179,7 @@ public class secondTab extends Fragment {
                     if (getConnection.equals(isConnected)) {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Lock").setValue(statusOff);
+                        databaseReference.child("btn_Control").setValue("1");
                         lockBtn.setText("LOCK");
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -207,6 +209,7 @@ public class secondTab extends Fragment {
                     if (getConnection.equals(isConnected)) {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Motor_Status").setValue(statusOn);
+                        databaseReference.child("btn_Control").setValue("1");
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
@@ -222,6 +225,7 @@ public class secondTab extends Fragment {
                     if (getConnection.equals(isConnected)) {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Motor_Status").setValue(statusOff);
+                        databaseReference.child("btn_Control").setValue("1");
                         getMotorStatus();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -245,19 +249,20 @@ public class secondTab extends Fragment {
         gpsBtn.setOnClickListener(view -> {
             isConnected();
             if (isConnectedto) {
-                FirebaseDB_Connection();
-                if (getConnection.equals(isConnected)) {
-                    firebaseDB_Connection.child("Connection").setValue("0");
+//                FirebaseDB_Connection();
+//                if (getConnection.equals(isConnected)) {
+//                    firebaseDB_Connection.child("Connection").setValue("0");
                     GPSConfirmation(getGPS_status);
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                    builder.setCancelable(true);
-                    builder.setTitle("Smart Moto Box Connection");
-                    builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    getMotorStatus();
-                }
+                    databaseReference.child("btn_Control").setValue("1");
+//                } else {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                    builder.setCancelable(true);
+//                    builder.setTitle("Smart Moto Box Connection");
+//                    builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    getMotorStatus();
+//                }
             } else {
                 Toast.makeText(getActivity(), "Phone not Connected to the Internet", Toast.LENGTH_SHORT).show();
                 getMotorStatus();
@@ -277,114 +282,122 @@ public class secondTab extends Fragment {
                     FirebaseDB_Connection();
 
                     if (volume == 0) {
-                        if (getConnection.equals(isConnected)) {
+//                        if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("60");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
                     } else if (volume == 1) {
-                        if (getConnection.equals(isConnected)) {
+//                        if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("61");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
 
                     } else if (volume == 2) {
-                        if (getConnection.equals(isConnected)) {
+//                        if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("62");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
 
                     } else if (volume == 3) {
-                        if (getConnection.equals(isConnected)) {
+//                        if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("63");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
 
                     } else if (volume == 4) {
-                        if (getConnection.equals(isConnected)) {
+ //                       if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("64");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
 
                     } else if (volume == 5) {
-                        if (getConnection.equals(isConnected)) {
+//                        if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("65");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
 
                     } else if (volume == 6) {
-                        if (getConnection.equals(isConnected)) {
+//                        if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("66");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
 
                     } else if (volume == 7) {
-                        if (getConnection.equals(isConnected)) {
+//                        if (getConnection.equals(isConnected)) {
                             firebaseDB_Connection.child("Connection").setValue("0");
                             volumeDBRef.child("Volume_Control").setValue("67");
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                            builder.setCancelable(true);
-                            builder.setTitle("Smart Moto Box Connection");
-                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                        databaseReference.child("btn_Control").setValue("1");
+//                        } else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                            builder.setCancelable(true);
+//                            builder.setTitle("Smart Moto Box Connection");
+//                            builder.setMessage("Smart Moto Box device is not connected to the Internet");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                        }
 
 
                     }
@@ -434,6 +447,7 @@ public class secondTab extends Fragment {
                                     String newNumber = etNumber.getText().toString(); // variable to collect user input
                                     databaseReference.child("numChange_confirmation").setValue("1");
                                     databaseReference.child("mobile_number").setValue(newNumber);
+                                    databaseReference.child("btn_Control").setValue("1");
                                     Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
                                     postChangeNumberConfirmation();
                                 } else {
