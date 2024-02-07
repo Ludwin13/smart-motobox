@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MapFragment">
 
     <fragment
@@ -14,10 +15,11 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="250dp"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="left|top"
+            android:layout_marginTop="0dp"
             />
 
         <TextView
@@ -25,6 +27,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="test" />
+
+        <Button
+            android:id="@+id/limitMarkers_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:text="Display Markers"
+            android:padding="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/round_corners"
+            android:paddingRight="10dp"/>
+
 
 <!--        <Button -->
 <!--            android:id="@+id/showHistory_btn"-->
