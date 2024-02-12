@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +53,7 @@ public class MapFragment extends Fragment {
     private static int markerCountLimit = 0;
     private Marker mMarker;
     private static String mSelectedDate;
+    private static int gpsListSize;
     List<Marker> markers = new ArrayList<>();
     boolean isConnectedto;
 
@@ -146,57 +149,58 @@ public class MapFragment extends Fragment {
                          *      If the currentDate is equal to the latest postSnapshot children name with the same date
                          *      then it will create a query pointing to that specific Date Node and retrieve the Marker Data.
                          */
-                        String parent = snapshot.getKey();
-                        String date = dateFormat.format(Calendar.getInstance().getTime());
-
-                        if (parent != null && parent.equals(date)) {
-                            DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(parent);
-                            Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    /**
-                                     * at this point the query points to the child node with the same name as the value of the currentDate variable.
-                                     * So snapshot will display only the date name (Parent).
-                                     * DataSnapshot snapshot = Dates (6-16-2023, 6-17-2023) etc.
-                                     */
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
+                        for (DataSnapshot childSnapshot: snapshot.getChildren()) {
+                            String parent = childSnapshot.getKey();
+                            if (parent != null) {
+                                DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(parent);
+                                Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         /**
-                                         * Need an enhanced for loop to increment through the snapshot (Parent Node/Date).
-                                         * This will retrieve children of the Date nodes e.g. nodes that start with "-NDY..."
+                                         * at this point the query points to the child node with the same name as the value of the currentDate variable.
+                                         * So snapshot will display only the date name (Parent).
+                                         * DataSnapshot snapshot = Dates (6-16-2023, 6-17-2023) etc.
                                          */
-                                        Location model = postSnapshot.getValue(Location.class);
-                                        /**
-                                         *
-                                         */
-                                        assert model != null;
-                                        String LatitudeStr = model.getLatitude();
-                                        String LongitudeStr = model.getLongitude();
-                                        String Time = model.getTime();
+                                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
-                                        if (LatitudeStr == null || LongitudeStr == null || Time == null) {
+                                            /**
+                                             * Need an enhanced for loop to increment through the snapshot (Parent Node/Date).
+                                             * This will retrieve children of the Date nodes e.g. nodes that start with "-NDY..."
+                                             */
+                                            Location model = postSnapshot.getValue(Location.class);
+                                            /**
+                                             *
+                                             */
+                                            assert model != null;
+                                            String LatitudeStr = model.getLatitude();
+                                            String LongitudeStr = model.getLongitude();
+                                            String Time = model.getTime();
 
-                                            break;
+                                            if (LatitudeStr == null || LongitudeStr == null || Time == null) {
 
-                                        } else {
+                                                break;
 
-                                            Double Latitude = Double.valueOf(LatitudeStr);
-                                            Double Longitude = Double.valueOf(LongitudeStr);
-//                                            Test.setText(Latitude.toString());
+                                            } else {
 
+                                                Double Latitude = Double.valueOf(LatitudeStr);
+                                                Double Longitude = Double.valueOf(LongitudeStr);
+//
+                                                addMarker(Latitude, Longitude, Time, convertDate(parent));
 
-                                            addMarker(Latitude, Longitude, Time, convertDate(parent));
-
+                                            }
                                         }
                                     }
-                                }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
+
+
+
 
 
                     }
@@ -239,13 +243,14 @@ public class MapFragment extends Fragment {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
-
+                                gpsListSize = 0;
 
 
                                 if (selectedDate.equals("--SELECT HISTORY--")) {
 
                                 } else {
-                                    Test.setText(convertDateFormat(selectedDate));
+                                    //String date = dateFormat.format(Calendar.getInstance().getTime());
+                                    //Test.setText(convertDateFormat(date));
                                     if (supportMapFragmentInitialization != null) {
                                         supportMapFragmentInitialization.getMapAsync(googleMap -> {
                                             googleMap.clear();
@@ -315,8 +320,6 @@ public class MapFragment extends Fragment {
 
 
 
-
-
                                                             /**
                                                              * the methods model.getLongitude, model.getLatitude, and model.getTime();
                                                              * retrieves the current assigned value in the Location class assigns it in the Double Longitude, Latitude, and String Time.
@@ -339,6 +342,7 @@ public class MapFragment extends Fragment {
                                                                 ListLongitude.add(Longitude);
                                                                 ListLatitude.add(Latitude);
                                                                 mSelectedDate = selectedDate;
+                                                                gpsListSize = ListTime.size();
 //                                                                markerCountSize = ListTime.size();
 //                                                                finalMarkerCounter = markerCountSize - markerCountLimit;
 //                                                                Test.setText(String.valueOf(ListLongitude));
@@ -392,7 +396,7 @@ public class MapFragment extends Fragment {
 
                 final EditText etMarkerLimit = new EditText(getContext());
                 etMarkerLimit.setInputType(InputType.TYPE_CLASS_NUMBER);
-                etMarkerLimit.setHint("3 or 10");
+                etMarkerLimit.setHint(gpsListSize+" stored Markers on "+mSelectedDate);
                 layoutName.addView(etMarkerLimit);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -691,8 +695,6 @@ public class MapFragment extends Fragment {
     private void addMarker(Double Latitude, Double Longitude, String Time, String selectedDate) {
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-
-
         if (supportMapFragment != null) {
             supportMapFragment.getMapAsync(googleMap -> {
 
@@ -709,7 +711,7 @@ public class MapFragment extends Fragment {
                     googleMap.animateCamera(point);
                     markers.add(mMarker);
 
-                    if (markers.size() >= 3) {
+                    if (markers.size() >= 4) {
                         markers.get(0).remove();
                         markers.remove(0);
                     }

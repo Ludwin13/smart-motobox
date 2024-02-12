@@ -253,7 +253,7 @@ public class secondTab extends Fragment {
 //                if (getConnection.equals(isConnected)) {
 //                    firebaseDB_Connection.child("Connection").setValue("0");
                     GPSConfirmation(getGPS_status);
-                    databaseReference.child("btn_Control").setValue("1");
+
 //                } else {
 //                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 //                    builder.setCancelable(true);
@@ -536,6 +536,7 @@ public class secondTab extends Fragment {
                     (dialog, which) -> {
                         FirebaseDB_Connection();
                         if (getConnection.equals(isConnected)){
+                            databaseReference.child("btn_Control").setValue("1");
                             databaseReference.child("btn_GPS_Enabler").setValue(gpsOn);
                             getMotorStatus();
                         } else {
