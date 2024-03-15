@@ -33,11 +33,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
-            android:text="Display Markers"
+            android:text="Limit Markers"
             android:padding="10dp"
             android:layout_marginTop="0dp"
             android:background="@drawable/round_corners"
             android:paddingRight="10dp"/>
+
+<!--        <Button-->
+<!--            android:id="@+id/addMarkerTestBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="left|bottom"-->
+<!--            android:text="Add Marker"-->
+<!--            android:padding="10dp"-->
+<!--            android:layout_marginTop="0dp"-->
+<!--            android:background="@drawable/round_corners"-->
+<!--            android:paddingRight="10dp"/>-->
 
 
 <!--        <Button -->

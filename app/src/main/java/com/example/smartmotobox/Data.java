@@ -2,14 +2,14 @@ package com.example.smartmotobox;
 
 public class Data {
 
-    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler, Volume_Control, numChange_confirmation, mobile_number;
+    String btn_Alarm, btn_Lock, btn_Motor_Status, btn_Enroll, btn_Delete, btn_GPS_Enabler, Volume_Control, numChange_confirmation, mobile_number, btn_Finger_Enabler;
     int btn_Notification;
 
     public Data() {
 
     }
 
-    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler, String Volume_Control, String numChange_confirmation, String mobile_number) {
+    public Data(String btn_Alarm, String btn_Lock, String btn_Motor_Status, String btn_Enroll, String btn_Delete, String btn_GPS_Enabler, String Volume_Control, String numChange_confirmation, String mobile_number, String btn_Finger_Enabler) {
         this.btn_Alarm = btn_Alarm;
         this.btn_Lock = btn_Lock;
         this.btn_Motor_Status = btn_Motor_Status;
@@ -19,6 +19,7 @@ public class Data {
         this.Volume_Control = Volume_Control;
         this.numChange_confirmation = numChange_confirmation;
         this.mobile_number = mobile_number;
+        this.btn_Finger_Enabler = btn_Finger_Enabler;
     }
 
     public String getBtn_Alarm() { return  this.btn_Alarm; }
@@ -28,6 +29,9 @@ public class Data {
     public void setBtn_Lock(String btn_Lock) {
         this.btn_Lock = btn_Lock;
     }
+
+    public String getBtn_Finger_Enabler() { return  this.btn_Finger_Enabler; }
+    public void setBtn_Finger_Enabler_Enabler(String btn_Finger_Enabler) { this.btn_Finger_Enabler = btn_Finger_Enabler; }
 
     public String getBtn_Motor_Status() { return  this.btn_Motor_Status; }
     public void setBtn_Motor_Status(String btn_Motor_Status) { this.btn_Motor_Status = btn_Motor_Status; }

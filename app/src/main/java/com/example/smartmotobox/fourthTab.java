@@ -40,6 +40,7 @@ public class fourthTab extends Fragment {
     ArrayList<CharSequence> arrayListCollection = new ArrayList<>();
     ArrayAdapter<CharSequence> adapter;
     EditText txt; // user input bar
+
     boolean isConnectedto;
 
 
@@ -65,7 +66,10 @@ public class fourthTab extends Fragment {
         firebaseDB_Data = FirebaseDatabase.getInstance().getReference("Data");
         firebaseDB_Connection = FirebaseDatabase.getInstance().getReference("Connection");
 
-        getFingerprintData();
+         getFingerprintData();
+
+
+
 //        deleteFingerID(getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status, getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status,
 //                getFinger1_Time, getFinger2_Time, getFinger3_Time, getFinger4_Time, getFinger5_Time, getFinger6_Time, getFinger7_Time, getFinger8_Time, getFinger9_Time, getFinger10_Time,
 //                getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status, getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status,
@@ -73,6 +77,7 @@ public class fourthTab extends Fragment {
 
         return view;
     }
+
 
     private void deleteFingerID(String getFinger1_Status, String getFinger2_Status, String getFinger3_Status, String getFinger4_Status, String getFinger5_Status, String getFinger6_Status, String getFinger7_Status, String getFinger8_Status, String getFinger9_Status, String getFinger10_Status,
                                 String getFinger1_Description, String getFinger2_Description, String getFinger3_Description, String getFinger4_Description, String getFinger5_Description, String getFinger6_Description, String getFinger7_Description, String getFinger8_Description, String getFinger9_Description, String getFinger10_Description,
@@ -475,7 +480,9 @@ public class fourthTab extends Fragment {
 
                     String NotEnrolled = "0";
 
+                    assert model != null;
                     //Finger1_Status - Finger10_Status in RTDB.
+
 
                     getFinger1_Status = model.getFinger1_Status();
                     getFinger2_Status = model.getFinger2_Status();
@@ -527,19 +534,20 @@ public class fourthTab extends Fragment {
                     getFinger9_Date = model.getFinger9_Date();
                     getFinger10_Date = model.getFinger10_Date();
 
+                        fingerprintStatus(getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status,
+                                getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status);
 
-                    fingerprintStatus(getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status,
-                            getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status);
+                        deleteFingerID(getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status,
+                                getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status,
+                                getFinger1_Description, getFinger2_Description, getFinger3_Description, getFinger4_Description, getFinger5_Description,
+                                getFinger6_Description, getFinger7_Description, getFinger8_Description, getFinger9_Description, getFinger10_Description,
+                                getFinger1_Date, getFinger2_Date, getFinger3_Date, getFinger4_Date, getFinger5_Date,
+                                getFinger6_Date, getFinger7_Date, getFinger8_Date, getFinger9_Date, getFinger10_Date,
+                                getFinger1_Time, getFinger2_Time, getFinger3_Time, getFinger4_Time, getFinger5_Time,
+                                getFinger6_Time, getFinger7_Time, getFinger8_Time, getFinger9_Time, getFinger10_Time
+                        );
 
-                    deleteFingerID(getFinger1_Status, getFinger2_Status, getFinger3_Status, getFinger4_Status, getFinger5_Status,
-                            getFinger6_Status, getFinger7_Status, getFinger8_Status, getFinger9_Status, getFinger10_Status,
-                            getFinger1_Description, getFinger2_Description, getFinger3_Description, getFinger4_Description, getFinger5_Description,
-                            getFinger6_Description, getFinger7_Description, getFinger8_Description, getFinger9_Description, getFinger10_Description,
-                            getFinger1_Date, getFinger2_Date, getFinger3_Date, getFinger4_Date, getFinger5_Date,
-                            getFinger6_Date, getFinger7_Date, getFinger8_Date, getFinger9_Date, getFinger10_Date,
-                            getFinger1_Time, getFinger2_Time, getFinger3_Time, getFinger4_Time, getFinger5_Time,
-                            getFinger6_Time, getFinger7_Time, getFinger8_Time, getFinger9_Time, getFinger10_Time
-                            );
+
                 }
             }
 

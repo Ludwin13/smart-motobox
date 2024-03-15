@@ -2,6 +2,7 @@ package com.example.smartmotobox;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.lang.ref.WeakReference;
 
 public class secondTab extends Fragment {
@@ -36,7 +40,7 @@ public class secondTab extends Fragment {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference, connectionDBRef, volumeDBRef, firebaseDB_Connection, firebaseDB_Alarm;
     TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus, tvGPSStatus, tvVolume;
-    String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getConnection, getSSID;
+    String getBtn_Alarm, getBtn_Lock, getMotor_Status, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getConnection, getSSID, getBtn_Finger_Enabler;
     String statusOff = "0";
     String volume_0 = "60";
     String volume_1 = "61";
@@ -49,6 +53,9 @@ public class secondTab extends Fragment {
     String statusOn = "1";
     boolean isConnectedto;
     SeekBar seekBar;
+    boolean gpsStatus_Test = false;
+    boolean motorStatus_Test = false;
+    boolean lockStatus_Test = false;
 
     //ALL CODES FROM THIS TAB SHOULD BE PLACED IN MAINACTIVITY.CLASS SO IT UPDATES EVERYTIME WHEN SWITCHING TABS
     private static class MyHandler extends Handler {
@@ -146,27 +153,214 @@ public class secondTab extends Fragment {
         }
 
         getMotorStatus();
-        btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number);
-
+        btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getBtn_Finger_Enabler);
         return view;
     }
 
-    private void btnMethods(String getMotor_status, String getBtn_lock, String getGPS_status, String getVolume_Control, String getMobile_Number) {
+//    private void btnMethodsTest() {
+//        lockBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (lockStatus_Test == false) {
+//                    tvLockStatus.setText("LOCKED");
+//                    tvLockStatus.setTextColor(Color.GREEN);
+//                    lockBtn.setText("UNLOCK");
+//                    lockStatus_Test = true;
+//                } else {
+//                    tvLockStatus.setText("UNLOCKED");
+//                    tvLockStatus.setTextColor(Color.RED);
+//                    lockBtn.setText("LOCK");
+//                    lockStatus_Test = false;
+//                }
+//            }
+//        });
+//
+//        motorStatusBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (motorStatus_Test == false) {
+//                    tvMotorStatus.setText("PARKED");
+//                    tvMotorStatus.setTextColor(Color.GREEN);
+//                    motorStatusBtn.setText("RIDING");
+//                    motorStatus_Test = true;
+//                } else {
+//                    tvMotorStatus.setText("RIDING");
+//                    tvMotorStatus.setTextColor(Color.RED);
+//                    motorStatusBtn.setText("PARK");
+//                    motorStatus_Test = false;
+//                }
+//            }
+//        });
+//
+//        gpsBtn.setOnClickListener(new View.OnClickListener() {
+//            final String title1 = "Enable GPS";
+//            final String title2 = "Disable GPS";
+//            final String message = "Warning, enabling the GPS will switch the Serial Communication of the device to the GPS Module. Disabling the usage of the fingerprint scanner, change from Park" +
+//                    " Mode to Ride Mode and unlocking the device via Mobile Application until the gps achieves trilateration. Do you want to enable GPS?";
+//            final String message2 = "Do you want to disable GPS?";
+//            @Override
+//            public void onClick(View view) {
+//                if (gpsStatus_Test == false) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                    builder.setCancelable(true);
+//                    builder.setTitle(title1);
+//                    builder.setMessage(message);
+//                    builder.setPositiveButton("Enable",
+//                            (dialog, which) -> {
+//                                tvGPSStatus.setText("ON");
+//                                tvGPSStatus.setTextColor(Color.GREEN);
+//                                gpsBtn.setText("DISABLE GPS");
+//                            });
+//
+//                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+//                    });
+//
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    gpsStatus_Test = true;
+//                } else {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+//                    builder.setCancelable(true);
+//                    builder.setTitle(title2);
+//                    builder.setMessage(message2);
+//                    builder.setPositiveButton("Disable",
+//                            (dialog, which) -> {
+//                                tvGPSStatus.setText("OFF");
+//                                tvGPSStatus.setTextColor(Color.RED);
+//                                gpsBtn.setText("ENABLE GPS");
+//                            });
+//
+//                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+//                    });
+//
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    gpsStatus_Test = false;
+//                }
+//            }
+//        });
+//
+//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+//                if (i == 0) {
+//                    tvVolume.setText("0");
+//                    tvVolume.setTextColor(Color.RED);
+//
+//                } else if (i == 1) {
+//                    tvVolume.setText("10");
+//                    tvVolume.setTextColor(Color.RED);
+//
+//                } else if (i == 2) {
+//                    tvVolume.setText("20");
+//                    tvVolume.setTextColor(Color.RED);
+//
+//                } else if (i == 3) {
+//                    tvVolume.setText("30");
+//                    tvVolume.setTextColor(Color.YELLOW);
+//
+//                } else if (i == 4) {
+//                    tvVolume.setText("40");
+//                    tvVolume.setTextColor(Color.YELLOW);
+//
+//
+//                } else if (i == 5) {
+//                    tvVolume.setText("50");
+//                    tvVolume.setTextColor(Color.GREEN);
+//
+//                } else if (i == 6) {
+//                    tvVolume.setText("60");
+//                    tvVolume.setTextColor(Color.GREEN);
+//
+//                } else {
+//                    tvVolume.setText("70");
+//                    tvVolume.setTextColor(Color.GREEN);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
+//    }
+    private void btnMethods(String getMotor_status, String getBtn_lock, String getGPS_status, String getVolume_Control, String getMobile_Number, String getBtn_Finger_Enabler) {
         String statusOff = "0";
         String statusOn = "1";
+//        TextView unlockText = new TextView(getActivity());
+//        unlockText.setText("Remove Unlock");
+//        unlockText.setTextIsSelectable(true);
+//        TextView enableFinger = new TextView(getActivity());
+//        enableFinger.setText("Enable Fingerprint Access");
+//        unlockText.setTextIsSelectable(true);
+        final String[] unlockOptions = new String[]{"Remote Unlock", "Biometrics"};
 
         lockBtn.setOnClickListener(view -> {
             isConnected();
-
             if (isConnectedto) {
                 FirebaseDB_Connection();
-
                 if (getBtn_lock.equals(statusOff)) {
                     if (getConnection.equals(isConnected)) {
-                        firebaseDB_Connection.child("Connection").setValue("0");
-                        databaseReference.child("btn_Lock").setValue(statusOn);
-                        databaseReference.child("btn_Control").setValue("1");
-                        lockBtn.setText("UNLOCK");
+                        AlertDialog.Builder unlockBuilder = new AlertDialog.Builder(requireContext());
+                        unlockBuilder.setTitle("Unlock Options");
+//                        unlockBuilder.setMessage(unlockText.getText().toString() + "\n" + enableFinger.getText().toString());
+                        unlockBuilder.setItems(unlockOptions, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                               if ("Remote Unlock".equals(unlockOptions[i])) {
+                                   firebaseDB_Connection.child("Connection").setValue("0");
+                                   databaseReference.child("btn_Lock").setValue(statusOn);
+                                   databaseReference.child("btn_Control").setValue("1");
+                                   lockBtn.setText("LOCK");
+                                   getMotorStatus();
+                               }
+
+                               if ("Biometrics".equals(unlockOptions[i])) {
+                                   if (getBtn_Finger_Enabler.equals(statusOff)) {
+                                       AlertDialog.Builder BiometricsEnabler = new AlertDialog.Builder(requireContext());
+                                       BiometricsEnabler.setTitle("Enable Biometrics?");
+                                       BiometricsEnabler.setPositiveButton("Enable",
+                                               (dialog, which) -> {
+                                                   firebaseDB_Connection.child("Connection").setValue("0");
+                                                   databaseReference.child("btn_Finger_Enabler").setValue(statusOn);
+                                                   databaseReference.child("btn_Control").setValue("1");
+                                               });
+                                       BiometricsEnabler.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                                       });
+                                       BiometricsEnabler.create();
+                                       BiometricsEnabler.show();
+                                       getMotorStatus();
+                                   }
+
+                                   if (getBtn_Finger_Enabler.equals(statusOn)) {
+
+                                       AlertDialog.Builder BiometricsEnabler = new AlertDialog.Builder(requireContext());
+                                       BiometricsEnabler.setTitle("Disable Biometrics?");
+                                       BiometricsEnabler.setPositiveButton("Disable",
+                                               (dialog, which) -> {
+                                                   firebaseDB_Connection.child("Connection").setValue("0");
+                                                   databaseReference.child("btn_Finger_Enabler").setValue(statusOff);
+                                                   databaseReference.child("btn_Control").setValue("1");
+                                               });
+                                       BiometricsEnabler.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                                       });
+                                       BiometricsEnabler.create();
+                                       BiometricsEnabler.show();
+                                       getMotorStatus();
+                                   }
+                               }
+
+                            }
+                        });
+                        unlockBuilder.create();
+                        unlockBuilder.show();
+
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
@@ -210,6 +404,7 @@ public class secondTab extends Fragment {
                         firebaseDB_Connection.child("Connection").setValue("0");
                         databaseReference.child("btn_Motor_Status").setValue(statusOn);
                         databaseReference.child("btn_Control").setValue("1");
+                        getMotorStatus();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                         builder.setCancelable(true);
@@ -405,7 +600,7 @@ public class secondTab extends Fragment {
                     Toast.makeText(getActivity(), "Not Connected to the Internet", Toast.LENGTH_SHORT).show();
                 }
                 getMotorStatus();
-
+                
 
             }
 
@@ -432,6 +627,7 @@ public class secondTab extends Fragment {
                     layoutName.setOrientation(LinearLayout.VERTICAL);
 
                     final EditText etNumber = new EditText(getContext());
+                    etNumber.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
                     etNumber.setHint("9276625575");
                     layoutName.addView(etNumber);
 
@@ -445,11 +641,18 @@ public class secondTab extends Fragment {
                                 FirebaseDB_Connection();
                                 if (getConnection.equals(isConnected)) {
                                     String newNumber = etNumber.getText().toString(); // variable to collect user input
-                                    databaseReference.child("numChange_confirmation").setValue("1");
-                                    databaseReference.child("mobile_number").setValue(newNumber);
-                                    databaseReference.child("btn_Control").setValue("1");
-                                    Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
-                                    postChangeNumberConfirmation();
+                                    if(newNumber.charAt(0) != '9') {
+                                        Toast.makeText(getActivity(), "Start with '9'", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        databaseReference.child("numChange_confirmation").setValue("1");
+                                        databaseReference.child("mobile_number").setValue(newNumber);
+                                        databaseReference.child("btn_Control").setValue("1");
+                                        Toast.makeText(getContext(), "Enrollment In Process, check Fingerprint Scanner.", Toast.LENGTH_LONG).show();
+                                        postChangeNumberConfirmation();
+                                    }
+
+
+
                                 } else {
                                     AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
                                     builder2.setCancelable(true);
@@ -597,7 +800,10 @@ public class secondTab extends Fragment {
                     getMotor_Status = model.getBtn_Motor_Status();
                     getBtn_Lock = model.getBtn_Lock();
                     getBtn_GPS_Enabler = model.getBtn_GPS_Enabler();
+                    getBtn_Finger_Enabler = model.getBtn_Finger_Enabler();
                     getMobile_Number = model.getMobile_number();
+                    getVolume_Control = model.getVolume_Control();
+
 
                     firebaseDB_Connection.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -618,8 +824,8 @@ public class secondTab extends Fragment {
                                             if (model != null) {
                                                 getVolume_Control = model.getVolume_Control();
                                             }
-                                            setMotorStatus(getBtn_Alarm, getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number);
-                                            btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number);
+                                            setMotorStatus(getBtn_Alarm, getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getBtn_Finger_Enabler);
+                                            btnMethods(getMotor_Status, getBtn_Lock, getBtn_GPS_Enabler, getVolume_Control, getMobile_Number, getBtn_Finger_Enabler);
                                         }
                                     }
 
@@ -648,7 +854,7 @@ public class secondTab extends Fragment {
         });
     }
 
-    private void setMotorStatus(String getBtn_Alarm, String getMotor_Status, String getBtn_Lock, String getGPS_Status, String getVolume_Control, String getMobile_Number) {
+    private void setMotorStatus(String getBtn_Alarm, String getMotor_Status, String getBtn_Lock, String getGPS_Status, String getVolume_Control, String getMobile_Number, String getBtn_Finger_Enabler) {
 
         if (this.getMotor_Status.equals(statusOff)) {
             tvMotorStatus.setText("PARKED");
@@ -691,34 +897,42 @@ public class secondTab extends Fragment {
         if (this.getVolume_Control.equals(volume_0)) {
             tvVolume.setText("0");
             tvVolume.setTextColor(Color.RED);
+            seekBar.setProgress(0);
 
         } else if (this.getVolume_Control.equals(volume_1)) {
             tvVolume.setText("10");
             tvVolume.setTextColor(Color.RED);
+            seekBar.setProgress(1);
 
         } else if (this.getVolume_Control.equals(volume_2)) {
             tvVolume.setText("20");
             tvVolume.setTextColor(Color.RED);
+            seekBar.setProgress(2);
 
         } else if (this.getVolume_Control.equals(volume_3)) {
             tvVolume.setText("30");
             tvVolume.setTextColor(Color.YELLOW);
+            seekBar.setProgress(3);
 
         } else if (this.getVolume_Control.equals(volume_4)) {
             tvVolume.setText("40");
             tvVolume.setTextColor(Color.YELLOW);
+            seekBar.setProgress(4);
 
         } else if (this.getVolume_Control.equals(volume_5)) {
             tvVolume.setText("50");
             tvVolume.setTextColor(Color.GREEN);
+            seekBar.setProgress(5);
 
         } else if (this.getVolume_Control.equals(volume_6)) {
             tvVolume.setText("60");
             tvVolume.setTextColor(Color.GREEN);
+            seekBar.setProgress(6);
 
         } else {
             tvVolume.setText("70");
             tvVolume.setTextColor(Color.GREEN);
+            seekBar.setProgress(7);
 
         }
 
@@ -746,10 +960,13 @@ public class secondTab extends Fragment {
     }
 
     private void isConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (getActivity() != null) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+            isConnectedto = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+        }
+
     }
 
     public class MyRunnable implements Runnable {

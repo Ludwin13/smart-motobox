@@ -68,7 +68,6 @@ public class enrollFingerprint extends AppCompatActivity {
          * Else, display a toast (temporarily, preferrably use a popup message for user to be able to read it) indicating that fingerprint enrollment is in process.
          */
 
-
         TimeZone tz = TimeZone.getDefault();
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("MM-dd-yyyy");
         String date = dateFormat1.format(Calendar.getInstance().getTime());
@@ -194,8 +193,6 @@ public class enrollFingerprint extends AppCompatActivity {
         final String delete_Message = "Delete Fingerprint ID #";
         final String enrollValue = "1";
         final String deleteValue = "0";
-
-
 
         fingerprint_1.setOnClickListener(new View.OnClickListener() {
             @Override

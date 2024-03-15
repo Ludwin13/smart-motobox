@@ -38,14 +38,15 @@ public class forgotPasswordPage extends AppCompatActivity {
             finish();
         });
         
-        emailRecovery.setOnClickListener(view -> {
-            isConnected();
-            if (isConnectedto) {
-                changePassword();
-            }  else {
-                Toast.makeText(forgotPasswordPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        emailRecovery.setOnClickListener(view -> {
+//            isConnected();
+//            if (isConnectedto) {
+//                    changePassword();
+//
+//            }  else {
+//                Toast.makeText(forgotPasswordPage.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         resetPassBtn.setOnClickListener(view -> {
             isConnected();

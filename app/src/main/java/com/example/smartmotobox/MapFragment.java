@@ -39,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,12 +49,16 @@ import java.util.List;
 
 public class MapFragment extends Fragment {
     private FirebaseDatabase firebaseDatabase;
-    private Button limitMarkers_Btn;
+    private Button limitMarkers_Btn, addMarkerTest_Btn;
     private TextView Test;
     private static int markerCountLimit = 0;
     private Marker mMarker;
     private static String mSelectedDate;
     private static int gpsListSize;
+    private static int gpsmarkerlist_test = 0;
+    private static boolean firstStartup = true;
+    private static int ListTime2_oldSize = 0;
+    private static int ListTime2_Size = 0;
     List<Marker> markers = new ArrayList<>();
     boolean isConnectedto;
 
@@ -108,9 +113,11 @@ public class MapFragment extends Fragment {
         List<String> ListTime = new ArrayList<>();
         List<Double> ListLatitude = new ArrayList<>();
         List<Double> ListLongitude = new ArrayList<>();
+        List<String> ListDates = new ArrayList<>();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("M-dd-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         limitMarkers_Btn = view.findViewById(R.id.limitMarkers_Btn);
+//        addMarkerTest_Btn = view.findViewById(R.id.addMarkerTestBtn);
 
 
 
@@ -127,7 +134,66 @@ public class MapFragment extends Fragment {
         SupportMapFragment supportMapFragmentInitialization = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         isConnected();
-
+//        addMarkerTest_Btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+//
+//                if (supportMapFragment != null) {
+//                    supportMapFragment.getMapAsync(googleMap -> {
+//
+//                        if (gpsmarkerlist_test == 0) {
+//                            googleMap.clear();
+//                            gpsmarkerlist_test++;
+//                            LatLng marker2 = new LatLng(014.59303, 121.101510);
+//                            googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
+//                            String snippet = "Latitude: " + 014.59303 + "\n" + "Longitude: " + 121.101501;
+//                            mMarker = googleMap.addMarker(new MarkerOptions()
+//                                    .position(marker2)
+//                                    .title("Marker1")
+//                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+//                                    .snippet(snippet));
+//                            CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(014.59303, 121.101510), 17.5f);
+//                            googleMap.moveCamera(point);
+//                            return;
+//
+//                        }
+//
+//                        if (gpsmarkerlist_test == 1){
+//                            gpsmarkerlist_test++;
+//                        LatLng marker2 = new LatLng(014.592818, 121.10162);
+//                        googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
+//                        String snippet = "Latitude: " + 014.592818 + "\n" + "Longitude: " + 121.101620;
+//                        mMarker = googleMap.addMarker(new MarkerOptions()
+//                                .position(marker2)
+//                                .title("Marker2")
+//                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+//                                .snippet(snippet));
+//                        CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(014.592818, 121.101620), 17.5f);
+//                        googleMap.moveCamera(point);
+//                            return;
+//                        }
+//
+//                        if (gpsmarkerlist_test == 2) {
+//                            gpsmarkerlist_test = 0;
+//                            LatLng marker2 = new LatLng(014.593388, 121.101590);
+//                            googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
+//                            String snippet = "Latitude: " + 014.593388 + "\n" + "Longitude: " + 121.101590;
+//                            mMarker = googleMap.addMarker(new MarkerOptions()
+//                                    .position(marker2)
+//                                    .title("Marker3")
+//                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+//                                    .snippet(snippet));
+//                            CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(014.593388, 121.101590), 17.5f);
+//                            googleMap.moveCamera(point);
+//                            return;
+//                        }
+//
+//            });
+//
+//                }
+//            }
+//        });
             Firebase_GPSDataChange.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -151,52 +217,75 @@ public class MapFragment extends Fragment {
                          */
                         for (DataSnapshot childSnapshot: snapshot.getChildren()) {
                             String parent = childSnapshot.getKey();
-                            if (parent != null) {
-                                DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(parent);
-                                Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        /**
-                                         * at this point the query points to the child node with the same name as the value of the currentDate variable.
-                                         * So snapshot will display only the date name (Parent).
-                                         * DataSnapshot snapshot = Dates (6-16-2023, 6-17-2023) etc.
-                                         */
-                                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            ListDates.add(parent);
+                            String myDate = java.text.DateFormat.getDateInstance(DateFormat.LONG).format(Calendar.getInstance().getTime());
+                            for(int i = 0; i < ListDates.size(); i++) {
+                                if (myDate == ListDates.get(i)) {
+                                    if (parent != null) {
+                                        DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(parent);
+                                        Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                /**
+                                                 * at this point the query points to the child node with the same name as the value of the currentDate variable.
+                                                 * So snapshot will display only the date name (Parent).
+                                                 * DataSnapshot snapshot = Dates (6-16-2023, 6-17-2023) etc.
+                                                 */
+                                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
-                                            /**
-                                             * Need an enhanced for loop to increment through the snapshot (Parent Node/Date).
-                                             * This will retrieve children of the Date nodes e.g. nodes that start with "-NDY..."
-                                             */
-                                            Location model = postSnapshot.getValue(Location.class);
-                                            /**
-                                             *
-                                             */
-                                            assert model != null;
-                                            String LatitudeStr = model.getLatitude();
-                                            String LongitudeStr = model.getLongitude();
-                                            String Time = model.getTime();
+                                                    /**
+                                                     * Need an enhanced for loop to increment through the snapshot (Parent Node/Date).
+                                                     * This will retrieve children of the Date nodes e.g. nodes that start with "-NDY..."
+                                                     */
+                                                    Location model = postSnapshot.getValue(Location.class);
+                                                    /**
+                                                     *
+                                                     */
+                                                    assert model != null;
+                                                    String LatitudeStr = model.getLatitude();
+                                                    String LongitudeStr = model.getLongitude();
+                                                    String Time = model.getTime();
 
-                                            if (LatitudeStr == null || LongitudeStr == null || Time == null) {
 
-                                                break;
 
-                                            } else {
+                                                    if (LatitudeStr == null || LongitudeStr == null || Time == null) {
 
-                                                Double Latitude = Double.valueOf(LatitudeStr);
-                                                Double Longitude = Double.valueOf(LongitudeStr);
+                                                        break;
+
+                                                    } else {
+
+
+
+                                                        Double Latitude = Double.valueOf(LatitudeStr);
+                                                        Double Longitude = Double.valueOf(LongitudeStr);
+
+//                                                ListTime2.add(Time);
 //
-                                                addMarker(Latitude, Longitude, Time, convertDate(parent));
+//                                                 int ListTime2_oldSize = ListTime2.size();
+//
+//                                                 if(ListTime2_Size != ListTime2_oldSize) {
+//                                                 addMarker(Latitude, Longitude, Time, convertDate(parent));
+//                                                    ListTime2_Size = ListTime2_oldSize;
+//                                                 }
+                                                        addMarker(Latitude, Longitude, Time, convertDatev2(parent));
+                                                        int pos = getAllParentDates.indexOf(myDate);
+                                                        FirebaseDB_Spinner.setSelection(pos);
+
+
+
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
                                             }
-                                        }
+                                        });
                                     }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
+                                }
                             }
+
                         }
 
 
@@ -229,7 +318,7 @@ public class MapFragment extends Fragment {
 
 //
 //                        Test.setText(substringYear + "|" + substringMonth + "|" + substringDay);
-                        getAllParentDates.add(convertDate(parent));
+                        getAllParentDates.add(convertDatev2(parent));
                         adapter.notifyDataSetChanged();
                         /**
                          * Need to create a code to zoom in on the newest received location from the Database
@@ -238,13 +327,18 @@ public class MapFragment extends Fragment {
                          * Need to refresh the app to successfully read it.
                          * Maybe an app refresher?
                          */
+                        String myDate = java.text.DateFormat.getDateInstance(DateFormat.LONG).format(Calendar.getInstance().getTime());
+
+
+                        int pos = getAllParentDates.indexOf(myDate);
+                        FirebaseDB_Spinner.setSelection(pos);
 
                         FirebaseDB_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
+                                Test.setText(convertDateFormatv2(selectedDate));
                                 gpsListSize = 0;
-
 
                                 if (selectedDate.equals("--SELECT HISTORY--")) {
 
@@ -254,7 +348,7 @@ public class MapFragment extends Fragment {
                                     if (supportMapFragmentInitialization != null) {
                                         supportMapFragmentInitialization.getMapAsync(googleMap -> {
                                             googleMap.clear();
-                                            DatabaseReference FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(convertDateFormat(selectedDate));
+                                            DatabaseReference FirebaseDB_GPSDateMarkerData = FirebaseDB_GPSDate.child(convertDateFormatv2(selectedDate));
 
                                             FirebaseDB_GPSDateMarkerData.addValueEventListener(new ValueEventListener() {
                                                 @Override
@@ -345,10 +439,7 @@ public class MapFragment extends Fragment {
                                                                 gpsListSize = ListTime.size();
 //                                                                markerCountSize = ListTime.size();
 //                                                                finalMarkerCounter = markerCountSize - markerCountLimit;
-//                                                                Test.setText(String.valueOf(ListLongitude));
-
-
-
+//                                                                Test.setText(String.valueOf(ListLongitude)); addMarker(Latitude, Longitude, Time, myDate);
 //                                                                addMarkerv2(Latitude, Longitude, Time, selectedDate, ListTime.size());
 
                                                             }
@@ -524,6 +615,124 @@ public class MapFragment extends Fragment {
         return null;
     }
 
+    private String convertDateFormatv2(String selectedDate) {
+        //January #, #### = 14 | Month(0, 7) | Day(8, 9) | Year(11)
+        //February #, #### = 15 | Month(0, 8) | Day(9, 10) | Year(12)
+        //March #, #### = 12 | Month(0, 5) | Day(6, 7) | Year(9)
+        //April #, #### = 12 | Month(0, 5) | Day(6, 7) | Year(9)
+        //May #, #### = 10 | Month(0, 3) | Day(4, 5) | Year(7)
+        //June #, #### = 11 | Month(0, 4) | Day(5, 6) | Year(8)
+        //July #, #### = 11 | Month(0, 4) | Day(5, 6) | Year(8)
+        //August #, #### = 13 | Month(0, 6) | Day(7, 8) | Year(10)
+        //September #, #### = 16 | Month(0, 9) | Day(10, 11) | Year(13)
+        //October #, #### = 14 | Month(0, 7) | Day(8, 9) | Year(11)
+        //November #, #### = 15 | Month(0, 8) | Day(9, 10) | Year (12)
+        //December #, #### = 15 | Month(0, 8) | Day(9, 10) | Year (12)
+
+        //January ##, #### = 15 | Month(0, 7) | Day(8, 10) | Year(12)
+        //February ##, #### = 16 | Month(0, 8) | Day(9, 11) | Year(13)
+        //March ##, #### = 13 | Month(0, 5) | Day(6, 8) | Year(10)
+        //April ##, #### = 13 | Month(0, 5) | Day(6, 8) | Year(10)
+        //May ##, #### = 11 | Month(0, 3) | Day(4, 6) | Year(8)
+        //June ##, #### = 12 | Month(0, 4) | Day(5, 7) | Year(9)
+        //July ##, #### = 12 | Month(0, 4) | Day(5, 7) | Year(9)
+        //August ##, #### = 14 | Month(0, 6) | Day(7, 9) | Year(11)
+        //September ##, #### = 17 | Month(0, 9) | Day(10, 12) | Year(14)
+        //October ##, #### = 15 | Month(0, 7) | Day(8, 10) | Year(12)
+        //November ##, #### = 16 | Month(0, 8) | Day(9, 11) | Year (13)
+        //December ##, #### = 16 | Month(0, 8) | Day(9, 11) | Year (13)
+
+
+
+        if (selectedDate.contains("January")) {
+            if (selectedDate.substring(10, 11).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(8, 9) + "-" + selectedDate.substring(0, 7).replace("January", "1") + "-" +selectedDate.substring(11);
+            } else {
+                return selectedDate.substring(8, 10) + "-" + selectedDate.substring(0, 7).replace("January", "1") + "-" +selectedDate.substring(12);
+            }
+        } else if (selectedDate.contains("February")) {
+            if (selectedDate.substring(11, 12).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(9, 10) + "-" + selectedDate.substring(0, 8).replace("February", "2") + "-" +selectedDate.substring(12);
+            } else {
+                return selectedDate.substring(9, 11) + "-" + selectedDate.substring(0, 8).replace("February", "2") + "-" +selectedDate.substring(13);
+            }
+        } else if (selectedDate.contains("March")) {
+            if (selectedDate.substring(8, 9).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(6,7) + "-" + selectedDate.substring(0, 5).replace("March", "3") + "-" +selectedDate.substring(9);
+            } else {
+                return selectedDate.substring(6,8) + "-" + selectedDate.substring(0, 5).replace("March", "3") + "-" +selectedDate.substring(10);
+            }
+        } else if (selectedDate.contains("April")) {
+            if (selectedDate.substring(8, 9).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(6,7) + "-" + selectedDate.substring(0, 5).replace("April", "4") + "-" +selectedDate.substring(9);
+            } else {
+                return selectedDate.substring(6,8) + "-" + selectedDate.substring(0, 5).replace("April", "4") + "-" +selectedDate.substring(10);
+            }
+        } else if (selectedDate.contains("May")) {
+            if (selectedDate.substring(6,7).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(4, 5) + "-" + selectedDate.substring(0, 3).replace("May", "5") + "-" +selectedDate.substring(7);
+            } else {
+                return selectedDate.substring(4, 6) + "-" + selectedDate.substring(0, 3).replace("May", "5") + "-" +selectedDate.substring(8);
+            }
+        } else if (selectedDate.contains("June")) {
+            if (selectedDate.substring(7,8).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(5, 6) + "-" + selectedDate.substring(0, 4).replace("June", "6") + "-" +selectedDate.substring(8);
+            } else {
+                return selectedDate.substring(5, 7) + "-" + selectedDate.substring(0, 4).replace("June", "6") + "-" +selectedDate.substring(9);
+            }
+        } else if (selectedDate.contains("July")) {
+            if (selectedDate.substring(7,8).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(5, 6) + "-" + selectedDate.substring(0, 4).replace("July", "7") + "-" +selectedDate.substring(8);
+            } else {
+                return selectedDate.substring(5, 7) + "-" + selectedDate.substring(0, 4).replace("July", "7") + "-" +selectedDate.substring(9);
+            }
+        } else if (selectedDate.contains("August")) {
+            if (selectedDate.substring(8, 9).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(7, 8) + "-" + selectedDate.substring(0, 6).replace("August", "8") + "-" +selectedDate.substring(10);
+            } else {
+                return selectedDate.substring(7, 9) + "-" + selectedDate.substring(9).replace("August", "8") + "-" +selectedDate.substring(13);
+            }
+        } else if (selectedDate.contains("September")) {
+            if (selectedDate.substring(12, 13).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(10, 11) + "-" + selectedDate.substring(0, 9).replace("September", "9") + "-" +selectedDate.substring(13);
+            } else {
+                return selectedDate.substring(10, 12) + "-" + selectedDate.substring(0, 9).replace("September", "9") + "-" +selectedDate.substring(14);
+            }
+        } else if (selectedDate.contains("October")) {
+            if (selectedDate.substring(10, 11).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(8, 9) + "-" + selectedDate.substring(0, 7).replace("October", "10") + "-" +selectedDate.substring(11);
+            } else {
+                return selectedDate.substring(8, 10) + "-" + selectedDate.substring(0, 7).replace("October", "10") + "-" +selectedDate.substring(12);
+            }
+        } else if (selectedDate.contains("November")) {
+            if (selectedDate.substring(11, 12).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(9, 10) + "-" + selectedDate.substring(0, 8).replace("November", "11") + "-" +selectedDate.substring(12);
+            } else {
+                return selectedDate.substring(9, 11) + "-" + selectedDate.substring(0, 8).replace("November", "11") + "-" +selectedDate.substring(13);
+            }
+        } else if (selectedDate.contains("December")) {
+            if (selectedDate.substring(11, 12).contains(" ")) {
+                //day-month-year
+                return selectedDate.substring(9, 10) + "-" + selectedDate.substring(0, 8).replace("December", "12") + "-" +selectedDate.substring(12);
+            } else {
+                return selectedDate.substring(9, 11) + "-" + selectedDate.substring(0, 8).replace("December", "12") + "-" +selectedDate.substring(13);
+            }
+        }
+
+        return null;
+    }
+
     private String convertDate(String parent) {
         int parentLength = parent.length();
         String substringDay = "";
@@ -645,7 +854,126 @@ public class MapFragment extends Fragment {
         return convertedDate;
         }
 
+    private String convertDatev2(String parent) {
+        int parentLength = parent.length();
+        String substringDay = "";
+        String substringMonth = "";
+        String substringYear = "";
+        String convertedDate = "";
 
+        if (parentLength == 10) {
+            substringDay = parent.substring(0, 2);
+            substringMonth = parent.substring(3, 5);
+            substringYear = parent.substring(6);
+            // 10-12-2024 = 10
+
+            if (substringMonth.equals("10")) {
+                return substringMonth.replace("10", "October") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.equals("11")) {
+                return substringMonth.replace("11", "November") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.equals("12")) {
+                return substringMonth.replace("12", "December") + " " +  substringDay + ", " + substringYear;
+            }
+
+        }
+
+        if (parentLength == 9) {
+
+            substringDay = parent.substring(0, 2);
+            substringMonth = parent.substring(3, 5);
+            substringYear = parent.substring(5);
+
+
+            if (substringDay.contains("-")) {
+                //1-12-2024
+                substringDay = parent.substring(0, 1);
+                substringMonth = parent.substring(2, 4);
+
+                if (substringMonth.equals("10")) {
+                    return substringMonth.replace("10", "October") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.equals("11")) {
+                    return substringMonth.replace("11", "November") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.equals("12")) {
+                    return substringMonth.replace("12", "December") + " " + substringDay + ", " + substringYear;
+                }
+
+            }
+
+            if (substringMonth.contains("-")) {
+                //10-1-2024
+                substringMonth = parent.substring(3, 4);
+
+                if (substringMonth.charAt(0) == '1') {
+                    return substringMonth.replace("1", "January") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '2') {
+                    return substringMonth.replace("2", "February") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '3') {
+                    return substringMonth.replace("3", "March") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '4') {
+                    return substringMonth.replace("4", "April") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '5') {
+                    return substringMonth.replace("5", "May") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '6') {
+                    return substringMonth.replace("6", "June") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '7') {
+                    return substringMonth.replace("7", "July") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '8') {
+                    return substringMonth.replace("8", "August") + " " + substringDay + ", " + substringYear;
+                } else if (substringMonth.charAt(0) == '9') {
+                    return substringMonth.replace("9", "September") + " " + substringDay + ", " + substringYear;
+                }
+            }
+
+//            } else {
+//                substringMonth = parent.substring(3, 5);
+//                substringYear = parent.substring(5);
+//
+//                if (substringMonth.equals("10")) {
+//                    substringMonth.replace("10", "October");
+//                } else if (substringMonth.equals("11")) {
+//                    substringMonth.replace("11", "November");
+//                } else if (substringMonth.equals("12")) {
+//                    substringMonth.replace("12", "December");
+//                }
+//            }
+
+        }
+
+        if (parent.length() == 8) {
+            substringDay = parent.substring(0, 1);
+            substringMonth = parent.substring(2, 3);
+            substringYear = parent.substring(4);
+            // 1-1-2024 = 8
+
+            if (substringMonth.charAt(0) == '1') {
+                return substringMonth.replace("1", "January") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '2') {
+                return substringMonth.replace("2", "February") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '3') {
+                return substringMonth.replace("3", "March") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '4') {
+                return substringMonth.replace("4", "April") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '5') {
+                return substringMonth.replace("5", "May") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '6') {
+                return substringMonth.replace("6", "June") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '7') {
+                return substringMonth.replace("7", "July") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '8') {
+                return substringMonth.replace("8", "August") + " " + substringDay + ", " + substringYear;
+            } else if (substringMonth.charAt(0) == '9') {
+                return substringMonth.replace("9", "September") + " " + substringDay + ", " + substringYear;
+            }
+
+        }
+
+        if (parent.equals("--SELECT HISTORY--")) {
+            return parent;
+        }
+
+        convertedDate = substringMonth + " " + substringDay + "," + substringYear;
+        return convertedDate;
+    }
 
     private void addMarkerv2(Double Latitude, Double Longitude, String Time, String selectedDate) {
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);

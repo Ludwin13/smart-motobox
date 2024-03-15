@@ -86,7 +86,6 @@ public class loginPage extends AppCompatActivity {
     }
 
     private void performLogin() {
-
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString();
 
