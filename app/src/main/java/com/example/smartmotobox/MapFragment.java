@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -24,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,7 +32,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -217,12 +216,14 @@ public class MapFragment extends Fragment {
                          */
                         for (DataSnapshot childSnapshot: snapshot.getChildren()) {
                             String parent = childSnapshot.getKey();
-                            ListDates.add(parent);
+                            ListDates.add(convertDatev2(parent));
+
                             String myDate = java.text.DateFormat.getDateInstance(DateFormat.LONG).format(Calendar.getInstance().getTime());
-                            for(int i = 0; i < ListDates.size(); i++) {
-                                if (myDate == ListDates.get(i)) {
-                                    if (parent != null) {
-                                        DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(parent);
+                            //Test.setText(convertDateFormatv2(parent) + " | " + myDate);
+                            for(String s : ListDates) {
+                                if (myDate.equals(s)) {
+                                    if (s != null) {
+                                        DatabaseReference Firebase_GPSCurrentDate = FirebaseDB_GPSDate.child(convertDateFormatv2(s));
                                         Firebase_GPSCurrentDate.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -245,7 +246,7 @@ public class MapFragment extends Fragment {
                                                     String LatitudeStr = model.getLatitude();
                                                     String LongitudeStr = model.getLongitude();
                                                     String Time = model.getTime();
-
+                                                    Test.setText(convertDateFormatv2(s) + " | " + myDate);
 
 
                                                     if (LatitudeStr == null || LongitudeStr == null || Time == null) {
@@ -253,8 +254,6 @@ public class MapFragment extends Fragment {
                                                         break;
 
                                                     } else {
-
-
 
                                                         Double Latitude = Double.valueOf(LatitudeStr);
                                                         Double Longitude = Double.valueOf(LongitudeStr);
@@ -267,7 +266,7 @@ public class MapFragment extends Fragment {
 //                                                 addMarker(Latitude, Longitude, Time, convertDate(parent));
 //                                                    ListTime2_Size = ListTime2_oldSize;
 //                                                 }
-                                                        addMarker(Latitude, Longitude, Time, convertDatev2(parent));
+                                                        addMarker(Latitude, Longitude, Time, s);
                                                         int pos = getAllParentDates.indexOf(myDate);
                                                         FirebaseDB_Spinner.setSelection(pos);
 
@@ -282,6 +281,7 @@ public class MapFragment extends Fragment {
 
                                             }
                                         });
+
                                     }
                                 }
                             }
@@ -337,7 +337,7 @@ public class MapFragment extends Fragment {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
-                                Test.setText(convertDateFormatv2(selectedDate));
+//                                Test.setText(convertDateFormatv2(selectedDate));
                                 gpsListSize = 0;
 
                                 if (selectedDate.equals("--SELECT HISTORY--")) {
@@ -498,14 +498,20 @@ public class MapFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 markerCountLimit = Integer.parseInt(etMarkerLimit.getText().toString());
                                 Collections.reverse(ListTime);
                                 Collections.reverse(ListLatitude);
                                 Collections.reverse(ListLongitude);
-
-                                for (int i = 0; i < markerCountLimit; i++) {
-                                    addMarkerv2(ListLatitude.get(i), ListLongitude.get(i), ListTime.get(i), mSelectedDate);
+                                if (markerCountLimit > ListTime.size()) {
+                                    Toast.makeText(getActivity(), "Set limit exceeds stored marker count", Toast.LENGTH_SHORT).show();
+                                    return;
+                                } else {
+                                    for (int i = 0; i < markerCountLimit; i++) {
+                                        addMarkerv2(ListLatitude.get(i), ListLongitude.get(i), ListTime.get(i), mSelectedDate);
+                                    }
                                 }
+
 
                             }
                         });
