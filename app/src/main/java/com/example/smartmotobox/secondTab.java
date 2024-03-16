@@ -36,7 +36,7 @@ import java.lang.ref.WeakReference;
 public class secondTab extends Fragment {
 
     Data data;
-    Button lockBtn, motorStatusBtn, gpsBtn, changeNumberBtn;
+    Button lockBtn, motorStatusBtn, gpsBtn, changeNumberBtn, updateControlBtn;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference, connectionDBRef, volumeDBRef, firebaseDB_Connection, firebaseDB_Alarm;
     TextView tvLockStatus, tvAlarmStatus, tvMotorStatus, tvConnectionStatus, tvGPSStatus, tvVolume;
@@ -79,6 +79,7 @@ public class secondTab extends Fragment {
         lockBtn = (Button) view.findViewById(R.id.lockBtn);
         motorStatusBtn = (Button) view.findViewById(R.id.ridingBtn);
         gpsBtn = (Button) view.findViewById(R.id.gpsBtn);
+        updateControlBtn = (Button) view.findViewById(R.id.updateControlBtn);
         firebaseDB_Connection = firebaseDatabase.getReference("Connection");
 //        resetWiFiBtn = (Button) view.findViewById(R.id.resetWiFi);
 
@@ -391,6 +392,25 @@ public class secondTab extends Fragment {
             }
             getMotorStatus();
 
+        });
+
+        updateControlBtn.setOnClickListener(view -> {
+            isConnected();
+            if (isConnectedto) {
+                FirebaseDB_Connection();
+                if (getConnection.equals(statusOn)) {
+                    firebaseDB_Connection.child("Connection").setValue("0");
+                    databaseReference.child("btn_Control").setValue("1");
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                    builder.setCancelable(true);
+                    builder.setTitle("Smart Moto Box Connection");
+                    builder.setMessage("Smart Moto Box device is not connected to the Internet");
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+
+            }
         });
 
         motorStatusBtn.setOnClickListener(view -> {

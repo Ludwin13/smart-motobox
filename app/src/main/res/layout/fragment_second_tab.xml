@@ -175,6 +175,18 @@
                 app:layout_constraintTop_toTopOf="@+id/statusGuideline2" />
 
             <Button
+                android:id="@+id/updateControlBtn"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_corners"
+                android:text="Update Control"
+                app:layout_constraintEnd_toStartOf="@id/centerGuideline"
+                app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/lockBtn" />
+
+            <Button
                 android:id="@+id/ridingBtn"
                 android:layout_width="125dp"
                 android:layout_height="75dp"

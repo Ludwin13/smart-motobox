@@ -444,6 +444,7 @@ public class fourthTab extends Fragment {
 
                         firebaseDB_Data.child("btn_Enroll").setValue("0");
                         firebaseDB_Data.child("finger_address").setValue("00");
+                        firebaseDB_Data.child("btn_Control").setValue("1");
                         dialog.hide();
                     }
 
@@ -456,6 +457,7 @@ public class fourthTab extends Fragment {
                         firebaseDB_getFingerPrintData.child(fingerTime_child).setValue("");
                         firebaseDB_Data.child("btn_Delete").setValue("0");
                         firebaseDB_Data.child("finger_address").setValue("00");
+                        firebaseDB_Data.child("btn_Control").setValue("1");
                         dialog.hide();
                     }
 
