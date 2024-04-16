@@ -58,6 +58,7 @@ public class MapFragment extends Fragment {
     private static boolean firstStartup = true;
     private static int ListTime2_oldSize = 0;
     private static int ListTime2_Size = 0;
+    private static String currentDate;
     List<Marker> markers = new ArrayList<>();
     boolean isConnectedto;
 
@@ -246,7 +247,7 @@ public class MapFragment extends Fragment {
                                                     String LatitudeStr = model.getLatitude();
                                                     String LongitudeStr = model.getLongitude();
                                                     String Time = model.getTime();
-                                                    Test.setText(convertDateFormatv2(s) + " | " + myDate);
+                                                    //Test.setText(convertDateFormatv2(s) + " | " + myDate);
 
 
                                                     if (LatitudeStr == null || LongitudeStr == null || Time == null) {
@@ -337,10 +338,16 @@ public class MapFragment extends Fragment {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 String selectedDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
+                                currentDate = FirebaseDB_Spinner.getItemAtPosition(i).toString();
 //                                Test.setText(convertDateFormatv2(selectedDate));
                                 gpsListSize = 0;
 
                                 if (selectedDate.equals("--SELECT HISTORY--")) {
+                                    if (supportMapFragmentInitialization != null) {
+                                        supportMapFragmentInitialization.getMapAsync(googleMap -> {
+                                            googleMap.clear();
+                                        });
+                                    }
 
                                 } else {
                                     //String date = dateFormat.format(Calendar.getInstance().getTime());
@@ -479,51 +486,59 @@ public class MapFragment extends Fragment {
         limitMarkers_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int MarkersCount = 0;
-                final String postTitle = "Set Marker Limit Display";
+                String myDate = java.text.DateFormat.getDateInstance(DateFormat.LONG).format(Calendar.getInstance().getTime());
+                Test.setText(myDate + " " + currentDate);
+                if (myDate.equals(currentDate)) {
+                    Toast.makeText(getActivity(), "Cannot limit markers on current date", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    int MarkersCount = 0;
+                    final String postTitle = "Set Marker Limit Display";
 
-                LinearLayout layoutName = new LinearLayout(getContext());
-                layoutName.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout layoutName = new LinearLayout(getContext());
+                    layoutName.setOrientation(LinearLayout.VERTICAL);
 
-                final EditText etMarkerLimit = new EditText(getContext());
-                etMarkerLimit.setInputType(InputType.TYPE_CLASS_NUMBER);
-                etMarkerLimit.setHint(gpsListSize+" stored Markers on "+mSelectedDate);
-                layoutName.addView(etMarkerLimit);
+                    final EditText etMarkerLimit = new EditText(getContext());
+                    etMarkerLimit.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    etMarkerLimit.setHint(gpsListSize+" stored Markers on "+mSelectedDate);
+                    layoutName.addView(etMarkerLimit);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setView(layoutName);
-                builder.setTitle("Set Marker Limit Display");
-                builder.setCancelable(true);
-                builder.setPositiveButton("Confirm",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setView(layoutName);
+                    builder.setTitle("Set Marker Limit Display");
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("Confirm",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                markerCountLimit = Integer.parseInt(etMarkerLimit.getText().toString());
-                                Collections.reverse(ListTime);
-                                Collections.reverse(ListLatitude);
-                                Collections.reverse(ListLongitude);
-                                if (markerCountLimit > ListTime.size()) {
-                                    Toast.makeText(getActivity(), "Set limit exceeds stored marker count", Toast.LENGTH_SHORT).show();
-                                    return;
-                                } else {
-                                    for (int i = 0; i < markerCountLimit; i++) {
-                                        addMarkerv2(ListLatitude.get(i), ListLongitude.get(i), ListTime.get(i), mSelectedDate);
+                                    markerCountLimit = Integer.parseInt(etMarkerLimit.getText().toString());
+                                    Collections.reverse(ListTime);
+                                    Collections.reverse(ListLatitude);
+                                    Collections.reverse(ListLongitude);
+                                    if (markerCountLimit > ListTime.size()) {
+                                        Toast.makeText(getActivity(), "Set limit exceeds stored marker count", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    } else {
+                                        for (int i = 0; i < markerCountLimit; i++) {
+                                            addMarkerv2(ListLatitude.get(i), ListLongitude.get(i), ListTime.get(i), mSelectedDate);
+                                        }
                                     }
+
+
                                 }
+                            });
 
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
 
-                            }
-                        });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
 
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
             }
         });
         initSupportMapFragment();
@@ -1108,7 +1123,9 @@ public class MapFragment extends Fragment {
                 googleMap.animateCamera(point);
 
                 LatLng marker1 = new LatLng(014.576603, 121.101320);
-                googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
+                if (getActivity() != null) {
+                    googleMap.setInfoWindowAdapter(new customInfoWindowAdapter(getActivity()));
+                }
                 String snippet = "Latitude: 014.576603\n" + "Longitude: 121.101320\n" + "Time: 05:03:10";
                 googleMap.addMarker(new MarkerOptions()
                         .position(marker1)
